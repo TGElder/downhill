@@ -8,6 +8,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+    	Mesh mesh = new Mesh(16385);
+    	
+    	mesh.printEdges();
+    	
     }
 }
