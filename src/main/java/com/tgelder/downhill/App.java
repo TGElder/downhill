@@ -8,7 +8,7 @@ public class App
 {
     public static void main( String[] args )
     {
-    	Mesh mesh = new Mesh(16385);
+    	Mesh mesh = new Mesh(3);
     	
     	mesh.printEdges();
     	
