@@ -23,7 +23,6 @@ public class EdgeIterator implements Iterator<Edge> {
 		edgeCases.add(new Vertical());
 		edgeCases.add(new ForwardSlash());
 		edgeCases.add(new BackSlash());
-		
 	}
 	
 	@Override
