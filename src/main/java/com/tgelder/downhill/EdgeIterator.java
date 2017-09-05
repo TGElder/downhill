@@ -10,6 +10,7 @@ public class EdgeIterator implements Iterator<Edge> {
 	private final Mesh mesh;
 	private int x;
 	private int y;
+	private int c;
 	private final int width;
 	private final List<EdgeCase> edgeCases = new ArrayList<> ();
 
@@ -22,6 +23,7 @@ public class EdgeIterator implements Iterator<Edge> {
 		edgeCases.add(new Vertical());
 		edgeCases.add(new ForwardSlash());
 		edgeCases.add(new BackSlash());
+		
 	}
 	
 	@Override
@@ -48,9 +50,9 @@ public class EdgeIterator implements Iterator<Edge> {
 	}
 	
 	private EdgeCase getEdgeCaseAt(int x, int y) {
-		for (EdgeCase edgeCase : edgeCases) {
-			if (edgeCase.appliesAt(x, y)) {
-				return edgeCase;
+		for (c=0; c<edgeCases.size(); c++) {
+			if (edgeCases.get(c).appliesAt(x, y)) {
+				return edgeCases.get(c);
 			}
 		}
 		return null;
