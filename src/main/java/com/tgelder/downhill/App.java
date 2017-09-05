@@ -10,7 +10,6 @@ public class App
     {
     	Mesh mesh = new Mesh(3);
     	
-    	mesh.printEdges();
     	
     }
 }

@@ -1,160 +1,134 @@
 package com.tgelder.downhill;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class EdgeIterator implements Iterator<Edge> {
-
-
-	private Mesh mesh;
-	private final Edge edge = new Edge();
-	private int ax=0;
-	private int ay=0;
-	private int bx;
-	private int by;
-	private Iterator<Object> mode;
-	private final EvenMode evenMode = new EvenMode();
-	private final OddMode oddMode = new OddMode();
-	private final OddMode2 oddMode2 = new OddMode2();
 	
+	private final Edge edge = new Edge();
+	private final Mesh mesh;
+	private int x;
+	private int y;
+	private final int width;
+	private final List<EdgeCase> edgeCases = new ArrayList<> ();
+
 	EdgeIterator(Mesh mesh) {
 		this.mesh = mesh;
+		width = mesh.getWidth()*2 - 1;
 		
-		mode = evenMode;
-		
+		edgeCases.add(new Point());
+		edgeCases.add(new Horizontal());
+		edgeCases.add(new Vertical());
+		edgeCases.add(new ForwardSlash());
+		edgeCases.add(new BackSlash());
 	}
 	
-	
-	
+	@Override
 	public boolean hasNext() {
-		return mode.hasNext();
+		return y!=width;
+	}
+	
+	private void iterate() {
+		x++;
+		if (x==width) {
+			x=0;
+			y++;
+		}
 	}
 
+	@Override
 	public Edge next() {
 		
-		mode.next();
+		getEdgeCaseAt(x,y).setEdge(edge, x, y);
 		
-		while(!mesh.inBounds(edge.getBx(), edge.getBy())) {
-			mode.next();
-		}
-		
-		return edge;			
+		iterate();
+	
+		return edge;	
 	}
 	
-	
-
-	
-	private class EvenMode implements Iterator<Object> {
-		
-		private int [] dxs = {0,1};
-		private int d=0;
-		
-		public boolean hasNext() {
-			return (ay!=(mesh.getWidth()-1))||(ax!=(mesh.getWidth()-1))||(d!=1);
-		}
-		
-		public Object next() {
-			
-			bx = ax+dxs[d];
-			by = ay;
-			
-			edge.setAx(ax);
-			edge.setAy(ay);
-			edge.setBx(bx);
-			edge.setBy(by);
-						
-			d=(d+1)%2;
-			if (d==0) {
-				ax++;
-				if (ax==mesh.getWidth()) {
-					ax=0;
-					if (ay%2==0) {
-						mode = oddMode;
-					}
-					else {
-						mode = oddMode2;
-					}
-					
-				}
+	private EdgeCase getEdgeCaseAt(int x, int y) {
+		for (EdgeCase edgeCase : edgeCases) {
+			if (edgeCase.appliesAt(x, y)) {
+				return edgeCase;
 			}
-			
-			return null;
 		}
-
-
-
+		return null;
 	}
 	
-	private class OddMode implements Iterator<Object> {
+	private interface EdgeCase {
+		boolean appliesAt(int x, int y);
+		void setEdge(Edge edge, int x, int y);
+	}
+	
+	private class Point implements EdgeCase {
 
-		private int [] dxs = {-1,0,1};
-		private int d=0;
-		
-		public boolean hasNext() {
-			return true;
+		@Override
+		public boolean appliesAt(int x, int y) {
+			return (x%2==0) && (y%2==0);
 		}
-		
-		public Object next() {
-			
-			
-			bx = ax+dxs[d];
-			by = ay+1;
-			
-			edge.setAx(ax);
-			edge.setAy(ay);
-			edge.setBx(bx);
-			edge.setBy(by);
-			
-			d=(d+1)%3;
-			if (d==0) {
-				ax++;
-				if (ax==mesh.getWidth()) {
-					ax=0;
-					ay++;
-					mode = evenMode;
-				}
-				else {
-					mode = oddMode2;
-				}
-			}
-			
-			return null;
+
+		@Override
+		public void setEdge(Edge edge, int x, int y) {
+			edge.set(x/2, y/2, x/2, y/2);
 		}
 		
 	}
 	
-	private class OddMode2 implements Iterator<Object> {
-		
-		public boolean hasNext() {
-			return true;
+	private class Horizontal implements EdgeCase {
+
+		@Override
+		public boolean appliesAt(int x, int y) {
+			return (x%2!=0) && (y%2==0);
 		}
-		
-		public Object next() {
-			
-			bx = ax;
-			by = ay+1;
-			
-			edge.setAx(ax);
-			edge.setAy(ay);
-			edge.setBx(bx);
-			edge.setBy(by);
-			
-			ax++;
-			if (ax==mesh.getWidth()) {
-				ax=0;
-				ay++;
-				mode = evenMode;
-			}
-			else {
-				mode = oddMode;
-			}
-			
-			return null;
+
+		@Override
+		public void setEdge(Edge edge, int x, int y) {
+			edge.set(x/2, y/2, (x/2)+1, y/2);
 		}
 		
 	}
 	
+	private class Vertical implements EdgeCase {
 
+		@Override
+		public boolean appliesAt(int x, int y) {
+			return (x%2==0) && (y%2!=0);
+		}
+
+		@Override
+		public void setEdge(Edge edge, int x, int y) {
+			edge.set(x/2, y/2, x/2, (y/2)+1);
+		}
+		
+	}
 	
+	private class ForwardSlash implements EdgeCase {
 
+		@Override
+		public boolean appliesAt(int x, int y) {
+			return ((x%4==1) != (y%4==1));
+		}
 
+		@Override
+		public void setEdge(Edge edge, int x, int y) {
+			edge.set(x/2, (y/2)+1, (x/2)+1, y/2);
+		}
+		
+	}
+	
+	private class BackSlash implements EdgeCase {
+
+		@Override
+		public boolean appliesAt(int x, int y) {
+			return ((x%4==1) == (y%4==1));
+		}
+
+		@Override
+		public void setEdge(Edge edge, int x, int y) {
+			edge.set(x/2, y/2, (x/2)+1, (y/2)+1);
+		}
+		
+	}
+	
 }

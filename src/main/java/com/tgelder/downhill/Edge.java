@@ -22,4 +22,10 @@ public class Edge {
 		return "("+ax+","+ay+") to ("+bx+","+by+")";
 	}
 
+	public void set(int ax, int ay, int bx, int by) {
+		this.ax = ax;
+		this.ay = ay;
+		this.bx = bx;
+		this.by = by;
+	}
 }

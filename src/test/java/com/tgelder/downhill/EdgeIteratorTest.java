@@ -101,7 +101,7 @@ public class EdgeIteratorTest {
 				0,0,0,1,
 				0,0,1,1,
 				1,0,1,1,
-				2,0,1,1,
+				1,1,2,0,
 				2,0,2,1,
 				0,1,0,1,
 				0,1,1,1,
@@ -109,7 +109,7 @@ public class EdgeIteratorTest {
 				1,1,2,1,
 				2,1,2,1,
 				0,1,0,2,
-				1,1,0,2,
+				0,2,1,1,
 				1,1,1,2,
 				1,1,2,2,
 				2,1,2,2,
@@ -121,6 +121,7 @@ public class EdgeIteratorTest {
 		};
 		
 		for (int i=0; i<100; i++) {
+			System.out.println(i);
 			assertEquals(expected[i],actual.get(i));
 		}
 
