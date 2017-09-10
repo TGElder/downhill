@@ -13,39 +13,36 @@ import javax.imageio.ImageIO;
 
 public class AWTImage implements Image {
 
-	private final BufferedImage image;
-	private final Graphics2D canvas;
+  private final BufferedImage image;
+  private final Graphics2D canvas;
 
-	public AWTImage(int width, int length)
-	{
-		GraphicsConfiguration GFX_CONFIG = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+  public AWTImage(int width, int length) {
+    GraphicsConfiguration GFX_CONFIG = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+        .getDefaultConfiguration();
 
-		image = GFX_CONFIG.createCompatibleImage(width,length, Transparency.OPAQUE);
-		canvas = image.createGraphics();
-	}
+    image = GFX_CONFIG.createCompatibleImage(width, length, Transparency.OPAQUE);
+    canvas = image.createGraphics();
+  }
 
-	@Override
-	public void setColor(int r, int g, int b) {
-		canvas.setColor(new Color(r, g, b));
-	}
-	
-	@Override
-	public void drawPoint(int x, int y) {
-		drawLine(x, y, x, y);
-	}
+  @Override
+  public void setColor(int r, int g, int b) {
+    canvas.setColor(new Color(r, g, b));
+  }
 
-	@Override
-	public void drawLine(int ax, int ay, int bx, int by) {
-		canvas.drawLine(ax, ay, bx, by);
-	}
+  @Override
+  public void drawPoint(int x, int y) {
+    drawLine(x, y, x, y);
+  }
 
-	@Override
-	public void save(String location) throws IOException {
-		File file = new File(location + ".png");
-		ImageIO.write(image, "png", file);
-	}
+  @Override
+  public void drawLine(int ax, int ay, int bx, int by) {
+    canvas.drawLine(ax, ay, bx, by);
+  }
 
-
-
+  @Override
+  public void save(String location) throws IOException {
+    File file = new File(location + ".png");
+    ImageIO.write(image, "png", file);
+  }
 
 }
