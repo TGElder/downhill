@@ -19,10 +19,10 @@ public class MeshTriangle {
     ca = new MeshEdge(c, a);
   }
 
-  public void set(int atx, int aty, int btx, int bty, int ctx, int cty) {
-    ab.getA().set(atx, aty);
-    bc.getA().set(btx, bty);
-    ca.getA().set(ctx, cty);
+  public void set(int amx, int amy, int bmx, int bmy, int cmx, int cmy) {
+    ab.getA().set(amx, amy);
+    bc.getA().set(bmx, bmy);
+    ca.getA().set(cmx, cmy);
   }
   
   public MeshPoint getA() {

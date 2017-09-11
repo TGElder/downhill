@@ -8,20 +8,33 @@ import lombok.Getter;
 public class MeshPoint {
   
   private final Mesh mesh;
-  private int tx;
-  private int ty;
+  private int mx;
+  private int my;
   
   public MeshPoint(Mesh mesh) {
     this.mesh = mesh;
   }
   
-  public void set(int tx, int ty) {
-    this.tx = tx;
-    this.ty = ty;
+  public void set(int mx, int my) {
+    this.mx = mx;
+    this.my = my;
   }
   
   public String toString() {
-    return "("+tx+", "+ty+")";
+    return "("+mx+", "+my+")";
   }
+  
+  public float getX() {
+    return mesh.getX(mx, my);
+  }
+  
+  public float getY() {
+    return mesh.getY(mx, my);
+  }
+  
+  public float getZ() {
+    return mesh.getZ(mx, my);
+  }
+
 
 }

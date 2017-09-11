@@ -49,10 +49,10 @@ public class EdgeIteratorTest {
     while (iterator.hasNext()) {
       MeshEdge meshEdge = iterator.next();
 
-      actual.add(meshEdge.getA().getTx());
-      actual.add(meshEdge.getA().getTy());
-      actual.add(meshEdge.getB().getTx());
-      actual.add(meshEdge.getB().getTy());
+      actual.add(meshEdge.getA().getMx());
+      actual.add(meshEdge.getA().getMy());
+      actual.add(meshEdge.getB().getMx());
+      actual.add(meshEdge.getB().getMy());
     }
 
     Integer[] expected = { 0, 0, 0, 0, 
@@ -82,10 +82,10 @@ public class EdgeIteratorTest {
     while (iterator.hasNext()) {
       MeshEdge meshEdge = iterator.next();
 
-      actual.add(meshEdge.getA().getTx());
-      actual.add(meshEdge.getA().getTy());
-      actual.add(meshEdge.getB().getTx());
-      actual.add(meshEdge.getB().getTy());
+      actual.add(meshEdge.getA().getMx());
+      actual.add(meshEdge.getA().getMy());
+      actual.add(meshEdge.getB().getMx());
+      actual.add(meshEdge.getB().getMy());
     }
 
     Integer[] expected = { 0, 0, 0, 0,

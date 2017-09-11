@@ -50,8 +50,8 @@ public class Mesh {
   public static Mesh of3x3() {
     Mesh out = new Mesh(3);
 
-    float max = Float.MAX_VALUE;
-    float min = Float.MIN_VALUE;
+    float max = 512f;
+    float min = 0f;
 
     for (int x = 0; x < 3; x++) {
       for (int y = 0; y < 3; y++) {
@@ -59,7 +59,7 @@ public class Mesh {
       }
     }
 
-    out.setZ(0, 0, max);
+    out.setZ(1, 1, max);
 
     return out;
   }

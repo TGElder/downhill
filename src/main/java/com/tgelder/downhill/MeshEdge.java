@@ -15,9 +15,9 @@ public class MeshEdge {
     b = new MeshPoint(mesh);
   }
 
-  public void set(int atx, int aty, int btx, int bty) {
-    a.set(atx, aty);
-    b.set(btx, bty);
+  public void set(int amx, int amy, int bmx, int bmy) {
+    a.set(amx, amy);
+    b.set(bmx, bmy);
   }
   
   public String toString() {

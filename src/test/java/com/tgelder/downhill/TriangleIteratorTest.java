@@ -48,12 +48,12 @@ public class TriangleIteratorTest {
     while (iterator.hasNext()) {
       MeshTriangle meshTriangle = iterator.next();
 
-      actual.add(meshTriangle.getA().getTx());
-      actual.add(meshTriangle.getA().getTy());
-      actual.add(meshTriangle.getB().getTx());
-      actual.add(meshTriangle.getB().getTy());
-      actual.add(meshTriangle.getC().getTx());
-      actual.add(meshTriangle.getC().getTy());
+      actual.add(meshTriangle.getA().getMx());
+      actual.add(meshTriangle.getA().getMy());
+      actual.add(meshTriangle.getB().getMx());
+      actual.add(meshTriangle.getB().getMy());
+      actual.add(meshTriangle.getC().getMx());
+      actual.add(meshTriangle.getC().getMy());
     }
 
     Integer[] expected = { 0, 0, 1, 0, 1, 1,
@@ -76,12 +76,12 @@ public class TriangleIteratorTest {
     while (iterator.hasNext()) {
       MeshTriangle meshTriangle = iterator.next();
 
-      actual.add(meshTriangle.getA().getTx());
-      actual.add(meshTriangle.getA().getTy());
-      actual.add(meshTriangle.getB().getTx());
-      actual.add(meshTriangle.getB().getTy());
-      actual.add(meshTriangle.getC().getTx());
-      actual.add(meshTriangle.getC().getTy());
+      actual.add(meshTriangle.getA().getMx());
+      actual.add(meshTriangle.getA().getMy());
+      actual.add(meshTriangle.getB().getMx());
+      actual.add(meshTriangle.getB().getMy());
+      actual.add(meshTriangle.getC().getMx());
+      actual.add(meshTriangle.getC().getMy());
     }
 
     Integer[] expected = { 0, 0, 1, 0, 1, 1,
