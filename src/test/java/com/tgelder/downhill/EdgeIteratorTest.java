@@ -12,7 +12,7 @@ public class EdgeIteratorTest {
   @Test
   public void testEdgeCounts() {
 
-    for (int i = 0; i <= 14; i++) {
+    for (int i = 0; i <= 12; i++) {
       System.out.println(i); // TODO replace with logging
       int size = (int) (Math.pow(2, i)) + 1;
       int edges = (int) (Math.pow(2, i + 1)) + 1;
@@ -47,16 +47,23 @@ public class EdgeIteratorTest {
     List<Integer> actual = new ArrayList<>();
 
     while (iterator.hasNext()) {
-      Edge edge = iterator.next();
+      MeshEdge meshEdge = iterator.next();
 
-      actual.add(edge.getAx());
-      actual.add(edge.getAy());
-      actual.add(edge.getBx());
-      actual.add(edge.getBy());
+      actual.add(meshEdge.getA().getTx());
+      actual.add(meshEdge.getA().getTy());
+      actual.add(meshEdge.getB().getTx());
+      actual.add(meshEdge.getB().getTy());
     }
 
-    Integer[] expected = { 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1,
-        1, 1, 1, 1, 1 };
+    Integer[] expected = { 0, 0, 0, 0, 
+                           0, 0, 1, 0, 
+                           1, 0, 1, 0, 
+                           0, 0, 0, 1, 
+                           0, 0, 1, 1, 
+                           1, 0, 1, 1, 
+                           0, 1, 0, 1, 
+                           0, 1, 1, 1,
+                           1, 1, 1, 1 };
 
     for (int i = 0; i < 9; i++) {
       assertEquals(expected[i], actual.get(i));
@@ -73,20 +80,41 @@ public class EdgeIteratorTest {
     List<Integer> actual = new ArrayList<>();
 
     while (iterator.hasNext()) {
-      Edge edge = iterator.next();
+      MeshEdge meshEdge = iterator.next();
 
-      actual.add(edge.getAx());
-      actual.add(edge.getAy());
-      actual.add(edge.getBx());
-      actual.add(edge.getBy());
+      actual.add(meshEdge.getA().getTx());
+      actual.add(meshEdge.getA().getTy());
+      actual.add(meshEdge.getB().getTx());
+      actual.add(meshEdge.getB().getTy());
     }
 
-    Integer[] expected = { 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1,
-        1, 1, 1, 2, 0, 2, 0, 2, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 0, 1, 0, 2, 0, 2, 1, 1,
-        1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 2, 2, 0, 2, 0, 2, 0, 2, 1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2 };
+    Integer[] expected = { 0, 0, 0, 0,
+                           0, 0, 1, 0, 
+                           1, 0, 1, 0, 
+                           1, 0, 2, 0, 
+                           2, 0, 2, 0, 
+                           0, 0, 0, 1, 
+                           0, 0, 1, 1, 
+                           1, 0, 1, 1, 
+                           1, 1, 2, 0, 
+                           2, 0, 2, 1, 
+                           0, 1, 0, 1, 
+                           0, 1, 1, 1, 
+                           1, 1, 1, 1, 
+                           1, 1, 2, 1, 
+                           2, 1, 2, 1, 
+                           0, 1, 0, 2, 
+                           0, 2, 1, 1,
+                           1, 1, 1, 2, 
+                           1, 1, 2, 2, 
+                           2, 1, 2, 2, 
+                           0, 2, 0, 2, 
+                           0, 2, 1, 2, 
+                           1, 2, 1, 2, 
+                           1, 2, 2, 2, 
+                           2, 2, 2, 2 };
 
     for (int i = 0; i < 100; i++) {
-      System.out.println(i);
       assertEquals(expected[i], actual.get(i));
     }
 

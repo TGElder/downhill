@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class EdgeIterator implements Iterator<MeshEdge> {
+public class TriangleIterator implements Iterator<MeshEdge> {
 
-  private final MeshEdge meshEdge;
+  private final MeshTriangle triangle = new MeshTriangle();
+  private final Mesh mesh;
   private int x;
   private int y;
   private int c;
   private final int width;
   private final List<EdgeCase> edgeCases = new ArrayList<>();
 
-  EdgeIterator(Mesh mesh) {
-    meshEdge = new MeshEdge(mesh);
+  TriangleIterator(Mesh mesh) {
+    this.mesh = mesh;
     width = mesh.getWidth() * 2 - 1;
 
     edgeCases.add(new Point());
@@ -40,11 +41,11 @@ public class EdgeIterator implements Iterator<MeshEdge> {
   @Override
   public MeshEdge next() {
 
-    getEdgeCaseAt(x, y).setEdge(meshEdge, x, y);
+    getEdgeCaseAt(x, y).setEdge(edge, x, y);
 
     iterate();
 
-    return meshEdge;
+    return edge;
   }
 
   private EdgeCase getEdgeCaseAt(int x, int y) {

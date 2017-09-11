@@ -19,7 +19,7 @@ public class TriangleZInterpolator {
   private float aa;
   private float ab;
   private float ac;
-  
+
   private double s1;
   private double s2;
   private double s3;
@@ -54,14 +54,13 @@ public class TriangleZInterpolator {
     return (x - c.getX()) * (b.getY() - c.getY()) - (b.getX() - c.getX()) * (y - c.getY());
   }
 
-
   public boolean pointIsInTriangle(float x, float y) {
     s1 = Math.signum(sign(x, y, ta, tb));
     s2 = Math.signum(sign(x, y, tb, tc));
     s3 = Math.signum(sign(x, y, tc, ta));
-    
-    return (((s1==-1)||(s1==0))&&((s2==-1)||(s2==0))&&((s3==-1)||(s3==0)))
-        || (((s1==1)||(s1==0))&&((s2==1)||(s2==0))&&((s3==1)||(s3==0)));
+
+    return (((s1 == -1) || (s1 == 0)) && ((s2 == -1) || (s2 == 0)) && ((s3 == -1) || (s3 == 0)))
+        || (((s1 == 1) || (s1 == 0)) && ((s2 == 1) || (s2 == 0)) && ((s3 == 1) || (s3 == 0)));
   }
 
 }
