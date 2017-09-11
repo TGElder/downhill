@@ -15,12 +15,12 @@ public class MeshEdge {
     b = new MeshPoint(mesh);
   }
 
-  public String toString() {
-    return a + " to " + b;
-  }
-
   public void set(int atx, int aty, int btx, int bty) {
     a.set(atx, aty);
     b.set(btx, bty);
+  }
+  
+  public String toString() {
+    return a + " to " + b;
   }
 }

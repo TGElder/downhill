@@ -24,9 +24,21 @@ public class MeshTriangle {
     bc.getA().set(btx, bty);
     ca.getA().set(ctx, cty);
   }
+  
+  public MeshPoint getA() {
+    return ab.getA();
+  }
+  
+  public MeshPoint getB() {
+    return bc.getA();
+  }
+  
+  public MeshPoint getC() {
+    return ca.getA();
+  }
 
   public String toString() {
-    return ab.getA() + " to " + bc.getA() + " to " + ca.getA();
+    return getA() + " to " + getA() + " to " + getA();
   }
 
 }
