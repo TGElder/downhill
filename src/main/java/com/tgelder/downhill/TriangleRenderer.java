@@ -43,7 +43,6 @@ public class TriangleRenderer {
     ty = points.stream().mapToInt(p -> (int) Math.ceil(p.getY())).max().getAsInt();
 
     interpolator.setTriangle(t);
-    
 
     for (x = fx; x <= tx; x++) {
       for (y = fy; y <= ty; y++) {

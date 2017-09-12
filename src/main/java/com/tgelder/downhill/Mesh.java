@@ -1,11 +1,14 @@
 package com.tgelder.downhill;
 
+import java.util.Random;
+
 import lombok.Getter;
 
 public class Mesh {
 
   static final float MAX_VALUE = Float.MAX_VALUE;
   static final float MIN_VALUE = Float.MIN_VALUE;
+  static final Random random = new Random(1986);
   
   @Getter
   private final int width;
@@ -66,6 +69,36 @@ public class Mesh {
 
     out.setZ(1, 1, MAX_VALUE);
 
+    return out;
+  }
+  
+  public Mesh split() {
+    int oWidth = width*2 - 1;
+    int ox = 0;
+    int oy = 0;
+    
+    Mesh out = new Mesh(oWidth);
+    
+    EdgeIterator iterator = new EdgeIterator(this);
+    MeshEdge edge;
+    
+    while (iterator.hasNext()) {
+      edge = iterator.next();
+      
+      float r = random.nextFloat()*.9f;
+      
+      out.setX(ox, oy, (edge.getA().getX()/2f + edge.getB().getX()/2f));
+      out.setY(ox, oy, (edge.getA().getY()/2f + edge.getB().getY()/2f));
+      out.setZ(ox, oy, (edge.getA().getZ()*r + edge.getB().getZ()*(1 - r)));
+                 
+      ox++;
+      if (ox==oWidth) {
+        ox=0;
+        oy++;
+      }
+      
+    }
+    
     return out;
   }
 
