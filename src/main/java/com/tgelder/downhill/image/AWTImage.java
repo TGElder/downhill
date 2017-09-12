@@ -11,16 +11,25 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import lombok.Getter;
+
 public class AWTImage implements Image {
 
+  @Getter
+  private final int width;
+  @Getter
+  private final int height;
   private final BufferedImage image;
   private final Graphics2D canvas;
 
-  public AWTImage(int width, int length) {
+  public AWTImage(int width, int height) {
+    this.width = width;
+    this.height = height;
+    
     GraphicsConfiguration GFX_CONFIG = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
         .getDefaultConfiguration();
 
-    image = GFX_CONFIG.createCompatibleImage(width, length, Transparency.OPAQUE);
+    image = GFX_CONFIG.createCompatibleImage(width, height, Transparency.OPAQUE);
     canvas = image.createGraphics();
   }
 

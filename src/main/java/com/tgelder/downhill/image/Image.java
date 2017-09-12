@@ -11,5 +11,9 @@ public interface Image {
   public void drawLine(int ax, int ay, int bx, int by);
 
   public void save(String location) throws IOException;
+  
+  public int getWidth();
+  
+  public int getHeight();
 
 }

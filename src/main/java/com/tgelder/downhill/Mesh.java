@@ -4,6 +4,9 @@ import lombok.Getter;
 
 public class Mesh {
 
+  static final float MAX_VALUE = Float.MAX_VALUE;
+  static final float MIN_VALUE = Float.MIN_VALUE;
+  
   @Getter
   private final int width;
   private final float[][] x;
@@ -50,16 +53,18 @@ public class Mesh {
   public static Mesh of3x3() {
     Mesh out = new Mesh(3);
 
-    float max = 512f;
-    float min = 0f;
-
+    float max = MAX_VALUE;
+    float min = MIN_VALUE;
+    
+    float [] values = {min, (min/2f) + (max/2f), max};
+    
     for (int x = 0; x < 3; x++) {
       for (int y = 0; y < 3; y++) {
-        out.set(x, y, min + (max * x), min + (max * y), 0);
+        out.set(x, y, values[x], values[y], MIN_VALUE);
       }
     }
 
-    out.setZ(1, 1, max);
+    out.setZ(1, 1, MAX_VALUE);
 
     return out;
   }

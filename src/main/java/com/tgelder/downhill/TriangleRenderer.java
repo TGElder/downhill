@@ -17,6 +17,7 @@ public class TriangleRenderer {
   private final List<Point> points = new ArrayList<Point>();
   int x, y, fx, tx, fy, ty;
   float z;
+  double xScale, yScale, zScale;
   int colour;
   private final TriangleZInterpolator interpolator = new TriangleZInterpolator();
 
@@ -28,32 +29,46 @@ public class TriangleRenderer {
 
   public void render(MeshTriangle triangle, Image image) {
 
-    a.set(triangle.getA().getX(), triangle.getA().getY(), triangle.getA().getZ());
-    b.set(triangle.getB().getX(), triangle.getB().getY(), triangle.getB().getZ());
-    c.set(triangle.getC().getX(), triangle.getC().getY(), triangle.getC().getZ());
+    xScale = image.getWidth()/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
+    yScale = image.getHeight()/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
+    zScale = 255/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
+    
+    setPointWithImageCoordinates(a, triangle.getA());
+    setPointWithImageCoordinates(b, triangle.getB());
+    setPointWithImageCoordinates(c, triangle.getC());
 
-    fx = points.stream().mapToInt(p -> (int)Math.floor(p.getX())).min().getAsInt();
-    tx = points.stream().mapToInt(p -> (int)Math.ceil(p.getX())).max().getAsInt();
-    fy = points.stream().mapToInt(p -> (int)Math.floor(p.getY())).min().getAsInt();
-    ty = points.stream().mapToInt(p -> (int)Math.ceil(p.getY())).max().getAsInt();
+    fx = points.stream().mapToInt(p -> (int) Math.floor(p.getX())).min().getAsInt();
+    tx = points.stream().mapToInt(p -> (int) Math.ceil(p.getX())).max().getAsInt();
+    fy = points.stream().mapToInt(p -> (int) Math.floor(p.getY())).min().getAsInt();
+    ty = points.stream().mapToInt(p -> (int) Math.ceil(p.getY())).max().getAsInt();
 
     interpolator.setTriangle(t);
+    
 
     for (x = fx; x <= tx; x++) {
       for (y = fy; y <= ty; y++) {
 
         if (interpolator.pointIsInTriangle(x, y)) {
 
-          z = (interpolator.getZ(x, y)/1024f);
-          
-          colour = (int) (z*255);
-          
+          colour = (int) interpolator.getZ(x, y);
+
           image.setColor(colour, colour, colour);
           image.drawPoint(x, y);
+          
         }
       }
     }
 
+  }
+  
+  private void setPointWithImageCoordinates(Point point, MeshPoint meshPoint) {
+    point.set(scale(meshPoint.getX(), xScale), 
+        scale(meshPoint.getY(), yScale),
+        scale(meshPoint.getZ(), zScale));
+  }
+  
+  private float scale(float value, double scale) {
+    return (float)((value - Mesh.MIN_VALUE)*scale);
   }
 
 }
