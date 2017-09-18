@@ -85,7 +85,7 @@ public class Mesh {
     while (iterator.hasNext()) {
       edge = iterator.next();
       
-      float r = random.nextFloat()*.9f;
+      float r = random.nextFloat();
       
       out.setX(ox, oy, (edge.getA().getX()/2f + edge.getB().getX()/2f));
       out.setY(ox, oy, (edge.getA().getY()/2f + edge.getB().getY()/2f));

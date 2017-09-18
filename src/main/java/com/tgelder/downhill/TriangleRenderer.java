@@ -15,10 +15,11 @@ public class TriangleRenderer {
   private final Point c = new Point();
   private final Triangle t = new Triangle(a, b, c);
   private final List<Point> points = new ArrayList<Point>();
-  int x, y, fx, tx, fy, ty;
-  float z;
-  double xScale, yScale, zScale;
-  int colour;
+  private int x, y, fx, tx, fy, ty;
+  private final Scale xScale = new Scale();
+  private final Scale yScale = new Scale();
+  private final Scale zScale = new Scale();
+  private int colour;
   private final TriangleZInterpolator interpolator = new TriangleZInterpolator();
 
   public TriangleRenderer() {
@@ -28,11 +29,10 @@ public class TriangleRenderer {
   }
 
   public void render(MeshTriangle triangle, Image image) {
+    xScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getWidth());
+    yScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getHeight());
+    zScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, 255);
 
-    xScale = image.getWidth()/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
-    yScale = image.getHeight()/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
-    zScale = 255/(Mesh.MAX_VALUE - Mesh.MIN_VALUE);
-    
     setPointWithImageCoordinates(a, triangle.getA());
     setPointWithImageCoordinates(b, triangle.getB());
     setPointWithImageCoordinates(c, triangle.getC());
@@ -61,13 +61,11 @@ public class TriangleRenderer {
   }
   
   private void setPointWithImageCoordinates(Point point, MeshPoint meshPoint) {
-    point.set(scale(meshPoint.getX(), xScale), 
-        scale(meshPoint.getY(), yScale),
-        scale(meshPoint.getZ(), zScale));
+    point.set(xScale.scale(meshPoint.getX()), 
+        yScale.scale(meshPoint.getY()),
+        zScale.scale(meshPoint.getZ()));
   }
   
-  private float scale(float value, double scale) {
-    return (float)((value - Mesh.MIN_VALUE)*scale);
-  }
+ 
 
 }

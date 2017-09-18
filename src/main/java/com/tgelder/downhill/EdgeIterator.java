@@ -1,27 +1,17 @@
 package com.tgelder.downhill;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class EdgeIterator implements Iterator<MeshEdge> {
+public class EdgeIterator implements Iterator<CasedMeshEdge> {
 
-  private final MeshEdge meshEdge;
+  private final CasedMeshEdge casedMeshEdge;
   private int x;
   private int y;
-  private int c;
   private final int width;
-  private final List<EdgeCase> edgeCases = new ArrayList<>();
-
+  
   EdgeIterator(Mesh mesh) {
-    meshEdge = new MeshEdge(mesh);
+    casedMeshEdge = new CasedMeshEdge(mesh);
     width = mesh.getWidth() * 2 - 1;
-
-    edgeCases.add(new Point());
-    edgeCases.add(new Horizontal());
-    edgeCases.add(new Vertical());
-    edgeCases.add(new ForwardSlash());
-    edgeCases.add(new BackSlash());
   }
 
   @Override
@@ -38,98 +28,22 @@ public class EdgeIterator implements Iterator<MeshEdge> {
   }
 
   @Override
-  public MeshEdge next() {
-
-    getEdgeCaseAt(x, y).setEdge(meshEdge, x, y);
+  public CasedMeshEdge next() {
+    getEdgeCaseAt(x, y).setEdge(casedMeshEdge, x, y);
 
     iterate();
 
-    return meshEdge;
+    return casedMeshEdge;
   }
 
   private EdgeCase getEdgeCaseAt(int x, int y) {
-    for (c = 0; c < edgeCases.size(); c++) {
-      if (edgeCases.get(c).appliesAt(x, y)) {
-        return edgeCases.get(c);
+    for (EdgeCase edgeCase : EdgeCase.values()) {
+      if (edgeCase.appliesAt(x, y)) {
+        return edgeCase;
       }
     }
     return null;
   }
-
-  private interface EdgeCase {
-    boolean appliesAt(int x, int y);
-
-    void setEdge(MeshEdge meshEdge, int x, int y);
-  }
-
-  private class Point implements EdgeCase {
-
-    @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 == 0) && (y % 2 == 0);
-    }
-
-    @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, x / 2, y / 2);
-    }
-
-  }
-
-  private class Horizontal implements EdgeCase {
-
-    @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 != 0) && (y % 2 == 0);
-    }
-
-    @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, (x / 2) + 1, y / 2);
-    }
-
-  }
-
-  private class Vertical implements EdgeCase {
-
-    @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 == 0) && (y % 2 != 0);
-    }
-
-    @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, x / 2, (y / 2) + 1);
-    }
-
-  }
-
-  private class ForwardSlash implements EdgeCase {
-
-    @Override
-    public boolean appliesAt(int x, int y) {
-      return ((x % 4 == 1) != (y % 4 == 1));
-    }
-
-    @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, (y / 2) + 1, (x / 2) + 1, y / 2);
-    }
-
-  }
-
-  private class BackSlash implements EdgeCase {
-
-    @Override
-    public boolean appliesAt(int x, int y) {
-      return ((x % 4 == 1) == (y % 4 == 1));
-    }
-
-    @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, (x / 2) + 1, (y / 2) + 1);
-    }
-
-  }
+  
 
 }
