@@ -24,8 +24,8 @@ public class MeshLineRenderer {
   public void render(Mesh mesh, Image image) {
     EdgeIterator iterator = new EdgeIterator(mesh);
 
-    Scale xScale = new Scale(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getWidth());
-    Scale yScale = new Scale(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getHeight());
+    Scale xScale = new Scale(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getWidth() - 1);
+    Scale yScale = new Scale(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getHeight() - 1);
     
     while (iterator.hasNext()) {
       CasedMeshEdge edge = iterator.next();
