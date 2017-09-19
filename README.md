@@ -25,4 +25,6 @@ This is however a bit boring - if you follow a path uphill from the edge of the 
 
 ## Implementation
 
-The implementation is designed to minimise Java memory usage and garbage collection. This is generally achieved by changing the values on a single object instead of creating a new object. 
+The implementation is designed to minimise Java memory usage and garbage collection. 
+1. The only part of the mesh held in memory are the x, y and z (elevation) coordinates of each point. We can work out where the edges and triangles are as the mesh has a predictable pattern.  
+2. Where possible (and practical) a single copy of an object is mutated instead of creating a new object. In particular, the EdgeIterator and TriangleIterator that iterate over the edges or triangles of a mesh repeatedly return the same object with changed values. 
