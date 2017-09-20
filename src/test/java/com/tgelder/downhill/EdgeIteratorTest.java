@@ -13,7 +13,6 @@ public class EdgeIteratorTest {
   public void testEdgeCounts() {
 
     for (int i = 0; i <= 12; i++) {
-      System.out.println(i); // TODO replace with logging
       int size = (int) (Math.pow(2, i)) + 1;
       int edges = (int) (Math.pow(2, i + 1)) + 1;
       edges = edges * edges;
@@ -23,13 +22,11 @@ public class EdgeIteratorTest {
   }
 
   private int getEdgeCount(int size) {
-    System.out.println("Creating mesh");
     Mesh mesh = new Mesh(size);
     EdgeIterator iterator = new EdgeIterator(mesh);
 
     int count = 0;
 
-    System.out.println("Iterating");
     while (iterator.hasNext()) {
       iterator.next();
       count++;

@@ -31,25 +31,27 @@ public class App {
     lineRenderer.render(mesh, image);
     image.save("images/mesh3");
     
-    mesh = mesh.split();
+    RandomRNG rng = new RandomRNG(1986);
+    
+    mesh = mesh.split(rng);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh5");
     
-    mesh = mesh.split();
+    mesh = mesh.split(rng);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh9");
     
-    mesh = mesh.split();
+    mesh = mesh.split(rng);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh17");
     
-    mesh = mesh.split().split().split().split();
+    mesh = mesh.split(rng).split(rng).split(rng).split(rng);
     
     triangleRenderer.render(mesh, image);
     image.save("images/mesh257");

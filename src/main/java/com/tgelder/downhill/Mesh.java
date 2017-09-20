@@ -8,7 +8,6 @@ public class Mesh {
 
   static final float MAX_VALUE = Float.MAX_VALUE;
   static final float MIN_VALUE = Float.MIN_VALUE;
-  static final Random random = new Random(1986);
   
   @Getter
   private final int width;
@@ -72,7 +71,7 @@ public class Mesh {
     return out;
   }
   
-  public Mesh split() {
+  public Mesh split(RNG rng) {
     int oWidth = width*2 - 1;
     int ox = 0;
     int oy = 0;
@@ -85,12 +84,12 @@ public class Mesh {
     while (iterator.hasNext()) {
       edge = iterator.next();
       
-      float r = random.nextFloat();
+      float r = rng.getNext();
       
       out.setX(ox, oy, (edge.getA().getX()/2f + edge.getB().getX()/2f));
       out.setY(ox, oy, (edge.getA().getY()/2f + edge.getB().getY()/2f));
       out.setZ(ox, oy, (edge.getA().getZ()*r + edge.getB().getZ()*(1 - r)));
-                 
+
       ox++;
       if (ox==oWidth) {
         ox=0;
