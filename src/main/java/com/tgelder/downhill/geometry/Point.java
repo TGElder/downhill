@@ -80,5 +80,5 @@ public class Point {
   public Point copy(Point other) {
     return set(other.x, other.y, other.z);
   }
-
+  
 }

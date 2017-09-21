@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.tgelder.downhill.edgesplitters.EdgeSplitter;
+import com.tgelder.downhill.edgesplitters.MidpointEdgeSplitter;
+import com.tgelder.downhill.edgesplitters.RandomEdgeSplitter;
+
 public class MeshTest {
   
   private static final float PRECISION = 0.00001f;
@@ -62,7 +66,11 @@ public class MeshTest {
     numbers[17] = 0.7f;
     numbers[18] = 1.0f;
     
-    Mesh split = Mesh.of3x3().split(new MockRNG(numbers));
+    EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
+    EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
+    EdgeSplitter zSplitter = new RandomEdgeSplitter(new MockRNG(numbers), MeshPoint::getZ);
+    
+    Mesh split = Mesh.of3x3().split(xSplitter, ySplitter, zSplitter);
     
     float[] expected = new float[25];
     

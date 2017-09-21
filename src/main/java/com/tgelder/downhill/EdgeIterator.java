@@ -4,12 +4,14 @@ import java.util.Iterator;
 
 public class EdgeIterator implements Iterator<CasedMeshEdge> {
 
+  private final Mesh mesh;
   private final CasedMeshEdge casedMeshEdge;
   private int x;
   private int y;
   private final int width;
   
   EdgeIterator(Mesh mesh) {
+    this.mesh = mesh;
     casedMeshEdge = new CasedMeshEdge(mesh);
     width = mesh.getWidth() * 2 - 1;
   }
@@ -29,21 +31,14 @@ public class EdgeIterator implements Iterator<CasedMeshEdge> {
 
   @Override
   public CasedMeshEdge next() {
-    getEdgeCaseAt(x, y).setEdge(casedMeshEdge, x, y);
+    mesh.getEdgeCaseAt(x, y).setEdge(casedMeshEdge, x, y);
 
     iterate();
 
     return casedMeshEdge;
   }
 
-  private EdgeCase getEdgeCaseAt(int x, int y) {
-    for (EdgeCase edgeCase : EdgeCase.values()) {
-      if (edgeCase.appliesAt(x, y)) {
-        return edgeCase;
-      }
-    }
-    return null;
-  }
+ 
   
 
 }

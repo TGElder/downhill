@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.tgelder.downhill.edgesplitters.EdgeSplitter;
+import com.tgelder.downhill.edgesplitters.MidpointEdgeSplitter;
+import com.tgelder.downhill.edgesplitters.RandomEdgeSplitter;
+import com.tgelder.downhill.edgesplitters.SubpeakEdgeSplitter;
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
 
@@ -33,25 +37,31 @@ public class App {
     
     RandomRNG rng = new RandomRNG(1986);
     
-    mesh = mesh.split(rng);
+    EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
+    EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
+    EdgeSplitter zSplitter = new SubpeakEdgeSplitter(rng);
+    
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh5");
     
-    mesh = mesh.split(rng);
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh9");
     
-    mesh = mesh.split(rng);
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     
     triangleRenderer.render(mesh, image);
     lineRenderer.render(mesh, image);
     image.save("images/mesh17");
     
-    mesh = mesh.split(rng).split(rng).split(rng).split(rng);
+    for (int i=0; i<4; i++) {
+      mesh = mesh.split(xSplitter, ySplitter, zSplitter);
+    }
     
     triangleRenderer.render(mesh, image);
     image.save("images/mesh257");

@@ -1,13 +1,13 @@
 package com.tgelder.downhill;
 
-import java.util.Random;
+import com.tgelder.downhill.edgesplitters.EdgeSplitter;
 
 import lombok.Getter;
 
 public class Mesh {
 
-  static final float MAX_VALUE = Float.MAX_VALUE;
-  static final float MIN_VALUE = Float.MIN_VALUE;
+  public static final float MAX_VALUE = Float.MAX_VALUE;
+  public static final float MIN_VALUE = Float.MIN_VALUE;
   
   @Getter
   private final int width;
@@ -71,7 +71,16 @@ public class Mesh {
     return out;
   }
   
-  public Mesh split(RNG rng) {
+  public EdgeCase getEdgeCaseAt(int x, int y) {
+    for (EdgeCase edgeCase : EdgeCase.values()) {
+      if (edgeCase.appliesAt(x, y)) {
+        return edgeCase;
+      }
+    }
+    return null;
+  }
+  
+  public Mesh split(EdgeSplitter xSplitter, EdgeSplitter ySplitter, EdgeSplitter zSplitter) {
     int oWidth = width*2 - 1;
     int ox = 0;
     int oy = 0;
@@ -79,16 +88,14 @@ public class Mesh {
     Mesh out = new Mesh(oWidth);
     
     EdgeIterator iterator = new EdgeIterator(this);
-    MeshEdge edge;
+    CasedMeshEdge edge;
     
     while (iterator.hasNext()) {
       edge = iterator.next();
-      
-      float r = rng.getNext();
-      
-      out.setX(ox, oy, (edge.getA().getX()/2f + edge.getB().getX()/2f));
-      out.setY(ox, oy, (edge.getA().getY()/2f + edge.getB().getY()/2f));
-      out.setZ(ox, oy, (edge.getA().getZ()*r + edge.getB().getZ()*(1 - r)));
+            
+      out.setX(ox, oy, xSplitter.split(edge));
+      out.setY(ox, oy, ySplitter.split(edge));
+      out.setZ(ox, oy, zSplitter.split(edge));
 
       ox++;
       if (ox==oWidth) {
@@ -100,5 +107,6 @@ public class Mesh {
     
     return out;
   }
+  
 
 }

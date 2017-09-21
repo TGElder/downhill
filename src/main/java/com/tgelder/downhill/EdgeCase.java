@@ -65,7 +65,6 @@ public enum EdgeCase{
     }
   };
   
-
   abstract boolean appliesAt(int x, int y);
 
   abstract void setEdge(CasedMeshEdge meshEdge, int x, int y);
