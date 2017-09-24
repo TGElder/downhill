@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableMap;
 import com.tgelder.downhill.edgesplitters.EdgeSplitter;
 import com.tgelder.downhill.edgesplitters.MidpointEdgeSplitter;
+import com.tgelder.downhill.edgesplitters.RandomEdgeSplitter;
 import com.tgelder.downhill.edgesplitters.SubpeakEdgeSplitter;
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
@@ -66,6 +68,8 @@ public class App {
     
     MeshTriangleRenderer triangleRenderer = new MeshTriangleRenderer();
     MeshLineRenderer lineRenderer = new MeshLineRenderer(Color.BLACK);
+    MeshLineRenderer lineRendererDiagonalHighlights = new MeshLineRenderer(Color.BLACK,
+        ImmutableMap.of(EdgeCase.BACKSLASH, Color.RED, EdgeCase.FORWARDSLASH, Color.RED));
     
     Mesh mesh = Mesh.of3x3();
     
@@ -78,7 +82,7 @@ public class App {
     
     EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
     EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
-    EdgeSplitter zSplitter = new SubpeakEdgeSplitter(rng);
+    EdgeSplitter zSplitter = new RandomEdgeSplitter(rng, MeshPoint::getZ);
     
     mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     
@@ -104,7 +108,45 @@ public class App {
     
     triangleRenderer.render(mesh, image);
     image.save("images/mesh257");
-
+    
+    mesh = Mesh.of3x3();
+    
+    image = new AWTImage(257, 257);
+    triangleRenderer.render(mesh, image);
+    lineRendererDiagonalHighlights.render(mesh, image);
+    image.save("images/subpeak3");
+    
+    rng = new RandomRNG(1986);
+    
+    xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
+    ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
+    zSplitter = new SubpeakEdgeSplitter(rng);
+    
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
+    
+    triangleRenderer.render(mesh, image);
+    lineRendererDiagonalHighlights.render(mesh, image);
+    image.save("images/subpeak5");
+    
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
+    
+    triangleRenderer.render(mesh, image);
+    lineRenderer.render(mesh, image);
+    image.save("images/subpeak9");
+    
+    mesh = mesh.split(xSplitter, ySplitter, zSplitter);
+    
+    triangleRenderer.render(mesh, image);
+    lineRenderer.render(mesh, image);
+    image.save("images/subpeak17");
+    
+    for (int i=0; i<4; i++) {
+      mesh = mesh.split(xSplitter, ySplitter, zSplitter);
+    }
+    
+    triangleRenderer.render(mesh, image);
+    image.save("images/subpeak257");
+    
   }
  
 }

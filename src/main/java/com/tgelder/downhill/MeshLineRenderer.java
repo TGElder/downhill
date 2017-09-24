@@ -28,7 +28,7 @@ public class MeshLineRenderer {
     Scale yScale = new Scale(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getHeight() - 1);
     
     while (iterator.hasNext()) {
-      CasedMeshEdge edge = iterator.next();
+      MeshEdge edge = iterator.next();
       
       Color color = getColor(edge.getEdgeCase());
       image.setColor(color.getRed(), color.getGreen(), color.getBlue());

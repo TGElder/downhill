@@ -1,7 +1,7 @@
 package com.tgelder.downhill.edgesplitters;
 
-import com.tgelder.downhill.CasedMeshEdge;
 import com.tgelder.downhill.Mesh;
+import com.tgelder.downhill.MeshEdge;
 import com.tgelder.downhill.MeshPoint;
 import com.tgelder.downhill.RNG;
 
@@ -22,7 +22,7 @@ public class SubpeakEdgeSplitter implements EdgeSplitter {
   }
 
   @Override
-  public float split(CasedMeshEdge edge) {
+  public float split(MeshEdge edge) {
     
     a = edge.getA();
     b = edge.getB();

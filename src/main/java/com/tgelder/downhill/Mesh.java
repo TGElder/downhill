@@ -71,7 +71,7 @@ public class Mesh {
     return out;
   }
   
-  public EdgeCase getEdgeCaseAt(int x, int y) {
+  public static EdgeCase getEdgeCaseAt(int x, int y) {
     for (EdgeCase edgeCase : EdgeCase.values()) {
       if (edgeCase.appliesAt(x, y)) {
         return edgeCase;
@@ -88,7 +88,7 @@ public class Mesh {
     Mesh out = new Mesh(oWidth);
     
     EdgeIterator iterator = new EdgeIterator(this);
-    CasedMeshEdge edge;
+    MeshEdge edge;
     
     while (iterator.hasNext()) {
       edge = iterator.next();

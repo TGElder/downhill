@@ -2,17 +2,15 @@ package com.tgelder.downhill;
 
 import java.util.Iterator;
 
-public class EdgeIterator implements Iterator<CasedMeshEdge> {
+public class EdgeIterator implements Iterator<MeshEdge> {
 
-  private final Mesh mesh;
-  private final CasedMeshEdge casedMeshEdge;
+  private final MeshEdge meshEdge;
   private int x;
   private int y;
   private final int width;
   
   EdgeIterator(Mesh mesh) {
-    this.mesh = mesh;
-    casedMeshEdge = new CasedMeshEdge(mesh);
+    meshEdge = new MeshEdge(mesh);
     width = mesh.getWidth() * 2 - 1;
   }
 
@@ -30,12 +28,12 @@ public class EdgeIterator implements Iterator<CasedMeshEdge> {
   }
 
   @Override
-  public CasedMeshEdge next() {
-    mesh.getEdgeCaseAt(x, y).setEdge(casedMeshEdge, x, y);
+  public MeshEdge next() {
+    Mesh.getEdgeCaseAt(x, y).setEdge(meshEdge, x, y);
 
     iterate();
 
-    return casedMeshEdge;
+    return meshEdge;
   }
 
  

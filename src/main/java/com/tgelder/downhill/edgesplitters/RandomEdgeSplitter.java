@@ -2,7 +2,7 @@ package com.tgelder.downhill.edgesplitters;
 
 import java.util.function.Function;
 
-import com.tgelder.downhill.CasedMeshEdge;
+import com.tgelder.downhill.MeshEdge;
 import com.tgelder.downhill.MeshPoint;
 import com.tgelder.downhill.RNG;
 
@@ -20,7 +20,7 @@ public class RandomEdgeSplitter implements EdgeSplitter {
     this.axis = axis;
   }
 
-  public float split(CasedMeshEdge edge) {
+  public float split(MeshEdge edge) {
     r = rng.getNext();
     return axis.apply(edge.getA()) * r + axis.apply(edge.getB()) * (1 - r);
   }

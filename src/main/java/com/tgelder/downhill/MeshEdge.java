@@ -23,4 +23,17 @@ public class MeshEdge {
   public String toString() {
     return a + " to " + b;
   }
+
+  public EdgeCase getEdgeCase() {
+    return computeEdgeCase();
+  }
+
+  private EdgeCase computeEdgeCase() {
+    for (EdgeCase edgeCase : EdgeCase.values()) {
+      if (edgeCase.appliesTo(this)) {
+        return edgeCase;
+      }
+    }
+    return null;
+  }
 }
