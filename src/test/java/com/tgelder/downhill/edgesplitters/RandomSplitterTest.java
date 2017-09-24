@@ -27,7 +27,7 @@ public class RandomSplitterTest {
 
   @Test
   public void testSplitX() {
-    splitter = new RandomEdgeSplitter(rng, MeshPoint::getX);
+    splitter = new RandomEdgeSplitter(rng, MeshPoint::getX, 0f, 1f);
     
     float min = Mesh.MIN_VALUE;
     float max = Mesh.MIN_VALUE/2 + Mesh.MAX_VALUE/2;
@@ -42,7 +42,7 @@ public class RandomSplitterTest {
   
   @Test
   public void testSplitY() {
-    splitter = new RandomEdgeSplitter(rng, MeshPoint::getY);
+    splitter = new RandomEdgeSplitter(rng, MeshPoint::getY, 0f, 1f);
     
     float min = Mesh.MIN_VALUE;
     float max = Mesh.MIN_VALUE/2 + Mesh.MAX_VALUE/2;
@@ -57,7 +57,7 @@ public class RandomSplitterTest {
   
   @Test
   public void testSplitZ() {
-    splitter = new RandomEdgeSplitter(rng, MeshPoint::getZ);
+    splitter = new RandomEdgeSplitter(rng, MeshPoint::getZ, 0f, 1f);
     
     float min = Mesh.MIN_VALUE;
     float max = Mesh.MAX_VALUE;

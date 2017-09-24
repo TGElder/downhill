@@ -72,7 +72,7 @@ public class MeshTest {
     
     EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
     EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
-    EdgeSplitter zSplitter = new RandomEdgeSplitter(new MockRNG(numbers), MeshPoint::getZ);
+    EdgeSplitter zSplitter = new RandomEdgeSplitter(new MockRNG(numbers), MeshPoint::getZ, 0f, 1f);
     
     Mesh split = Mesh.of3x3().split(xSplitter, ySplitter, zSplitter);
     

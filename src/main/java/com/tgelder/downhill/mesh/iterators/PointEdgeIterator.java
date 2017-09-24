@@ -15,7 +15,6 @@ public class PointEdgeIterator implements Iterator<MeshEdge> {
   private boolean hasNext;
   
   private MeshPoint point;
-  private int width;
   
   private int n;
   private int maxN;
@@ -31,9 +30,7 @@ public class PointEdgeIterator implements Iterator<MeshEdge> {
   
   public void setPoint(MeshPoint point) {
     this.point = point;
-    
-    width = point.getMesh().getWidth();
-    
+        
     n = 0;
     
     if (point.getPointCase() == PointCase.EIGHT_NEIGHBOURS) {
@@ -53,10 +50,7 @@ public class PointEdgeIterator implements Iterator<MeshEdge> {
 
   @Override
   public MeshEdge next() {
-    current.set(next.getA().getMx(),
-        next.getA().getMy(),
-        next.getB().getMx(),
-        next.getB().getMy());
+    current.copy(next);
     getNext();
     return current;
   }
@@ -73,7 +67,7 @@ public class PointEdgeIterator implements Iterator<MeshEdge> {
       
       n++;
       
-      if (inBounds(next)) {
+      if (next.inBounds()) {
         hasNext = true;
         return;
       }
@@ -82,13 +76,4 @@ public class PointEdgeIterator implements Iterator<MeshEdge> {
   
   }
   
-  private boolean inBounds(MeshEdge edge) {
-    return inBounds(edge.getA()) && inBounds(edge.getB());
-  }
-  
-  private boolean inBounds(MeshPoint point) {
-    return (point.getMx() >= 0) && (point.getMx() < width) &&
-        (point.getMy() >= 0) && (point.getMy() < width);
-  }
-
 }

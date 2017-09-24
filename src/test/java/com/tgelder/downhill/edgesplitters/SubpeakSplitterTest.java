@@ -31,7 +31,7 @@ public class SubpeakSplitterTest {
     mesh.setZ(2, 2, 4);
     
     float [] numbers = {0.4f};
-    splitter = new SubpeakEdgeSplitter(new MockRNG(numbers));
+    splitter = new SubpeakEdgeSplitter(new MockRNG(numbers), 0f, 1f);
   }
   
   @Test

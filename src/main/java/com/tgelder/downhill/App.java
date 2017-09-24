@@ -15,12 +15,15 @@ import com.tgelder.downhill.image.Image;
 import com.tgelder.downhill.mesh.EdgeCase;
 import com.tgelder.downhill.mesh.Mesh;
 import com.tgelder.downhill.mesh.MeshPoint;
+import com.tgelder.downhill.renderers.FlowRenderer;
 import com.tgelder.downhill.renderers.MeshLineRenderer;
 import com.tgelder.downhill.renderers.MeshTriangleRenderer;
+import com.tgelder.downhill.rivers.FlowComputer;
+import com.tgelder.downhill.rivers.FlowException;
 import com.tgelder.downhill.rngs.RandomRNG;
 
 public class App {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, FlowException {
           
      List<String> argList = Arrays.asList(args);
      
@@ -50,25 +53,37 @@ public class App {
     }
   }
   
-  private static void generateImagePerSplit(int seed, int splits, String saveLocation, int imageSize, int linesUntil) throws IOException {
+  private static void generateImagePerSplit(int seed, int splits, String saveLocation, int imageSize, int linesUntil) throws IOException, FlowException {
     MeshTriangleRenderer triangleRenderer = new MeshTriangleRenderer();
     MeshLineRenderer lineRenderer = new MeshLineRenderer(Color.BLACK);
+    FlowRenderer flowRenderer = new FlowRenderer(Color.BLUE);
     
     RandomRNG rng = new RandomRNG(seed);
     
     EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
     EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
-    EdgeSplitter zSplitter = new SubpeakEdgeSplitter(rng);
+    EdgeSplitter zSplitter = new SubpeakEdgeSplitter(rng, 0.1f, 0.9f);
     
     Mesh mesh = Mesh.of3x3();
     
     for (int s = 0; s <= splits; s++) {
+      System.out.println("Mesh width = " + mesh.getWidth());
+      System.out.println("Raining");
+      FlowComputer flow = new FlowComputer(mesh);
+      flow.rain();
+
+      System.out.println("Rendering");
       Image image = new AWTImage(imageSize, imageSize);
       triangleRenderer.render(mesh, image);
       if (s<= linesUntil) {
         lineRenderer.render(mesh, image);
       }
+      flowRenderer.render(flow, image, 0.001f);
+
+      System.out.println("Saving image");
       image.save(saveLocation + "mesh"+mesh.getWidth());
+      
+      System.out.println("Splitting");
       mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     }
   }
@@ -91,7 +106,7 @@ public class App {
     
     EdgeSplitter xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
     EdgeSplitter ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
-    EdgeSplitter zSplitter = new RandomEdgeSplitter(rng, MeshPoint::getZ);
+    EdgeSplitter zSplitter = new RandomEdgeSplitter(rng, MeshPoint::getZ, 0f, 1f);
     
     mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     
@@ -129,7 +144,7 @@ public class App {
     
     xSplitter = new MidpointEdgeSplitter(MeshPoint::getX);
     ySplitter = new MidpointEdgeSplitter(MeshPoint::getY);
-    zSplitter = new SubpeakEdgeSplitter(rng);
+    zSplitter = new SubpeakEdgeSplitter(rng, 0f, 1f);
     
     mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     

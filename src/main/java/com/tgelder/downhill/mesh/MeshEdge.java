@@ -44,4 +44,25 @@ public class MeshEdge {
   public int getEdgeY() {
     return getEdgeCase().getEdgeY(a.getMy());
   }
+  
+  public MeshPoint getOtherEnd(MeshPoint point) {
+    if (a.equals(point)) {
+      return b;
+    }
+    else if (b.equals(point)) {
+      return a;
+    }
+    else {
+      return null;
+    }
+  }
+  
+  public boolean inBounds() {
+    return a.inBounds() && b.inBounds();
+  }
+  
+  public void copy(MeshEdge other) {
+    a.copy(other.getA());
+    b.copy(other.getB());
+  }
 }

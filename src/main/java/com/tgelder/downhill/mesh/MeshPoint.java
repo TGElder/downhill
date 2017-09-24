@@ -49,6 +49,32 @@ public class MeshPoint {
       return PointCase.FOUR_NEIGHBOURS;
     }
   }
+  
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof MeshPoint)) {
+      return false;
+    }
+    else {
+      return ((MeshPoint) other).mx == mx
+          && ((MeshPoint) other).my == my;
+    }
+  }
+  
+  public boolean atEdge() {
+    return (mx == 0) || (my == 0) || (mx == mesh.getWidth() - 1) || (my == mesh.getWidth() - 1);
+  }
+  
+  public boolean inBounds() {
+    return (mx >= 0) && (mx < mesh.getWidth()) &&
+        (my >= 0) && (my < mesh.getWidth());
+  }
+  
+  public void copy(MeshPoint other) {
+    mx = other.mx;
+    my = other.my;
+  }
+
 
 
 }

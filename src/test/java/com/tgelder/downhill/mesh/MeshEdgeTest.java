@@ -1,6 +1,6 @@
 package com.tgelder.downhill.mesh;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -60,6 +60,38 @@ public class MeshEdgeTest {
       
       i++;
     }
+  }
+  
+  @Test
+  public void testGetOtherEnd() {
+    MeshPoint a = new MeshPoint(mesh, 0, 0);
+    MeshPoint b = new MeshPoint(mesh, 1, 1);
+    MeshEdge edge = new MeshEdge(a, b);
+    
+    assertEquals(b, edge.getOtherEnd(a));
+    assertEquals(a, edge.getOtherEnd(b));
+  }
+  
+  @Test
+  public void testInBounds() {
+    MeshPoint a = new MeshPoint(mesh, 0, 0);
+    MeshPoint b = new MeshPoint(mesh, 1, 1);
+    MeshEdge edge = new MeshEdge(a, b);
+    assertTrue(edge.inBounds());    
+  }
+  
+  @Test
+  public void testOutOfBounds() {
+    MeshPoint a = new MeshPoint(mesh, -1, 0);
+    MeshPoint b = new MeshPoint(mesh, 0, 0);
+    MeshEdge edge = new MeshEdge(a, b);
+    assertFalse(edge.inBounds());    
+    
+    edge.set(2, 2, 3, 2);
+    assertFalse(edge.inBounds());
+    
+    edge.set(3, 3, 4, 4);
+    assertFalse(edge.inBounds());
   }
 
 }
