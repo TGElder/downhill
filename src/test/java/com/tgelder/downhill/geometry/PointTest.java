@@ -2,6 +2,8 @@ package com.tgelder.downhill.geometry;
 
 import org.junit.Test;
 
+import com.tgelder.downhill.TestUtils;
+
 import static org.junit.Assert.assertEquals;
 
 public class PointTest {
@@ -9,8 +11,6 @@ public class PointTest {
   private Point a = new Point(101, 107, 113);
   private Point b = new Point(103, 109, 127);
   private Point r = new Point();
-
-  private float PRECISION = 0.00001f;
 
   @Test
   public void testAdd() {
@@ -47,15 +47,15 @@ public class PointTest {
   @Test
   public void testDistanceTo() {
     float d = a.distanceTo(b);
-    assertEquals(14.282857, d, PRECISION);
+    assertEquals(14.282857, d, TestUtils.PRECISION);
   }
 
   @Test
   public void testDivide() {
     r.divide(a, 3);
-    assertEquals(33.666667, r.getX(), PRECISION);
-    assertEquals(35.666667, r.getY(), PRECISION);
-    assertEquals(37.666667, r.getZ(), PRECISION);
+    assertEquals(33.666667, r.getX(), TestUtils.PRECISION);
+    assertEquals(35.666667, r.getY(), TestUtils.PRECISION);
+    assertEquals(37.666667, r.getZ(), TestUtils.PRECISION);
   }
 
   @Test
@@ -67,7 +67,7 @@ public class PointTest {
   @Test
   public void testMagnitude() {
     float m = a.magnitude();
-    assertEquals(185.523583, m, PRECISION);
+    assertEquals(185.523583, m, TestUtils.PRECISION);
   }
 
   @Test
@@ -81,9 +81,9 @@ public class PointTest {
   @Test
   public void testNormalize() {
     r.copy(a).normalize();
-    assertEquals(0.544405, r.getX(), PRECISION);
-    assertEquals(0.576746, r.getY(), PRECISION);
-    assertEquals(0.609087, r.getZ(), PRECISION);
+    assertEquals(0.544405, r.getX(), TestUtils.PRECISION);
+    assertEquals(0.576746, r.getY(), TestUtils.PRECISION);
+    assertEquals(0.609087, r.getZ(), TestUtils.PRECISION);
   }
 
   @Test
