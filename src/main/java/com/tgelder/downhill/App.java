@@ -27,8 +27,9 @@ public class App {
        int splits = Integer.parseInt(getArgument(argList, "splits", "10"));
        String saveLocation = getArgument(argList, "saveLocation", "");
        int imageSize = Integer.parseInt(getArgument(argList, "imageSize", "1024"));
+       int linesUntil = Integer.parseInt(getArgument(argList, "linesUntil", "0"));
        
-       generateImagePerSplit(seed, splits, saveLocation, imageSize);  
+       generateImagePerSplit(seed, splits, saveLocation, imageSize, linesUntil);  
      }
     
   }
@@ -43,7 +44,7 @@ public class App {
     }
   }
   
-  private static void generateImagePerSplit(int seed, int splits, String saveLocation, int imageSize) throws IOException {
+  private static void generateImagePerSplit(int seed, int splits, String saveLocation, int imageSize, int linesUntil) throws IOException {
     MeshTriangleRenderer triangleRenderer = new MeshTriangleRenderer();
     MeshLineRenderer lineRenderer = new MeshLineRenderer(Color.BLACK);
     
@@ -58,7 +59,9 @@ public class App {
     for (int s = 0; s <= splits; s++) {
       Image image = new AWTImage(imageSize, imageSize);
       triangleRenderer.render(mesh, image);
-      lineRenderer.render(mesh, image);
+      if (s<= linesUntil) {
+        lineRenderer.render(mesh, image);
+      }
       image.save(saveLocation + "mesh"+mesh.getWidth());
       mesh = mesh.split(xSplitter, ySplitter, zSplitter);
     }
