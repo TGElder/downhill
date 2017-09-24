@@ -1,6 +1,6 @@
 package com.tgelder.downhill.edgesplitters;
 
-import com.tgelder.downhill.MeshEdge;
+import com.tgelder.downhill.mesh.MeshEdge;
 
 public interface EdgeSplitter {
   

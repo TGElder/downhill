@@ -1,10 +1,13 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.renderers;
 
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshTriangle;
+import com.tgelder.downhill.mesh.iterators.TriangleIterator;
 
-public class MeshTriangleRenderer {
+public class MeshMaskRenderer {
 
-  private final TriangleRenderer renderer = new TriangleRenderer();
+  private final MaskRenderer renderer = new MaskRenderer();
 
   public void render(Mesh mesh, Image image) {
     TriangleIterator iterator = new TriangleIterator(mesh);

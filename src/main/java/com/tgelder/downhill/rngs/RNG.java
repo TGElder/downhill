@@ -1,4 +1,4 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.rngs;
 
 public interface RNG {
   

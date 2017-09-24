@@ -5,10 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tgelder.downhill.Mesh;
-import com.tgelder.downhill.MeshEdge;
-import com.tgelder.downhill.MeshPoint;
-import com.tgelder.downhill.MockRNG;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshEdge;
+import com.tgelder.downhill.mesh.MeshPoint;
+import com.tgelder.downhill.rngs.MockRNG;
 
 public class SubpeakSplitterTest {
   

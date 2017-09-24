@@ -1,4 +1,4 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ public class MeshEdge {
   private final MeshPoint a;
   private final MeshPoint b;
 
-  MeshEdge(Mesh mesh) {
+  public MeshEdge(Mesh mesh) {
     a = new MeshPoint(mesh);
     b = new MeshPoint(mesh);
   }

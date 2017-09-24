@@ -1,6 +1,9 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh.iterators;
 
 import java.util.Iterator;
+
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshTriangle;
 
 public class TriangleIterator implements Iterator<MeshTriangle> {
 
@@ -11,7 +14,7 @@ public class TriangleIterator implements Iterator<MeshTriangle> {
   private int t;
   private boolean backSlash = true;
 
-  TriangleIterator(Mesh mesh) {
+  public TriangleIterator(Mesh mesh) {
     triangle = new MeshTriangle(mesh);
     width = mesh.getWidth() - 1;
   }

@@ -1,6 +1,9 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh.iterators;
 
 import java.util.Iterator;
+
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshEdge;
 
 public class EdgeIterator implements Iterator<MeshEdge> {
 
@@ -9,7 +12,7 @@ public class EdgeIterator implements Iterator<MeshEdge> {
   private int y;
   private final int width;
   
-  EdgeIterator(Mesh mesh) {
+  public EdgeIterator(Mesh mesh) {
     meshEdge = new MeshEdge(mesh);
     width = mesh.getWidth() * 2 - 1;
   }

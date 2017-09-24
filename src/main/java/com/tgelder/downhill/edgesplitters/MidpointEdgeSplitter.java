@@ -2,8 +2,8 @@ package com.tgelder.downhill.edgesplitters;
 
 import java.util.function.Function;
 
-import com.tgelder.downhill.MeshEdge;
-import com.tgelder.downhill.MeshPoint;
+import com.tgelder.downhill.mesh.MeshEdge;
+import com.tgelder.downhill.mesh.MeshPoint;
 
 import lombok.AllArgsConstructor;
 

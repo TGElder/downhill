@@ -1,14 +1,18 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.renderers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.tgelder.downhill.geometry.Point;
+import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.geometry.Triangle;
 import com.tgelder.downhill.geometry.TriangleZInterpolator;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshPoint;
+import com.tgelder.downhill.mesh.MeshTriangle;
 
-public class TriangleRenderer {
+public class MaskRenderer {
 
   private final Point a = new Point();
   private final Point b = new Point();
@@ -22,7 +26,7 @@ public class TriangleRenderer {
   private int colour;
   private final TriangleZInterpolator interpolator = new TriangleZInterpolator();
 
-  public TriangleRenderer() {
+  public MaskRenderer() {
     points.add(a);
     points.add(b);
     points.add(c);
@@ -31,7 +35,7 @@ public class TriangleRenderer {
   public void render(MeshTriangle triangle, Image image) {
     xScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getWidth());
     yScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, image.getHeight());
-    zScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, 0, 255);
+    zScale.set(Mesh.MIN_VALUE, Mesh.MAX_VALUE, -64, 255);
 
     setPointWithImageCoordinates(a, triangle.getA());
     setPointWithImageCoordinates(b, triangle.getB());
@@ -50,9 +54,13 @@ public class TriangleRenderer {
         if (interpolator.pointIsInTriangle(x, y)) {
 
           colour = (int) interpolator.getZ(x, y);
+          
+          if (colour < 0) {
 
-          image.setColor(colour, colour, colour);
+          image.setColor(0, 0, 255);
           image.drawPoint(x, y);
+          
+          }
           
         }
       }

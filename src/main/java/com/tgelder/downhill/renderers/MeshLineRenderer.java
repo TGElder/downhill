@@ -1,10 +1,15 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.renderers;
 
 import java.awt.Color;
 import java.util.Collections;
 import java.util.Map;
 
+import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.mesh.EdgeCase;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshEdge;
+import com.tgelder.downhill.mesh.iterators.EdgeIterator;
 
 public class MeshLineRenderer {
 

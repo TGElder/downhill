@@ -1,4 +1,6 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.rngs;
+
+import com.tgelder.downhill.rngs.RNG;
 
 public class MockRNG implements RNG {
   

@@ -1,6 +1,7 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh;
 
 import com.tgelder.downhill.edgesplitters.EdgeSplitter;
+import com.tgelder.downhill.mesh.iterators.EdgeIterator;
 
 import lombok.Getter;
 

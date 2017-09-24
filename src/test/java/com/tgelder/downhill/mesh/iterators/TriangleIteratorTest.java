@@ -1,4 +1,4 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh.iterators;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshTriangle;
+import com.tgelder.downhill.mesh.iterators.TriangleIterator;
 
 public class TriangleIteratorTest {
 

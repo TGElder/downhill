@@ -1,6 +1,9 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh.iterators;
 
 import java.util.Iterator;
+
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshPoint;
 
 public class PointIterator implements Iterator<MeshPoint> {
 
@@ -9,7 +12,7 @@ public class PointIterator implements Iterator<MeshPoint> {
   private int x;
   private int y;
 
-  PointIterator(Mesh mesh) {
+  public PointIterator(Mesh mesh) {
     point = new MeshPoint(mesh);
     width = mesh.getWidth();
   }

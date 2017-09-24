@@ -1,4 +1,4 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.rngs;
 
 import java.util.Random;
 

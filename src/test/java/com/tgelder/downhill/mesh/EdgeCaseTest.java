@@ -1,8 +1,12 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.tgelder.downhill.mesh.EdgeCase;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshEdge;
 
 public class EdgeCaseTest {
   

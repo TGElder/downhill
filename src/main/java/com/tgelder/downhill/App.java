@@ -12,6 +12,12 @@ import com.tgelder.downhill.edgesplitters.RandomEdgeSplitter;
 import com.tgelder.downhill.edgesplitters.SubpeakEdgeSplitter;
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.mesh.EdgeCase;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshPoint;
+import com.tgelder.downhill.renderers.MeshLineRenderer;
+import com.tgelder.downhill.renderers.MeshTriangleRenderer;
+import com.tgelder.downhill.rngs.RandomRNG;
 
 public class App {
   public static void main(String[] args) throws IOException {

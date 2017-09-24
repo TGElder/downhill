@@ -1,4 +1,6 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.renderers;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -6,8 +8,8 @@ import com.tgelder.downhill.geometry.Point;
 import com.tgelder.downhill.geometry.Triangle;
 import com.tgelder.downhill.geometry.TriangleZInterpolator;
 import com.tgelder.downhill.image.MockImage;
-
-import static org.junit.Assert.assertEquals;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshTriangle;
 
 public class TriangleRendererTest {
   

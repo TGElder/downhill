@@ -1,12 +1,17 @@
-package com.tgelder.downhill;
+package com.tgelder.downhill.mesh;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.tgelder.downhill.TestUtils;
 import com.tgelder.downhill.edgesplitters.EdgeSplitter;
 import com.tgelder.downhill.edgesplitters.MidpointEdgeSplitter;
 import com.tgelder.downhill.edgesplitters.RandomEdgeSplitter;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshPoint;
+import com.tgelder.downhill.mesh.iterators.PointIterator;
+import com.tgelder.downhill.rngs.MockRNG;
 
 public class MeshTest {
   
