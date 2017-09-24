@@ -17,7 +17,6 @@ public class TriangleIteratorTest {
   public void testTriangleCounts() {
 
     for (int i = 0; i <= 12; i++) {
-      System.out.println(i); // TODO replace with logging
       int size = (int) (Math.pow(2, i)) + 1;
       int triangles = (size - 1) * (size - 1) * 2;
       assertEquals(triangles, getTriangleCount(size));
@@ -26,13 +25,11 @@ public class TriangleIteratorTest {
   }
 
   private int getTriangleCount(int size) {
-    System.out.println("Creating mesh");
     Mesh mesh = new Mesh(size);
     TriangleIterator iterator = new TriangleIterator(mesh);
 
     int count = 0;
     
-    System.out.println("Iterating");
     while (iterator.hasNext()) {
       iterator.next();
       count++;

@@ -36,4 +36,12 @@ public class MeshEdge {
     }
     return null;
   }
+  
+  public int getEdgeX() {
+    return getEdgeCase().getEdgeX(a.getMx());
+  }
+  
+  public int getEdgeY() {
+    return getEdgeCase().getEdgeY(a.getMy());
+  }
 }

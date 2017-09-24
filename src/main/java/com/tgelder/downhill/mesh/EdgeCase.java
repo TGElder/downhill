@@ -9,13 +9,23 @@ public enum EdgeCase{
     }
     
     @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 == 0) && (y % 2 == 0);
+    public boolean appliesAt(int edgeX, int edgeY) {
+      return (edgeX % 2 == 0) && (edgeY % 2 == 0);
     }
 
     @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, x / 2, y / 2);
+    public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY) {
+      meshEdge.set(edgeX / 2, edgeY / 2, edgeX / 2, edgeY / 2);
+    }
+
+    @Override
+    public int getEdgeX(int amx) {
+      return amx * 2;
+    }
+
+    @Override
+    public int getEdgeY(int amy) {
+      return amy * 2;
     }
     
   }, 
@@ -27,13 +37,23 @@ public enum EdgeCase{
     }
     
     @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 != 0) && (y % 2 == 0);
+    public boolean appliesAt(int edgeX, int edgeY) {
+      return (edgeX % 2 != 0) && (edgeY % 2 == 0);
     }
 
     @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, (x / 2) + 1, y / 2);
+    public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY) {
+      meshEdge.set(edgeX / 2, edgeY / 2, (edgeX / 2) + 1, edgeY / 2);
+    }
+    
+    @Override
+    public int getEdgeX(int amx) {
+      return amx * 2 + 1;
+    }
+
+    @Override
+    public int getEdgeY(int amy) {
+      return amy * 2;
     }
   },
   VERTICAL{
@@ -44,13 +64,23 @@ public enum EdgeCase{
     }
     
     @Override
-    public boolean appliesAt(int x, int y) {
-      return (x % 2 == 0) && (y % 2 != 0);
+    public boolean appliesAt(int edgeX, int edgeY) {
+      return (edgeX % 2 == 0) && (edgeY % 2 != 0);
     }
     
     @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, x / 2, (y / 2) + 1);
+    public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY) {
+      meshEdge.set(edgeX / 2, edgeY / 2, edgeX / 2, (edgeY / 2) + 1);
+    }
+    
+    @Override
+    public int getEdgeX(int amx) {
+      return amx * 2;
+    }
+
+    @Override
+    public int getEdgeY(int amy) {
+      return amy * 2 + 1;
     }
   },
   FORWARDSLASH{
@@ -61,13 +91,23 @@ public enum EdgeCase{
     }
     
     @Override
-    public boolean appliesAt(int x, int y) {
-      return ((x % 4 == 1) != (y % 4 == 1));
+    public boolean appliesAt(int edgeX, int edgeY) {
+      return ((edgeX % 4 == 1) != (edgeY % 4 == 1));
     }
 
     @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, (y / 2) + 1, (x / 2) + 1, y / 2);
+    public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY) {
+      meshEdge.set(edgeX / 2, (edgeY / 2) + 1, (edgeX / 2) + 1, edgeY / 2);
+    }
+    
+    @Override
+    public int getEdgeX(int amx) {
+      return amx * 2 + 1;
+    }
+
+    @Override
+    public int getEdgeY(int amy) {
+      return (amy - 1) * 2 + 1;
     }
     
   },
@@ -79,17 +119,29 @@ public enum EdgeCase{
     }
     
     @Override
-    public boolean appliesAt(int x, int y) {
-      return ((x % 4 == 1) == (y % 4 == 1));
+    public boolean appliesAt(int edgeX, int edgeY) {
+      return ((edgeX % 4 == 1) == (edgeY % 4 == 1));
     }
 
     @Override
-    public void setEdge(MeshEdge meshEdge, int x, int y) {
-      meshEdge.set(x / 2, y / 2, (x / 2) + 1, (y / 2) + 1);
+    public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY) {
+      meshEdge.set(edgeX / 2, edgeY / 2, (edgeX / 2) + 1, (edgeY / 2) + 1);
+    }
+    
+    @Override
+    public int getEdgeX(int amx) {
+      return amx * 2 + 1;
+    }
+
+    @Override
+    public int getEdgeY(int amy) {
+      return amy * 2 + 1;
     }
   };
   
   abstract public boolean appliesTo(MeshEdge edge);  
-  abstract public boolean appliesAt(int x, int y);
-  abstract public void setEdge(MeshEdge meshEdge, int x, int y);
+  abstract public boolean appliesAt(int edgeX, int edgeY);
+  abstract public void setEdge(MeshEdge meshEdge, int edgeX, int edgeY);
+  abstract public int getEdgeX(int amx);
+  abstract public int getEdgeY(int amy);
 }

@@ -7,6 +7,11 @@ import lombok.Getter;
 @Getter
 public class MeshPoint {
   
+  public enum PointCase{
+    FOUR_NEIGHBOURS,
+    EIGHT_NEIGHBOURS
+  }
+  
   private final Mesh mesh;
   private int mx;
   private int my;
@@ -34,6 +39,15 @@ public class MeshPoint {
   
   public float getZ() {
     return mesh.getZ(mx, my);
+  }
+  
+  public PointCase getPointCase() {
+    if ((mx % 2) == (my % 2)) {
+      return PointCase.EIGHT_NEIGHBOURS;
+    }
+    else {
+      return PointCase.FOUR_NEIGHBOURS;
+    }
   }
 
 
