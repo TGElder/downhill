@@ -32,7 +32,7 @@ public class MidpointSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min/2 + max/2, TestUtils.PRECISION);
+    assertEquals(min/2 + max/2, splitter.split(edge), TestUtils.PRECISION);
   }
   
   @Test
@@ -47,7 +47,7 @@ public class MidpointSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min/2 + max/2, TestUtils.PRECISION);
+    assertEquals(min/2 + max/2, splitter.split(edge), TestUtils.PRECISION);
   }
   
   @Test
@@ -62,7 +62,7 @@ public class MidpointSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min/2 + max/2, TestUtils.PRECISION);
+    assertEquals(min/2 + max/2, splitter.split(edge), TestUtils.PRECISION);
   }
   
 }

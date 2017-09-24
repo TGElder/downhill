@@ -24,35 +24,35 @@ public class MeshTest {
   public void test3x3Vertices() {
     Mesh mesh = Mesh.of3x3();
     
-    assertEquals(mesh.getX(0, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getX(1, 0), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getX(2, 0), max, TestUtils.PRECISION);
-    assertEquals(mesh.getX(0, 1), min, TestUtils.PRECISION);
-    assertEquals(mesh.getX(1, 1), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getX(2, 1), max, TestUtils.PRECISION);
-    assertEquals(mesh.getX(0, 2), min, TestUtils.PRECISION);
-    assertEquals(mesh.getX(1, 2), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getX(2, 2), max, TestUtils.PRECISION);
+    assertEquals(min, mesh.getX(0, 0), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getX(1, 0), TestUtils.PRECISION);
+    assertEquals(max, mesh.getX(2, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getX(0, 1), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getX(1, 1), TestUtils.PRECISION);
+    assertEquals(max, mesh.getX(2, 1), TestUtils.PRECISION);
+    assertEquals(min, mesh.getX(0, 2), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getX(1, 2), TestUtils.PRECISION);
+    assertEquals(max, mesh.getX(2, 2), TestUtils.PRECISION);
     
-    assertEquals(mesh.getY(0, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getY(1, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getY(2, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getY(0, 1), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getY(1, 1), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getY(2, 1), mid, TestUtils.PRECISION);
-    assertEquals(mesh.getY(0, 2), max, TestUtils.PRECISION);
-    assertEquals(mesh.getY(1, 2), max, TestUtils.PRECISION);
-    assertEquals(mesh.getY(2, 2), max, TestUtils.PRECISION);
+    assertEquals(min, mesh.getY(0, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getY(1, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getY(2, 0), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getY(0, 1), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getY(1, 1), TestUtils.PRECISION);
+    assertEquals(mid, mesh.getY(2, 1), TestUtils.PRECISION);
+    assertEquals(max, mesh.getY(0, 2), TestUtils.PRECISION);
+    assertEquals(max, mesh.getY(1, 2), TestUtils.PRECISION);
+    assertEquals(max, mesh.getY(2, 2), TestUtils.PRECISION);
     
-    assertEquals(mesh.getZ(0, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(1, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(2, 0), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(0, 1), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(1, 1), max, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(2, 1), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(0, 2), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(1, 2), min, TestUtils.PRECISION);
-    assertEquals(mesh.getZ(2, 2), min, TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(0, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(1, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(2, 0), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(0, 1), TestUtils.PRECISION);
+    assertEquals(max, mesh.getZ(1, 1), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(2, 1), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(0, 2), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(1, 2), TestUtils.PRECISION);
+    assertEquals(min, mesh.getZ(2, 2), TestUtils.PRECISION);
   }
   
   @Test
@@ -99,7 +99,7 @@ public class MeshTest {
     while(iterator.hasNext()) {
       MeshPoint point = iterator.next();
       
-      assertEquals(expected[i], point.getZ(), TestUtils.PRECISION);
+      assertEquals(point.getZ(), expected[i], TestUtils.PRECISION);
       
       i++;
     }

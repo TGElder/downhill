@@ -25,21 +25,21 @@ public class TriangleZInterpolatorTest {
   
   @Test
   public void testCornerInterpolations() {
-    assertEquals(interpolator.getZ(0, 0), 0, 0);
-    assertEquals(interpolator.getZ(2, 2), 1, 0);
-    assertEquals(interpolator.getZ(4, 1), 2, 0);
+    assertEquals(0, interpolator.getZ(0, 0), 0);
+    assertEquals(1, interpolator.getZ(2, 2), 0);
+    assertEquals(2, interpolator.getZ(4, 1), 0);
   }
   
   @Test
   public void testMidpointInterpolations() {
-    assertEquals(interpolator.getZ(1, 1), 0.5f, 0);
-    assertEquals(interpolator.getZ(3, 1.5f), 1.5f, 0);
-    assertEquals(interpolator.getZ(2, 0.5f), 1, 0);
+    assertEquals(0.5f, interpolator.getZ(1, 1),  0);
+    assertEquals(1.5f, interpolator.getZ(3, 1.5f), 0);
+    assertEquals(1, interpolator.getZ(2, 0.5f), 0);
   }
   
   @Test
   public void testInsideInterpolations() {
-    assertEquals(interpolator.getZ(3, 1), 1.5f, 0);
+    assertEquals(1.5f, interpolator.getZ(3, 1), 0);
   }
   
   @Test

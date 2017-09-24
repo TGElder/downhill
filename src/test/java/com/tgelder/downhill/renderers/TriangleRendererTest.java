@@ -34,12 +34,12 @@ public class TriangleRendererTest {
     TriangleRenderer renderer = new TriangleRenderer();
     renderer.render(triangle, image);
     
-    assertEquals(image.getR(0, 0), 0);
-    assertEquals(image.getR(50, 0), 0);
-    assertEquals(image.getR(50, 50), 255);
-    assertEquals(image.getR(25, 0), 0);
-    assertEquals(image.getR(50, 25), 127);
-    assertEquals(image.getR(25, 25), 127);
+    assertEquals(0, image.getR(0, 0));
+    assertEquals(0, image.getR(50, 0));
+    assertEquals(255, image.getR(50, 50));
+    assertEquals(0, image.getR(25, 0));
+    assertEquals(127, image.getR(50, 25));
+    assertEquals(127, image.getR(25, 25));
     
     TriangleZInterpolator interpolator = new TriangleZInterpolator();
     interpolator.setTriangle(new Triangle(new Point(0,0,0),new Point(50,0,0),new Point(50,50,255)));

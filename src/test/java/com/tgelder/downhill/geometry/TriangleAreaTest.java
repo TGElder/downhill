@@ -17,7 +17,7 @@ public class TriangleAreaTest {
     
     TriangleAreaCalculator calculator = new TriangleAreaCalculator();
     
-    assertEquals(calculator.getArea(triangle), 4.24264, TestUtils.PRECISION); 
+    assertEquals(4.24264, calculator.getArea(triangle), TestUtils.PRECISION); 
   }
   
  

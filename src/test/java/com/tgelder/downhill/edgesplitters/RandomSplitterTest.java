@@ -37,7 +37,7 @@ public class RandomSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min * 0.4f + max * (1 - 0.4f), TestUtils.PRECISION);
+    assertEquals(min * 0.4f + max * (1 - 0.4f), splitter.split(edge), TestUtils.PRECISION);
   }
   
   @Test
@@ -52,7 +52,7 @@ public class RandomSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min * 0.4f + max * (1 - 0.4f), TestUtils.PRECISION);
+    assertEquals(min * 0.4f + max * (1 - 0.4f), splitter.split(edge), TestUtils.PRECISION);
   }
   
   @Test
@@ -67,7 +67,7 @@ public class RandomSplitterTest {
 
     MeshEdge edge = new MeshEdge(a, b);
 
-    assertEquals(splitter.split(edge), min * 0.4f + max * (1 - 0.4f), TestUtils.PRECISION);
+    assertEquals(min * 0.4f + max * (1 - 0.4f), splitter.split(edge), TestUtils.PRECISION);
   }
 
 }

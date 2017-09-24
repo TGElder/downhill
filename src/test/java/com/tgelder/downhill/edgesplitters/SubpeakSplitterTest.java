@@ -44,7 +44,7 @@ public class SubpeakSplitterTest {
     
     MeshEdge edge = new MeshEdge(a, b);
     
-    assertEquals(splitter.split(edge), min*0.4f + max*(1- 0.4f), PRECISION);
+    assertEquals(min*0.4f + max*(1- 0.4f), splitter.split(edge), PRECISION);
   }
   
   @Test
@@ -57,7 +57,7 @@ public class SubpeakSplitterTest {
     
     MeshEdge edge = new MeshEdge(a, b);
     
-    assertEquals(splitter.split(edge), min*0.4f + max*(1- 0.4f), PRECISION);
+    assertEquals(min*0.4f + max*(1- 0.4f), splitter.split(edge), PRECISION);
   }
   
   @Test
@@ -67,7 +67,7 @@ public class SubpeakSplitterTest {
     
     MeshEdge edge = new MeshEdge(a, b);
     
-    assertEquals(splitter.split(edge), 5, PRECISION);
+    assertEquals(5, splitter.split(edge), PRECISION);
   }
   
   
@@ -81,7 +81,7 @@ public class SubpeakSplitterTest {
     
     MeshEdge edge = new MeshEdge(a, b);
     
-    assertEquals(splitter.split(edge), min*0.4f + max*(1- 0.4f), PRECISION);
+    assertEquals(min*0.4f + max*(1- 0.4f), splitter.split(edge), PRECISION);
   }
   
   @Test
@@ -94,7 +94,7 @@ public class SubpeakSplitterTest {
     
     MeshEdge edge = new MeshEdge(a, b);
     
-    assertEquals(splitter.split(edge), min*0.4f + max*(1- 0.4f), PRECISION);
+    assertEquals(min*0.4f + max*(1- 0.4f), splitter.split(edge), PRECISION);
   }
   
 
