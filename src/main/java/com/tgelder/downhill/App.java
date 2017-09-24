@@ -88,7 +88,7 @@ public class App {
     }
   }
   
-  private static void generateImagesForReadme() throws IOException {
+  private static void generateImagesForReadme() throws IOException, FlowException {
     
     MeshTriangleRenderer triangleRenderer = new MeshTriangleRenderer();
     MeshLineRenderer lineRenderer = new MeshLineRenderer(Color.BLACK);
@@ -170,6 +170,14 @@ public class App {
     
     triangleRenderer.render(mesh, image);
     image.save("images/subpeak257");
+    
+    FlowComputer flow = new FlowComputer(mesh);
+    flow.rain();
+    triangleRenderer.render(mesh, image);
+    
+    FlowRenderer flowRenderer = new FlowRenderer(Color.BLUE);
+    flowRenderer.render(flow, image, 0.005f);
+    image.save("images/rivers");
     
   }
  

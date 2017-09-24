@@ -43,9 +43,12 @@ In the top left we see how this allows 'valleys' to grow in from the edge of the
 
 The motivation for this algorithm was to generate realistic rivers. So let's see what rivers look like on this terrain. To generate rivers we:
 
-1. Assume rainfall is distributed evenly across the terrain. The rainfall hitting each triangle is its area 'when viewed from above' (projected onto the x-y plane).
-2. Place the rainfall for each triangle onto its lowest vertex (slightly unrealistic but good enough).
-3. Take the rainfall downhill to the next vertex and repeat until the edge of the map is reached.
+1. Assume rainfall is distributed evenly across the terrain - each vertex gets the same amount of rain.
+2. For each vertex, find the lowest adjacent vertex, place the rain on the edge between them and repeat until the edge of the map is reached.
+
+The below shows edges carrying over 0.5% of the rainfall that hits the terrain in blue.
+
+![Rivers](images/rivers.png)
 
 
 # Implementation
