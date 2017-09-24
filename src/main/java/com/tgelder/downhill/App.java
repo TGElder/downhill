@@ -21,7 +21,7 @@ public class App {
      if (argList.contains("-generateImagesForReadme")) {
        generateImagesForReadme();
      }
-     if (argList.contains("-generateImagesPerSplit")) {
+     if (argList.contains("-generateImages")) {
        
        int seed = Integer.parseInt(getArgument(argList, "seed", "1986"));
        int splits = Integer.parseInt(getArgument(argList, "splits", "10"));
