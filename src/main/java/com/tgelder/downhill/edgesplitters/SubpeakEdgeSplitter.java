@@ -42,8 +42,11 @@ public class SubpeakEdgeSplitter implements EdgeSplitter {
     
     switch(edge.getEdgeCase()) {
       case BACKSLASH:
+        max = Math.max(max, Math.max(c.getZ(), d.getZ()));
+//        min = Math.min(min, Math.min(c.getZ(), d.getZ()));
+        break;
       case FORWARDSLASH:
-        min = Math.min(min, Math.min(c.getZ(), d.getZ()));
+//        min = Math.min(min, Math.min(c.getZ(), d.getZ()));
         break;
       default:
         break;
