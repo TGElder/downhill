@@ -9,7 +9,7 @@ public class Mesh {
   public static final float MAX_VALUE = Float.MAX_VALUE;
   public static final float MIN_VALUE = Float.MIN_VALUE;
   
-  private static final Random random = new Random(999);
+  private static final Random random = new Random(888);
   
   @Getter
   private final int width;
@@ -53,6 +53,21 @@ public class Mesh {
     setY(mx, my, y);
     setZ(mx, my, z);
   }
+  
+  public static Mesh of2x2() {
+    Mesh out = new Mesh(2);
+
+    float max = MAX_VALUE;
+    
+    
+    for (int x = 0; x < 2; x++) {
+      for (int y = 0; y < 2; y++) {
+        out.set(x, y, x, y, max);
+      }
+    }
+
+    return out;
+  }
 
   public static Mesh of3x3() {
     Mesh out = new Mesh(3);
@@ -83,7 +98,7 @@ public class Mesh {
   }
   
   public Mesh split() {
-    int oWidth = width*2 - 1;
+    int oWidth = width*2;
     
     Vertex vertex;
     int ox = 0;
@@ -97,50 +112,44 @@ public class Mesh {
       vertex = iterator.next();
       ox = vertex.getMx();
       oy = vertex.getMy();
-      if (Mesh.getVertexCaseAt(ox, oy)==VertexCase.EXISTING) {
-        set(ox, oy, out);
-      }
-    }
-    
-    iterator = new VertexIterator(out);
-    
-    while (iterator.hasNext()) {
-      vertex = iterator.next();
-      ox = vertex.getMx();
-      oy = vertex.getMy();
-      if (Mesh.getVertexCaseAt(ox, oy)==VertexCase.HORIZONTAL || Mesh.getVertexCaseAt(ox, oy)==VertexCase.VERTICAL ) {
-        set(ox, oy, out);
-      }
-    }
-    
-    iterator = new VertexIterator(out);
-    
-    while (iterator.hasNext()) {
-      vertex = iterator.next();
-      ox = vertex.getMx();
-      oy = vertex.getMy();
-      if (Mesh.getVertexCaseAt(ox, oy)==VertexCase.CENTRE) {
-        set(ox, oy, out);
-      }
+      set(ox, oy, out);
     }
     
     return out;
   }
   
   private void set(int ox, int oy, Mesh next) {
-    next.setX(ox, oy, Mesh.getVertexCaseAt(ox, oy).getX(next, this, ox, oy));
-    next.setY(ox, oy, Mesh.getVertexCaseAt(ox, oy).getY(next, this, ox, oy));
+    next.setX(ox, oy, ox);
+    next.setY(ox, oy, oy);
     
     float minZ = Mesh.getVertexCaseAt(ox, oy).getMinZ(next, this, ox, oy);
     float maxZ = Mesh.getVertexCaseAt(ox, oy).getMaxZ(next, this, ox, oy);
     
+    if (maxZ < minZ) {
+      minZ = maxZ;
+    }
+    
     float r = random.nextFloat();
     
-    float z = minZ * r + maxZ * (1 - r);
+    float range = (maxZ - minZ);
+    
+    
+    float z = minZ + (range * r);
     
     next.setZ(ox, oy, z);
 
   }
+  
+  public float getMaxZ() {
+    float out = Mesh.MIN_VALUE;
+    for (int x=0; x<width; x++) {
+      for (int y=0; y<width; y++) {
+        out = Math.max(out, getZ(x, y));
+      }
+    }
+    return out;
+  }
+  
   
 
 }
