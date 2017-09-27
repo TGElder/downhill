@@ -37,6 +37,11 @@ public class AWTImage implements Image {
   public void setColor(int r, int g, int b) {
     canvas.setColor(new Color(r, g, b));
   }
+  
+  @Override
+  public void setColor(Color color) {
+    canvas.setColor(color);
+  }
 
   @Override
   public void drawPoint(int x, int y) {

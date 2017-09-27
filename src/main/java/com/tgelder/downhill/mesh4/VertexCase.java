@@ -9,12 +9,13 @@ public enum VertexCase{
     }
 
     @Override
-    public float getMinZ(Mesh current, Mesh parent, int x, int y) {
-      return Math.min(getZOrZero(parent, (x/2) - 1, (y/2)), getZOrZero(parent, (x/2), (y/2) -1 ));
+    public double getMinZ(Mesh current, Mesh parent, int x, int y) {
+      return Math.min(Math.min(getZOrZero(parent, (x/2) - 1, (y/2)), getZOrZero(parent, (x/2), (y/2) -1 )),
+          parent.getZ(x / 2, y / 2));
     }
 
     @Override
-    public float getMaxZ(Mesh current, Mesh parent, int x, int y) {
+    public double getMaxZ(Mesh current, Mesh parent, int x, int y) {
       return parent.getZ(x / 2, y / 2);
     }
 
@@ -26,12 +27,13 @@ public enum VertexCase{
     }
 
     @Override
-    public float getMinZ(Mesh current, Mesh parent, int x, int y) {
-      return Math.min(getZOrZero(parent, (x/2) + 1, (y/2)), getZOrZero(parent, (x/2), (y/2) -1 ));
+    public double getMinZ(Mesh current, Mesh parent, int x, int y) {
+      return Math.min(Math.min(getZOrZero(parent, (x/2) + 1, (y/2)), getZOrZero(parent, (x/2), (y/2) -1 )),
+          parent.getZ(x / 2, y / 2));
     }
 
     @Override
-    public float getMaxZ(Mesh current, Mesh parent, int x, int y) {
+    public double getMaxZ(Mesh current, Mesh parent, int x, int y) {
       return parent.getZ(x / 2, y / 2);
     }
 
@@ -43,12 +45,13 @@ public enum VertexCase{
     }
 
     @Override
-    public float getMinZ(Mesh current, Mesh parent, int x, int y) {
-      return Math.min(getZOrZero(parent, (x/2) - 1, (y/2)), getZOrZero(parent, (x/2), (y/2) + 1 ));
+    public double getMinZ(Mesh current, Mesh parent, int x, int y) {
+      return Math.min(Math.min(getZOrZero(parent, (x/2) - 1, (y/2)), getZOrZero(parent, (x/2), (y/2) + 1 )),
+          parent.getZ(x / 2, y / 2));
     }
 
     @Override
-    public float getMaxZ(Mesh current, Mesh parent, int x, int y) {
+    public double getMaxZ(Mesh current, Mesh parent, int x, int y) {
       return parent.getZ(x / 2, y / 2);
     }
   },
@@ -59,22 +62,26 @@ public enum VertexCase{
     }
 
     @Override
-    public float getMinZ(Mesh current, Mesh parent, int x, int y) {
-      return Math.min(getZOrZero(parent, (x/2) + 1, (y/2)), getZOrZero(parent, (x/2), (y/2) + 1 ));
+    public double getMinZ(Mesh current, Mesh parent, int x, int y) {
+      return Math.min(Math.min(getZOrZero(parent, (x/2) + 1, (y/2)), getZOrZero(parent, (x/2), (y/2) + 1 )),
+          parent.getZ(x / 2, y / 2));
     }
 
     @Override
-    public float getMaxZ(Mesh current, Mesh parent, int x, int y) {
+    public double getMaxZ(Mesh current, Mesh parent, int x, int y) {
        return parent.getZ(x / 2, y / 2);
     }
   
   };
   
   abstract public boolean appliesAt(int x, int y);
-  abstract public float getMinZ(Mesh current, Mesh parent, int x, int y);
-  abstract public float getMaxZ(Mesh current, Mesh parent, int x, int y);
+  abstract public double getMinZ(Mesh current, Mesh parent, int x, int y);
+  abstract public double getMaxZ(Mesh current, Mesh parent, int x, int y);
+  public short getDirection(Mesh parent, int x, int y) {
+    return parent.getDownhill(x / 2, y / 2);
+  }
   
-  private static float getZOrZero(Mesh mesh, int x, int y) {
+  private static double getZOrZero(Mesh mesh, int x, int y) {
     if (inBounds(mesh, x, y)) {
       return mesh.getZ(x, y);
     }

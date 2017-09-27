@@ -24,16 +24,24 @@ public class Vertex {
     return "("+mx+", "+my+")";
   }
   
-  public float getX() {
+  public double getX() {
     return mesh.getX(mx, my);
   }
   
-  public float getY() {
+  public double getY() {
     return mesh.getY(mx, my);
   }
   
-  public float getZ() {
+  public double getZ() {
     return mesh.getZ(mx, my);
+  }
+  
+  public int getFlow() {
+    return mesh.getFlow(mx, my);
+  }
+  
+  public short getDownhill() {
+    return mesh.getDownhill(mx, my);
   }
   
   @Override
