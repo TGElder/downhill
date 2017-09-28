@@ -18,25 +18,27 @@ public class App {
     mesh.setAllZ(Mesh.MAX_VALUE);
     mesh.computeDirections();
 
-    ZRenderer zRenderer = new ZRenderer();
+    //ZRenderer zRenderer = new ZRenderer();
 
 //    DirectionRenderer directionRenderer = new DirectionRenderer();
     
     MeshSplitter splitter = new MeshSplitter();
     RNG rng = new RandomRNG(1986);
     
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<15; i++) {
+      
+      System.out.println(mesh.getWidth());
       
       mesh = splitter.split(mesh, rng);
-      mesh.computeDirections();
-      mesh.computeFlow();
+      //mesh.computeDirections();
+      //mesh.computeFlow();
       
-      Image image = new AWTImage(mesh.getWidth(), mesh.getWidth());
-      zRenderer.render(mesh, image);
-      
-      FlowRenderer flowRenderer = new FlowRenderer(0.5f/mesh.getWidth());
-      flowRenderer.render(mesh, image);
-      image.save("gitignore/tile"+mesh.getWidth());
+//      Image image = new AWTImage(mesh.getWidth(), mesh.getWidth());
+//      zRenderer.render(mesh, image);
+//      
+//      FlowRenderer flowRenderer = new FlowRenderer(0.5f/mesh.getWidth());
+//      flowRenderer.render(mesh, image);
+//      image.save("gitignore/tile"+mesh.getWidth());
 //      Image directionImage = new AWTImage(mesh.getWidth(), mesh.getWidth());
 //      directionRenderer.render(mesh, directionImage);
 //      directionImage.save("gitignore/direction"+mesh.getWidth());
