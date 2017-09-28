@@ -8,67 +8,44 @@ import lombok.Getter;
 public class Vertex {
 
   private final Mesh mesh;
-  private int mx;
-  private int my;
+  private int x;
+  private int y;
   
   public Vertex(Mesh mesh) {
     this.mesh = mesh;
   }
   
-  public void set(int mx, int my) {
-    this.mx = mx;
-    this.my = my;
+  public void set(int x, int y) {
+    this.x = x;
+    this.y = y;
   }
   
   public String toString() {
-    return "("+mx+", "+my+")";
+    return "("+x+", "+y+")";
   }
   
-  public double getX() {
-    return mesh.getX(mx, my);
+  public int getX() {
+    return x;
   }
   
-  public double getY() {
-    return mesh.getY(mx, my);
+  public int getY() {
+    return y;
   }
   
   public double getZ() {
-    return mesh.getZ(mx, my);
+    return mesh.getZ(x, y);
   }
   
   public int getFlow() {
-    return mesh.getFlow(mx, my);
+    return mesh.getFlow(x, y);
   }
   
   public short getDownhill() {
-    return mesh.getDownhill(mx, my);
+    return mesh.getDownhill(x, y);
   }
-  
-  @Override
-  public boolean equals(Object other) {
-    if (!(other instanceof Vertex)) {
-      return false;
-    }
-    else {
-      return ((Vertex) other).mx == mx
-          && ((Vertex) other).my == my;
-    }
-  }
-  
-  public boolean atEdge() {
-    return (mx == 0) || (my == 0) || (mx == mesh.getWidth() - 1) || (my == mesh.getWidth() - 1);
-  }
-  
+
   public boolean inBounds() {
-    return (mx >= 0) && (mx < mesh.getWidth()) &&
-        (my >= 0) && (my < mesh.getWidth());
+    return mesh.inBounds(x, y); 
   }
   
-  public void copy(Vertex other) {
-    mx = other.mx;
-    my = other.my;
-  }
-
-
-
 }

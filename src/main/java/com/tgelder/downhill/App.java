@@ -11,7 +11,9 @@ import com.tgelder.downhill.renderer.ZRenderer;
 public class App {
   
   public static void main(String [] args) throws IOException {
-    Mesh mesh = Mesh.of(2);
+    Mesh mesh = new Mesh(2);
+    mesh.setAllZ(Mesh.MAX_VALUE);
+    mesh.computeDirections();
 
     ZRenderer zRenderer = new ZRenderer();
 

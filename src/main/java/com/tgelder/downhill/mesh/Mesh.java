@@ -27,16 +27,9 @@ public class Mesh {
     flow = new int[width][width];
   }
 
-  public final int getX(int mx, int my) {
-    return mx;
-  }
 
-  public final double getY(int mx, int my) {
-    return my;
-  }
-
-  public final double getZ(int mx, int my) {
-    return z[mx][my];
+  public final double getZ(int x, int y) {
+    return z[x][y];
   }
   
   public boolean inBounds(int x, int y){
@@ -52,43 +45,32 @@ public class Mesh {
     }
   }
   
-  public final short getDownhill(int mx, int my) {
-    return downhill[mx][my];
+  public final short getDownhill(int x, int y) {
+    return downhill[x][y];
   }
   
-  public final int getFlow(int mx, int my) {
-    return flow[mx][my];
+  public final int getFlow(int x, int y) {
+    return flow[x][y];
   }
 
-  public final void setZ(int mx, int my, double value) {
-    z[mx][my] = value;
+  public final void setZ(int x, int y, double value) {
+    z[x][y] = value;
   }
   
-  public final void setDownhill(int mx, int my, short value) {
-    downhill[mx][my] = value;
+  public final void setDownhill(int x, int y, short value) {
+    downhill[x][y] = value;
   }
   
-  public final void setFlow(int mx, int my, int value) {
-    flow[mx][my] = value;
+  public final void setFlow(int x, int y, int value) {
+    flow[x][y] = value;
   }
 
-  
-  public static Mesh of(int width) {
-    Mesh out = new Mesh(width);
-
-    double max = MAX_VALUE;
-    
-    
+  public void setAllZ(double value) {
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < width; y++) {
-        out.setZ(x, y, max);
+        setZ(x, y, value);
       }
     }
-    
-    out.computeDirections();
-    out.computeFlow();
-
-    return out;
   }
 
   
@@ -114,8 +96,8 @@ public class Mesh {
     
     while (iterator.hasNext()) {      
       vertex = iterator.next();
-      ox = vertex.getMx();
-      oy = vertex.getMy();
+      ox = vertex.getX();
+      oy = vertex.getY();
       set(ox, oy, out);
     }
     
@@ -147,7 +129,7 @@ public class Mesh {
     
   }
   
-  private void computeDirections() {
+  public void computeDirections() {
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < width; y++) {
         computeDirection(x, y);
@@ -155,7 +137,7 @@ public class Mesh {
     }
   }
   
-  private void computeFlow() {
+  public void computeFlow() {
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < width; y++) {
         computeFlow(x, y);
