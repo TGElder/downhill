@@ -5,8 +5,11 @@ import java.io.IOException;
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
 import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.MeshSplitter;
 import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.ZRenderer;
+import com.tgelder.downhill.rngs.RNG;
+import com.tgelder.downhill.rngs.RandomRNG;
 
 public class App {
   
@@ -18,10 +21,16 @@ public class App {
     ZRenderer zRenderer = new ZRenderer();
 
 //    DirectionRenderer directionRenderer = new DirectionRenderer();
-
+    
+    MeshSplitter splitter = new MeshSplitter();
+    RNG rng = new RandomRNG(1986);
     
     for (int i=0; i<10; i++) {
-      mesh = mesh.split();
+      
+      mesh = splitter.split(mesh, rng);
+      mesh.computeDirections();
+      mesh.computeFlow();
+      
       Image image = new AWTImage(mesh.getWidth(), mesh.getWidth());
       zRenderer.render(mesh, image);
       

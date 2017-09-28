@@ -4,15 +4,15 @@ import com.tgelder.downhill.rngs.RNG;
 
 public class MockRNG implements RNG {
   
-  private final float [] numbers;
+  private final double [] numbers;
   private int i = 0;
   
-  public MockRNG(final float [] numbers) {
+  public MockRNG(final double [] numbers) {
     this.numbers = numbers;
   }
 
   @Override
-  public float getNext() {
+  public double getNext() {
     i++;
     return numbers[i-1];
   }

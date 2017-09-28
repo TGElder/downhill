@@ -73,7 +73,6 @@ public class Mesh {
     }
   }
 
-  
   public static VertexCase getVertexCaseAt(int x, int y) {
     for (VertexCase vertexCase : VertexCase.values()) {
       if (vertexCase.appliesAt(x, y)) {
@@ -81,52 +80,6 @@ public class Mesh {
       }
     }
     return null;
-  }
-  
-  public Mesh split() {
-    int oWidth = width*2;
-    
-    Vertex vertex;
-    int ox = 0;
-    int oy = 0;
-    
-    Mesh out = new Mesh(oWidth);
-    
-    VertexIterator iterator = new VertexIterator(out);
-    
-    while (iterator.hasNext()) {      
-      vertex = iterator.next();
-      ox = vertex.getX();
-      oy = vertex.getY();
-      set(ox, oy, out);
-    }
-    
-    out.computeDirections();
-    out.computeFlow();
-    
-    return out;
-  }
-  
-  private void set(int ox, int oy, Mesh next) {
-
-    double minZ = Mesh.getVertexCaseAt(ox, oy).getMinZ(this, ox, oy);
-    double maxZ = Mesh.getVertexCaseAt(ox, oy).getMaxZ(this, ox, oy);
-    
-    if (maxZ < minZ) {
-      minZ = maxZ;
-    }
-    
-    double r = random.nextFloat();
-    
-    double range = (maxZ - minZ);
-    
-    
-    double z = minZ + range * (0.1 + 0.8 * r);
-    
-    next.setZ(ox, oy, z);
-    
-    next.setDownhill(ox, oy, getDownhill(ox / 2, oy / 2));
-    
   }
   
   public void computeDirections() {
@@ -157,9 +110,7 @@ public class Mesh {
       }
     }
   }
-  
 
-  
   private void computeFlow(int x, int y) {
         
     if (inBounds(x, y)) {
@@ -173,7 +124,6 @@ public class Mesh {
     }
   }
  
-  
   public double getMaxZ() {
     double out = Mesh.MIN_VALUE;
     for (int x=0; x<width; x++) {

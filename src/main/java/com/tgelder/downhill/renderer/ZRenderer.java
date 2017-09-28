@@ -24,7 +24,7 @@ public class ZRenderer {
 
     Scale xScale = new Scale(0, mesh.getWidth(), 0, image.getWidth());
     Scale yScale = new Scale(0, mesh.getWidth(), 0, image.getHeight());
-    Scale zScale = new Scale(Mesh.MIN_VALUE, mesh.getMaxZ(), -64, 255);
+    Scale zScale = new Scale(Mesh.MIN_VALUE, mesh.getMaxZ(), 0, 255);
     
     while (iterator.hasNext()) {
       Vertex vertex = iterator.next();

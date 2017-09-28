@@ -11,7 +11,7 @@ public class RandomRNG implements RNG {
   }
 
   @Override
-  public float getNext() {
+  public double getNext() {
     return random.nextFloat();
   }
   
