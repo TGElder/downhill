@@ -1,16 +1,19 @@
-package com.tgelder.downhill.mesh4;
+package com.tgelder.downhill.renderer;
 
 import java.awt.Color;
 
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.mesh.Mesh;
+import com.tgelder.downhill.mesh.Vertex;
+import com.tgelder.downhill.mesh.VertexIterator;
 
 
-public class TileMeshRenderer {
+public class ZRenderer {
 
   private final Color [] colors = new Color[256];
   
-  public TileMeshRenderer() {
+  public ZRenderer() {
     for (int i = 0; i < 255; i++) {
       colors[i] = new Color(i, i, i);
     }

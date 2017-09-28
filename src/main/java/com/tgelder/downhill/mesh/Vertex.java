@@ -5,18 +5,13 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class MeshPoint {
-  
-  public enum PointCase{
-    FOUR_NEIGHBOURS,
-    EIGHT_NEIGHBOURS
-  }
-  
+public class Vertex {
+
   private final Mesh mesh;
   private int mx;
   private int my;
   
-  public MeshPoint(Mesh mesh) {
+  public Vertex(Mesh mesh) {
     this.mesh = mesh;
   }
   
@@ -29,35 +24,34 @@ public class MeshPoint {
     return "("+mx+", "+my+")";
   }
   
-  public float getX() {
+  public double getX() {
     return mesh.getX(mx, my);
   }
   
-  public float getY() {
+  public double getY() {
     return mesh.getY(mx, my);
   }
   
-  public float getZ() {
+  public double getZ() {
     return mesh.getZ(mx, my);
   }
   
-  public PointCase getPointCase() {
-    if ((mx % 2) == (my % 2)) {
-      return PointCase.EIGHT_NEIGHBOURS;
-    }
-    else {
-      return PointCase.FOUR_NEIGHBOURS;
-    }
+  public int getFlow() {
+    return mesh.getFlow(mx, my);
+  }
+  
+  public short getDownhill() {
+    return mesh.getDownhill(mx, my);
   }
   
   @Override
   public boolean equals(Object other) {
-    if (!(other instanceof MeshPoint)) {
+    if (!(other instanceof Vertex)) {
       return false;
     }
     else {
-      return ((MeshPoint) other).mx == mx
-          && ((MeshPoint) other).my == my;
+      return ((Vertex) other).mx == mx
+          && ((Vertex) other).my == my;
     }
   }
   
@@ -70,7 +64,7 @@ public class MeshPoint {
         (my >= 0) && (my < mesh.getWidth());
   }
   
-  public void copy(MeshPoint other) {
+  public void copy(Vertex other) {
     mx = other.mx;
     my = other.my;
   }

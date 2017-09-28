@@ -1,5 +1,6 @@
 package com.tgelder.downhill.image;
 
+import java.awt.Color;
 import java.io.IOException;
 
 public class MockImage implements Image {
@@ -20,6 +21,13 @@ public class MockImage implements Image {
     this.r = r;
     this.g = g;
     this.b = b;
+  }
+
+  @Override
+  public void setColor(Color color) {
+    this.r = color.getRed();
+    this.g = color.getGreen();
+    this.b = color.getBlue();
   }
 
   @Override
@@ -46,15 +54,15 @@ public class MockImage implements Image {
   public int getHeight() {
     return size;
   }
-  
+
   public int getR(int x, int y) {
     return rs[x][y];
   }
-  
+
   public int getG(int x, int y) {
     return gs[x][y];
   }
-  
+
   public int getB(int x, int y) {
     return bs[x][y];
   }

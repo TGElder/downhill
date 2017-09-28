@@ -1,4 +1,4 @@
-package com.tgelder.downhill.mesh4;
+package com.tgelder.downhill.mesh;
 
 import java.util.Iterator;
 
