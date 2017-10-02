@@ -1,8 +1,15 @@
 package com.tgelder.downhill.mesh;
 
+import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.rngs.RNG;
 
 public class MeshSplitter {
+  
+  private final Scale scale;
+  
+  public MeshSplitter(double minSplit, double maxSplit) {
+    scale = new Scale(0, 1, minSplit, maxSplit);
+  }
   
   private int oWidth;
   private int ox;
@@ -37,15 +44,11 @@ public class MeshSplitter {
       minZ = Math.min(in.getZ(ix, iy, 0), Math.min(in.getZ(ix + xOffset, iy, 0), in.getZ(ix, iy + yOffset, 0)));
       maxZ = in.getZ(ix, iy, 0);
       
-      if (maxZ < minZ) {
-        minZ = maxZ;
-      }
-      
       r = rng.getNext();
 
       range = (maxZ - minZ);
       
-      z = minZ + range * (0.1 + 0.8 * r);
+      z = minZ + range * scale.scale(r);
       
       out.setZ(ox, oy, z);
       

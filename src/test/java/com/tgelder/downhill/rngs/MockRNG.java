@@ -13,8 +13,9 @@ public class MockRNG implements RNG {
 
   @Override
   public double getNext() {
-    i++;
-    return numbers[i-1];
+    double out = numbers[i];
+    i = (i + 1) % numbers.length;
+    return out;
   }
   
 }

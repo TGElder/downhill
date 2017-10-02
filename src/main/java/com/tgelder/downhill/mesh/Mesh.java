@@ -27,7 +27,6 @@ public class Mesh {
     flow = new int[width][width];
   }
 
-
   public final double getZ(int x, int y) {
     return z[x][y];
   }
