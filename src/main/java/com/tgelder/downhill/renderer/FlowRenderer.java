@@ -5,19 +5,15 @@ import java.awt.Color;
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.Image;
 import com.tgelder.downhill.mesh.Mesh;
-import com.tgelder.downhill.mesh.Vertex;
-import com.tgelder.downhill.mesh.VertexIterator;
 
 import lombok.AllArgsConstructor;
-
 
 @AllArgsConstructor
 public class FlowRenderer {
 
   private final float threshold;
   
-  public void render(Mesh mesh, Image image) {
-    VertexIterator iterator = new VertexIterator(mesh);
+  public void render(Mesh mesh, Image image, int[][] flow) {
 
     Scale xScale = new Scale(0, mesh.getWidth(), 0, image.getWidth());
     Scale yScale = new Scale(0, mesh.getWidth(), 0, image.getHeight());
@@ -25,19 +21,17 @@ public class FlowRenderer {
     
     image.setColor(Color.BLUE);
     
-    while (iterator.hasNext()) {
-      Vertex vertex = iterator.next();
-      
+    mesh.iterate((x, y) -> {
 
-      double flow = (fScale.scale(vertex.getFlow()));
+      double f = (fScale.scale(flow[x][y]));
 
-      if (flow >= threshold) {
+      if (f >= threshold) {
         image.drawPoint(
-            (int)xScale.scale(vertex.getX()), 
-            (int)yScale.scale(vertex.getY()));
+            (int)xScale.scale(x), 
+            (int)yScale.scale(y));
       }
       
-    }
+    });
 
   }
 

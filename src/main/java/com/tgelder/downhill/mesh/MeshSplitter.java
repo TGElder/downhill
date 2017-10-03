@@ -11,51 +11,31 @@ public class MeshSplitter {
     scale = new Scale(0, 1, minSplit, maxSplit);
   }
   
-  private int oWidth;
-  private int ox;
-  private int oy;
-  private int xOffset;
-  private int yOffset;
-  private int ix;
-  private int iy;
-  private double minZ;
-  private double maxZ;
-  private double r;
-  private double range;
-  private double z;
-  
   public Mesh split(Mesh in, RNG rng) {
-    oWidth = in.getWidth()*2;
+    Mesh out = new Mesh(in.getWidth() * 2);
     
-    Mesh out = new Mesh(oWidth);
-    VertexIterator iterator = new VertexIterator(out);
-    
-    while (iterator.hasNext()) {      
-      final Vertex vertex = iterator.next();
-      ox = vertex.getX();
-      oy = vertex.getY();
+    out.iterate((x, y) -> out.setZ(x, y, getOutZ(in, x, y, rng)));
 
-      xOffset = ((ox % 2) * 2) - 1;
-      yOffset = ((oy % 2) * 2) - 1;
-      
-      ix = ox / 2;
-      iy = oy / 2;
-      
-      minZ = Math.min(in.getZ(ix, iy, 0), Math.min(in.getZ(ix + xOffset, iy, 0), in.getZ(ix, iy + yOffset, 0)));
-      maxZ = in.getZ(ix, iy, 0);
-      
-      r = rng.getNext();
-
-      range = (maxZ - minZ);
-      
-      z = minZ + range * scale.scale(r);
-      
-      out.setZ(ox, oy, z);
-      
-      out.setDownhill(ox, oy, in.getDownhill(ix, iy));
-    }
-    
     return out;
+  }
+  
+  private double getOutZ(Mesh in, int x, int y, RNG rng) {
+    int xOffset = ((x % 2) * 2) - 1;
+    int yOffset = ((y % 2) * 2) - 1;
+    
+    int ix = x / 2;
+    int iy = y / 2;
+    
+    double minZ = Math.min(in.getZ(ix, iy, 0), Math.min(in.getZ(ix + xOffset, iy, 0), in.getZ(ix, iy + yOffset, 0)));
+    double maxZ = in.getZ(ix, iy, 0);
+    
+    double r = rng.getNext();
+
+    double range = (maxZ - minZ);
+    
+    double z = minZ + range * scale.scale(r);
+    
+    return z;
   }
   
 }
