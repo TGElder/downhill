@@ -52,6 +52,16 @@ public class Mesh {
     iterate((x, y) -> setZ(x, y, value));
   }
  
+  public double getMinZ() {
+    double out = Mesh.MIN_VALUE;
+    for (int x=0; x<width; x++) {
+      for (int y=0; y<width; y++) {
+        out = Math.min(out, getZ(x, y));
+      }
+    }
+    return out;
+  }
+  
   public double getMaxZ() {
     double out = Mesh.MIN_VALUE;
     for (int x=0; x<width; x++) {

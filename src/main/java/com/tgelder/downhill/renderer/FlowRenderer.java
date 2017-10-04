@@ -13,19 +13,16 @@ public class FlowRenderer {
 
   private final float threshold;
   
-  public void render(Mesh mesh, Image image, int[][] flow) {
+  public void render(Mesh mesh, int[][] flow, Image image) {
 
     Scale xScale = new Scale(0, mesh.getWidth(), 0, image.getWidth());
     Scale yScale = new Scale(0, mesh.getWidth(), 0, image.getHeight());
-    Scale fScale = new Scale(0, mesh.getWidth() * mesh.getWidth(), 0, 1);
     
     image.setColor(Color.BLUE);
     
     mesh.iterate((x, y) -> {
 
-      double f = (fScale.scale(flow[x][y]));
-
-      if (f >= threshold) {
+      if (flow[x][y] >= threshold) {
         image.drawPoint(
             (int)xScale.scale(x), 
             (int)yScale.scale(y));

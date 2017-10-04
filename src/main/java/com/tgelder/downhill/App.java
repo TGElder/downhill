@@ -24,8 +24,8 @@ public class App {
     ZRenderer zRenderer = new ZRenderer();
     DownhillRenderer downhillRenderer = new DownhillRenderer();
     
-    MeshSplitter splitter = new MeshSplitter(0.1, 0.9);
-    RNG rng = new RandomRNG(1986);
+    MeshSplitter splitter = new MeshSplitter(0.05, 0.95);
+    RNG rng = new RandomRNG(808);
     
     for (int i=0; i<10; i++) {
 
@@ -33,9 +33,9 @@ public class App {
       short[][] downhill = DownhillComputer.getDownhill(mesh);
       
       Image image = new AWTImage(mesh.getWidth(), mesh.getWidth());
-      zRenderer.render(mesh, image);
-      FlowRenderer flowRenderer = new FlowRenderer(0.5f/mesh.getWidth());
-      flowRenderer.render(mesh, image, FlowComputer.getFlow(mesh, downhill));
+      zRenderer.render(mesh, Mesh.MIN_VALUE * 0.75 + Mesh.MAX_VALUE * 0.25, image);
+      FlowRenderer flowRenderer = new FlowRenderer(1000f);
+      flowRenderer.render(mesh, FlowComputer.getFlow(mesh, downhill), image);
       image.save("gitignore/tile"+mesh.getWidth());
       
       Image downhillImage = new AWTImage(mesh.getWidth(), mesh.getWidth());

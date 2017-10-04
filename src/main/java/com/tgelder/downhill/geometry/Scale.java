@@ -2,11 +2,11 @@ package com.tgelder.downhill.geometry;
 
 public class Scale {
   
-  private double outMin;
   private double inMin;
+  private double inMax;
+  private double outMin;
+  private double outMax;
 
-  private double factor;
-  
   public Scale() {
     
   }
@@ -17,13 +17,13 @@ public class Scale {
   
   public void set(double inMin, double inMax, double outMin, double outMax) {
     this.inMin = inMin;
+    this.inMax = inMax;
     this.outMin = outMin;
-    
-    factor = (outMax - outMin)/(inMax - inMin);
+    this.outMax = outMax;
   }
   
   public double scale(double value) {
-    return (value - inMin)*factor + outMin;
+    return ((value - inMin)/(inMax - inMin))*(outMax - outMin) + outMin;
   }
   
 }
