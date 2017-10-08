@@ -16,27 +16,30 @@ public class ZRenderer {
     }
   }
   
-  public void render(Mesh mesh, double seaLevel, Image image) {
+  public void render(Mesh mesh, double min, double max, Image image) {
 
-    Scale xScale = new Scale(0, mesh.getWidth(), 0, image.getWidth());
-    Scale yScale = new Scale(0, mesh.getWidth(), 0, image.getHeight());
-    Scale zScale = new Scale(seaLevel, mesh.getMaxZ(), 0, 255);
+    Scale xScale = new Scale(0, image.getWidth(), 0, mesh.getWidth());
+    Scale yScale = new Scale(0, image.getHeight(), 0, mesh.getWidth());
+    Scale zScale = new Scale(min, max, 0, 255);
     
-    mesh.iterate((x, y) -> {
- 
-      int color = (int) (zScale.scale(mesh.getZ(x, y)));
-      
-      if (color < 0) {
-        image.setColor(Color.BLUE);
-      }
-      else {
-        image.setColor(colors[color]);
-      }
+    for (int x = 0; x < image.getWidth(); x++) {
+      for (int y = 0; y < image.getHeight(); y++) {
+        
+        int mx = (int) xScale.scale(x);
+        int my = (int) yScale.scale(y);
+        
+        int color = (int) (zScale.scale(mesh.getZ(mx, my)));
+                
+        if (color < 0) {
+          image.setColor(Color.BLUE);
+        }
+        else {
+          image.setColor(colors[color]);
+        }
 
-      image.drawPoint(
-          (int)xScale.scale(x), 
-          (int)yScale.scale(y));
-    });
+        image.drawPoint(x, y);
+      }
+    }
 
   }
 

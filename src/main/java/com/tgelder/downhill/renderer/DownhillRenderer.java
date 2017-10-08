@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.Image;
-import com.tgelder.downhill.mesh.Mesh;
 
 public class DownhillRenderer {
   
@@ -21,21 +20,21 @@ public class DownhillRenderer {
     colors[7] = new Color(191, 191, 191);
   }
   
-  public void render(Mesh mesh, short[][] downhill, Image image) {
-    Scale xScale = new Scale(0, mesh.getWidth(), 0, image.getWidth());
-    Scale yScale = new Scale(0, mesh.getWidth(), 0, image.getHeight());
+  public void render(short[][] downhill, Image image) {
+    Scale xScale = new Scale(0, image.getWidth(), 0, downhill.length);
+    Scale yScale = new Scale(0, image.getHeight(), 0, downhill[0].length);
      
-    mesh.iterate((x, y) -> {
+    for (int x = 0; x < image.getWidth(); x++) {
+      for (int y = 0; y < image.getHeight(); y++) {
+        
+        int mx = (int) xScale.scale(x);
+        int my = (int) yScale.scale(y);
+        
+        image.setColor(colors[downhill[mx][my]]);
 
-      image.setColor(colors[downhill[x][y]]);
-
-      image.drawPoint(
-          (int)xScale.scale(x), 
-          (int)yScale.scale(y));
-      
-    });
-
+        image.drawPoint(x, y);
+      }
+    }
   }
-
 
 }
