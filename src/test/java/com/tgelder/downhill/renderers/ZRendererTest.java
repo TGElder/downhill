@@ -26,7 +26,7 @@ public class ZRendererTest {
     
     MockImage image = new MockImage(4);
     ZRenderer renderer = new ZRenderer();
-    renderer.render(mesh, 0, image);
+    renderer.render(mesh, 0, mesh.getMaxZ(), image);
     
     int[][] expected = { { 255, 52, 62, 182 }, { 38, 240, 134, 158 }, { 48, 72, 86, 48 }, { 33, 62, 81, 76 } };
 
@@ -46,7 +46,7 @@ public class ZRendererTest {
     ZRenderer renderer = new ZRenderer();
     MockImage image = new MockImage(4);
     
-    renderer.render(mesh, 15, image);
+    renderer.render(mesh, 15, mesh.getMaxZ(), image);
     
     int[][] expectedRG = { { 255, 0, 0, 154 }, { 0, 234, 87, 120 }, { 0, 0, 20, 0 }, { 0, 0, 13, 6 } };
     int[][] expectedB = { { 255, 255, 255, 154 }, { 255, 234, 87, 120 }, { 255, 0, 20, 255 }, { 255, 255, 13, 6 } };
