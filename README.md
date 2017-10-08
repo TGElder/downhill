@@ -1,56 +1,45 @@
 # downhill
-This repository contains an implementation of an algorithm for randomly generating terrain that has a downhill path from any point to the edge of the map. This property is useful for generating realistic rivers. It is common for other terrain generation algorithms end up with 'bowls' in the landscape that make it difficult to add realistic rivers.   
+This repository contains an implementation of an algorithm for randomly generating terrain that has a downhill path from any point to the edge of the map. We call this the **downhill property**. This property is useful for generating realistic rivers. It is common for other terrain generation algorithms end up with 'bowls' in the landscape that make it difficult to add realistic rivers.   
 
 ## The Algorithm
 
-The algorithm works by repeatedly dividing triangles into four small triangles.
+Let's say we already have a terrain that already satisfies the downhill property:
 
-We start with a simple mesh featuring 9 vertices, 16 edges and 8 triangles.
+![4x4 terrain](images/power4.png)
 
-![3x3 Mesh](images/mesh3.png)
+You are looking a terrain with 64 'cells' arranged in a 4x4 grid heightmap. The lighter the cell, the higher it's altitude. This terrain satisfies the downhill property (when paths to the edge of the map can be created by moving up, down, left and right but not diagonally). 
 
-The shading shows the elevation of each point. The elevations are interpolated from the elevation of each vertex. The black lines show the edges of the triangles. This terrain is a pyramid, there is clearly a path from any point to the edge of the map.  
+We can split this into an 8x8 terrain while preserving the downhill property. Each cell is divided into four 'child' cells, e.g.:
 
-We now create new vertices at the midpoint of each edge and use them to create new triangles. The elevation of each new vertex must be between the elevation at each end of the edge. This ensures there is still a path from each vertex to the edge of the map.
+![New cells](images/power4boxes1.png)
 
-![5x5 Mesh](images/mesh5.png)
+In order to preserve the downhill property, we need to make sure that each new cell has at least one neighbour that is lower (or is at the edge of the map). 
 
-If we repeat this process we start to get a nice random terrain that guarantees a route from each path to the edge.
+Each new cell will have four neighbours. Two of these neighbours will the same parent cell, and two will have different parent cells - we call their parents the **neighbouring parent cells**.
 
-![9x9 Mesh](images/mesh9.png)
-![17x17 Mesh](images/mesh17.png)
-![257x257 Mesh](images/mesh257.png)
+There are three cases for new cells:
+1. Both neighbouring parent cells are *lower* than the parent cell.
+2. One neighbouring parent cell is lower than the parent cell and the other is higher.
+3. Both neighbouring parent cells are *higher* than the parent cell.
 
-This is however a bit boring - if you follow a path uphill from the edge of the map, you always get to the peak in the centre. Wouldn't it be better if there were sub-peaks?
+In cases 1 and 2, we constrain the height of the new cell as follows:  
+1. It must be lower than its parent cell.
+2. It must be higher than the lower of its parent cells and the two neighbouring parent cells.
 
-To achieve this we take advantage of the way the diagonal edges split.
+This ensures that at least one of the neighbours with a different parent will be lower. 
 
-![3x3 Mesh](images/subpeak3.png)
+In case 3 we make the height of the new cell the same height as its parent. In this case it is not as obvious how there will be a downhill route. Clearly the neighbours with different parents will both be higher. 
 
-In the split mesh, the vertex in the middle of each diagonal edge is connected to the four corners of the 'box' around it - which are points that were present in the original mesh. 
+However, one of the neighbours with the same parent will be lower. This is because at least one of these will be case 1 or case 2 cell (all the children of a cell cannot be case 3, this would mean the original terrain did not satisfy the downhill property). Since these cells are case 1 or 2, they must be lower than the parent cell, which means they are lower than the case 3 cell.
 
-![3x3 Mesh](images/subpeak5.png)
+Let us split our 4x4 terrain with these constraints (we set the height of case 1 or case 2 cells to random values between the minimum and maximum value):    
+  
+![8x8 terrain](images/power8.png)
 
-We can change the rule for getting the minimum elevation of these vertices - they only need to be higher than one of the four corners and we can guarantee that there is a route to the edge of the map. Let's look at what happens when we split with this new rule.
+We can repeat this process indefinitely:
 
-![9x9 Mesh](images/subpeak9.png)
-![17x17 Mesh](images/subpeak17.png)
-![257x257 Mesh](images/subpeak257.png)
-
-In the top left we see how this allows 'valleys' to grow in from the edge of the map, which ultimately separate two areas of higher terrain. Now we have sub-peaks!
-
-### Rivers
-
-The motivation for this algorithm was to generate realistic rivers. So let's see what rivers look like on this terrain. To generate rivers we:
-
-1. Assume rainfall is distributed evenly across the terrain - each vertex gets the same amount of rain.
-2. For each vertex, find the lowest adjacent vertex, place the rain on the edge between them and repeat until the edge of the map is reached.
-
-The below shows edges carrying over 0.5% of the rainfall that hits the terrain in blue.
-
-![Rivers](images/rivers.png)
-
-
+![16x16 terrain](images/power16.png) ![32x32 terrain](images/power32.png) ![64x64 terrain](images/power64.png) ![128x128 terrain](images/power128.png) ![256x256 terrain](images/power256.png)
+  
 # Implementation
 
 The implementation is designed to minimise Java memory usage and garbage collection. 

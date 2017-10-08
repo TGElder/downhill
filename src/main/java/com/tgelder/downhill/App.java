@@ -119,7 +119,7 @@ public class App {
     image.save("images/power4");
     image.setColor(Color.RED);
     
-    for (int x = 2; x < 4; x++) {
+    for (int x = 4; x < 6; x++) {
       for (int y = 2; y < 4; y++) {
         drawBox(image, (imageSize * x) / 8, (imageSize * y) / 8, imageSize / 8);
       }
@@ -130,19 +130,29 @@ public class App {
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
     image.setColor(Color.RED);
-    drawBox(image, (imageSize * 2) / 8, (imageSize * 2) / 8, imageSize / 8);
-    drawBox(image, (imageSize * 2) / 8, 0, imageSize / 4);
-    drawBox(image, 0, (imageSize * 2) / 8, imageSize / 4);
+    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
     image.save("images/power4boxes2");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    image.setColor(Color.RED);
+    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
+    drawBox(image, (imageSize * 4) / 8, (imageSize * 0) / 8, imageSize / 4);
+    drawBox(image, (imageSize * 2) / 8, (imageSize * 2) / 8, imageSize / 4);
+    image.save("images/power4boxes3");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    image.setColor(Color.RED);
+    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
+    drawBox(image, (imageSize * 4) / 8, (imageSize * 1) / 8, imageSize / 8);
+    drawBox(image, (imageSize * 3) / 8, (imageSize * 2) / 8, imageSize / 8);
+    image.save("images/power4boxes4");
     
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
-    image.setColor(Color.RED);
-    drawBox(image, (imageSize * 2) / 8, (imageSize * 2) / 8, imageSize / 8);
-    drawBox(image, (imageSize * 2) / 8, 0, imageSize / 4);
-    drawBox(image, 0, (imageSize * 2) / 8, imageSize / 4);
-    image.save("images/power8boxes2");
+    image.save("images/power8");
 
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);

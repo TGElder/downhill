@@ -35,7 +35,7 @@ public class DownhillComputerTest {
     MeshSplitter splitter = new MeshSplitter(0.1, 0.9);
     RNG rng = new RandomRNG(1986);
     
-    for (int i = 0; i < 14; i++) {
+    for (int i = 0; i < 13; i++) {
       mesh = splitter.split(mesh, rng);
       DownhillComputer.getDownhill(mesh);
     }
