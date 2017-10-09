@@ -3,25 +3,21 @@ This repository contains an implementation of an algorithm for randomly generati
 
 ## The Algorithm
 
-Let's say we already have a terrain that already satisfies the downhill property:
+Let's say we already have a simple terrain that already satisfies the downhill property:
 
 ![power4.png](images/power4.png)
 
-You are looking a terrain with 64 'cells' arranged in a 4x4 grid heightmap. The lighter the cell, the higher its altitude. This terrain satisfies the downhill property (when paths to the edge of the map can be created by moving up, down, left and right but not diagonally). 
+You are looking a heightmap of a terrain with 64 **cells** arranged in a 4x4 grid. The lighter the cell, the higher its altitude. This terrain satisfies the downhill property (allowing for up-down-left-right, but not diagonal, movement). 
 
-We can split this into an 8x8 terrain while preserving the downhill property. Each cell is divided into four new cells, e.g.:
+We can split this into an 8x8 terrain while preserving the downhill property. Each cell is divided into four new cells, as shown below.
 
 ![grid.png](images/grid.png)
 
-Let us consider just one cell.
+Let us consider just one cell and the cell it splits from (referred to as its **parent cell**).
 
-![oneCell.png](images/oneCell.png)
+![oneCell.png](images/oneCell.png) ![parent.png](images/parent.png)
 
-We refer to the cell it splits from as its **parent cell**. 
-
-![parent.png](images/parent.png)
-
-This cell has four neighbours.  
+The cell has four neighbours.  
 
 ![neighbours.png](images/neighbours.png)
 
@@ -33,15 +29,14 @@ The two white neighbours have the same parent cell and the two blue neighbours d
 
 In order to preserve the downhill property in our 8x8 terrain, we need to make sure that each new cell has at least one neighbour that is lower (or is at the edge of the map). We do this by constraining the height of new cells. Our first constraint applies to all new cells: 
 
-**Constraint 1** New cells may be no higher than their parent cells. 
+**Constraint 1:** New cells may be no higher than their parent cells. 
 
  Further constraints depend on the *type* of the new cell. There are three types. The parent cell we highlighted earlier features all three types:
-
-![gridColoured.png](images/gridColoured.png)
-
 * **Type-- (Red)** Both neighbouring parent cells are *lower* than the parent cell.
 * **Type++ (Yellow)** Both neighbouring parent cells are *higher* than the parent cell.
 * **Type+- (Orange)** One of each.
+
+![gridColoured.png](images/gridColoured.png)
 
 #### Type+- Cells
 
@@ -61,7 +56,7 @@ The red cell is Type--:
 
 ![case1.png](images/case1.png)
 
-Type-- cells are constrained in the same way, except that **Constraint b** is modified so that new Type-- cells need only be higher than either of the neighbouring parent cells. It should be clear that Type-- cells are guaranteed a lower neighbour in the same way as Type+- cells.
+Type-- cells are constrained in the same way as Type +- cells, except that **Constraint b** is modified so that new Type-- cells need only be higher than either of the neighbouring parent cells. It should be clear that Type-- cells are guaranteed a lower neighbour in the same way as Type+- cells.
 
 #### Type++ Cells
 
@@ -73,9 +68,13 @@ Type++ cells are trickier. They are constrained to be the same height as their p
 
 How do we know that one of the neighbours with the same parent must be Type-- or Type+-? Let us consider that this wasn't case, that both neighbours with the same parent were also Type++. It would follow that every neighbour of the parent cell must be higher than it, which means the downhill property would not have been satisfied in the original terrain. 
 
+#### Edge cells
+
+We handle edge cells by giving them imaginary neighbours beyond the edge. These imaginary neighbours have the lowest possible height. This mechanism allows us to split a 1x1 terrain with a single cell of maximum height, which is how we arrived at our 4x4 starting terrain.
+
 ### Repeating the process
 
-Let us split our 4x4 terrain with these constraints (we set the height of Type-- or Type+- cells to random values that satisfy their constraints):    
+Let us split our 4x4 terrain with these constraints (we set the height of Type-- or Type+- cells to random values that satisfy their constraints). We now have an 8x8 terrain that satisfies the downhill property:
   
 ![8x8 terrain](images/power8.png)
 
