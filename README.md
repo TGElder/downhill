@@ -38,7 +38,7 @@ In order to preserve the downhill property in our 8x8 terrain, we need to make s
 
 ![gridColoured.png](images/gridColoured.png)
 
-Let us look at how we constrain each type of cell and how this ensures they will have at least one neighbour that is lower.
+Let us look at how we constrain each type of cell and how this ensures that they will have at least one neighbour that is lower.
 
 #### Type+- Cells
 
