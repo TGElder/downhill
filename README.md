@@ -17,11 +17,11 @@ Let us consider just one cell and the cell it splits from (referred to as its **
 
 ![oneCell.png](images/oneCell.png) ![parent.png](images/parent.png)
 
-The cell has four neighbours.  
+The cell will have four neighbours.  
 
 ![neighbours.png](images/neighbours.png)
 
-The two white neighbours have the same parent cell and the two blue neighbours different parent cells. We call the parents of the blue cells the **neighbouring parent cells**.
+The two white neighbours have the same parent cell and the two blue neighbours have different parent cells. We call the parents of the blue cells the **neighbouring parent cells**.
 
 ![neighboursParents.png](images/neighboursParents.png)
 
@@ -34,13 +34,15 @@ In order to preserve the downhill property in our 8x8 terrain, we need to make s
  Further constraints depend on the *type* of the new cell. There are three types. The parent cell we highlighted earlier features all three types:
 * **Type-- (Red)** Both neighbouring parent cells are *lower* than the parent cell.
 * **Type++ (Yellow)** Both neighbouring parent cells are *higher* than the parent cell.
-* **Type+- (Orange)** One of each.
+* **Type+- (Orange)** One lower, one higher.
 
 ![gridColoured.png](images/gridColoured.png)
 
+Let us look at how we constrain each type of cell and how this ensures they will have at least one neighbour that is lower.
+
 #### Type+- Cells
 
-The orange cells are Type--:
+The orange cells are Type+-:
 
 ![case2a.png](images/case2a.png) ![case2b.png](images/case2b.png)
 
@@ -64,9 +66,9 @@ The yellow cell is Type++:
 
 ![case3.png](images/case3.png)
 
-Type++ cells are trickier. They are constrained to be the same height as their parent. The neighbours with different parent cells will be higher than the Type++ cell. Luckily, one of the neighbours with the same parent cell must be lower. This is because one of these must be a Type-- or Type+- cell, and Type-- and Type+- cells must be lower than their parent.
+Type++ cells are trickier. They are constrained to be the same height as their parent. The neighbours with *different* parent cells will be higher than the Type++ cell. Luckily, one of the neighbours with the *same* parent cell must be lower. This is because one of these must be a Type-- or Type+- cell, and Type-- and Type+- cells must be lower than their parent.
 
-How do we know that one of the neighbours with the same parent must be Type-- or Type+-? Let us consider that this wasn't case, that both neighbours with the same parent were also Type++. It would follow that every neighbour of the parent cell must be higher than it, which means the downhill property would not have been satisfied in the original terrain. 
+How do we know that one of the neighbours with the same parent must be Type-- or Type+-? Let us consider that this wasn't case: that both neighbours with the same parent were also Type++. It would follow that every neighbour of the parent cell must be higher than it, which means the downhill property would not have been satisfied in the original terrain. 
 
 #### Edge cells
 
