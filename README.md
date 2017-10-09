@@ -5,43 +5,94 @@ This repository contains an implementation of an algorithm for randomly generati
 
 Let's say we already have a terrain that already satisfies the downhill property:
 
-![4x4 terrain](images/power4.png)
+![power4.png](images/power4.png)
 
-You are looking a terrain with 64 'cells' arranged in a 4x4 grid heightmap. The lighter the cell, the higher it's altitude. This terrain satisfies the downhill property (when paths to the edge of the map can be created by moving up, down, left and right but not diagonally). 
+You are looking a terrain with 64 'cells' arranged in a 4x4 grid heightmap. The lighter the cell, the higher its altitude. This terrain satisfies the downhill property (when paths to the edge of the map can be created by moving up, down, left and right but not diagonally). 
 
-We can split this into an 8x8 terrain while preserving the downhill property. Each cell is divided into four 'child' cells, e.g.:
+We can split this into an 8x8 terrain while preserving the downhill property. Each cell is divided into four new cells, e.g.:
 
-![New cells](images/power4boxes1.png)
+![grid.png](images/grid.png)
 
-In order to preserve the downhill property, we need to make sure that each new cell has at least one neighbour that is lower (or is at the edge of the map). 
+Let us consider just one cell.
 
-Each new cell will have four neighbours. Two of these neighbours will the same parent cell, and two will have different parent cells - we call their parents the **neighbouring parent cells**.
+![oneCell.png](images/oneCell.png)
 
-There are three cases for new cells:
-1. Both neighbouring parent cells are *lower* than the parent cell.
-2. One neighbouring parent cell is lower than the parent cell and the other is higher.
-3. Both neighbouring parent cells are *higher* than the parent cell.
+We refer to the cell it splits from as its **parent cell**. 
 
-In cases 1 and 2, we constrain the height of the new cell as follows:  
-1. It must be lower than its parent cell.
-2. It must be higher than the lower of its parent cells and the two neighbouring parent cells.
+![parent.png](images/parent.png)
 
-This ensures that at least one of the neighbours with a different parent will be lower. 
+This cell has four neighbours.  
 
-In case 3 we make the height of the new cell the same height as its parent. In this case it is not as obvious how there will be a downhill route. Clearly the neighbours with different parents will both be higher. 
+![neighbours.png](images/neighbours.png)
 
-However, one of the neighbours with the same parent will be lower. This is because at least one of these will be case 1 or case 2 cell (all the children of a cell cannot be case 3, this would mean the original terrain did not satisfy the downhill property). Since these cells are case 1 or 2, they must be lower than the parent cell, which means they are lower than the case 3 cell.
+The two white neighbours have the same parent cell and the two blue neighbours different parent cells. We call the parents of the blue cells the **neighbouring parent cells**.
 
-Let us split our 4x4 terrain with these constraints (we set the height of case 1 or case 2 cells to random values between the minimum and maximum value):    
+![neighboursParents.png](images/neighboursParents.png)
+
+### Preserving the downhill property
+
+In order to preserve the downhill property in our 8x8 terrain, we need to make sure that each new cell has at least one neighbour that is lower (or is at the edge of the map). We do this by constraining the height of new cells. Our first constraint applies to all new cells: 
+
+**Constraint 1** New cells may be no higher than their parent cells. 
+
+ Further constraints depend on the *type* of the new cell. There are three types. The parent cell we highlighted earlier features all three types:
+
+![gridColoured.png](images/gridColoured.png)
+
+* **Type-- (Red)** Both neighbouring parent cells are *lower* than the parent cell.
+* **Type++ (Yellow)** Both neighbouring parent cells are *higher* than the parent cell.
+* **Type+- (Orange)** One of each.
+
+#### Type+- Cells
+
+The orange cells are Type--:
+
+![case2a.png](images/case2a.png) ![case2b.png](images/case2b.png)
+
+Type +- cells get the following extra constraints:  
+* **Constraint a** Type +- cells must be lower than their parent cell.
+* **Constraint b** Type +- cells must be higher than the lower neighbouring parent cell.
+
+Due to **Constraint b**, a Type+- cell will be higher than one of its neighbouring parent cells. Due to **Constraint 1**, the neighbour with this parent (coloured blue above) will be no higher than its parent.  It is therefore the case that this neighbour will be lower than the Type+- cell.  
+
+#### Type-- Cells
+
+The red cell is Type--:
+
+![case1.png](images/case1.png)
+
+Type-- cells are constrained in the same way, except that **Constraint b** is modified so that new Type-- cells need only be higher than either of the neighbouring parent cells. It should be clear that Type-- cells are guaranteed a lower neighbour in the same way as Type+- cells.
+
+#### Type++ Cells
+
+The yellow cell is Type++:
+
+![case3.png](images/case3.png)
+
+Type++ cells are trickier. They are constrained to be the same height as their parent. The neighbours with different parent cells will be higher than the Type++ cell. Luckily, one of the neighbours with the same parent cell must be lower. This is because one of these must be a Type-- or Type+- cell, and Type-- and Type+- cells must be lower than their parent.
+
+How do we know that one of the neighbours with the same parent must be Type-- or Type+-? Let us consider that this wasn't case, that both neighbours with the same parent were also Type++. It would follow that every neighbour of the parent cell must be higher than it, which means the downhill property would not have been satisfied in the original terrain. 
+
+### Repeating the process
+
+Let us split our 4x4 terrain with these constraints (we set the height of Type-- or Type+- cells to random values that satisfy their constraints):    
   
 ![8x8 terrain](images/power8.png)
 
 We can repeat this process indefinitely:
 
-![16x16 terrain](images/power16.png) ![32x32 terrain](images/power32.png) ![64x64 terrain](images/power64.png) ![128x128 terrain](images/power128.png) ![256x256 terrain](images/power256.png)
+![power16.png](images/power16.png) ![power32.png](images/power32.png) ![power64.png](images/power64.png) ![power128.png](images/power128.png) ![power256.png](images/power256.png)
   
-# Implementation
+We can adjust the values of our resulting terrain to make full use of the range of shades between white and black:
 
-The implementation is designed to minimise Java memory usage and garbage collection. 
-1. The only part of the mesh held in memory are the x, y and z (elevation) coordinates of each point. We can work out where the edges and triangles are as the mesh has a predictable pattern.  
-2. Where possible (and practical) a single copy of an object is mutated instead of creating a new object. In particular, the EdgeIterator and TriangleIterator that iterate over the edges or triangles of a mesh repeatedly return the same object with changed values. 
+![power256full.png](images/power256full.png)
+
+We can make anything below a certain point blue to simulate sea. This results in a plausible coastline:
+
+![power256sea.png](images/power256sea.png)
+
+Finally, the motivation for this algorithm was to generate realistic rivers. We add rivers by placing a drop of water on each cell and following its path to the edge (always moving to its lowest neighbour). Cells with the most water passing over them are highlighted blue:
+
+![power512.png](images/power512.png)
+ 
+Indeed, we end up with plausible rivers! 

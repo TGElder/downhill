@@ -113,42 +113,77 @@ public class App {
 
     mesh = splitter.split(mesh, rng);
     mesh = splitter.split(mesh, rng);
-    
+
     Image image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power4");
-    image.setColor(Color.RED);
-    
-    for (int x = 4; x < 6; x++) {
-      for (int y = 2; y < 4; y++) {
-        drawBox(image, (imageSize * x) / 8, (imageSize * y) / 8, imageSize / 8);
-      }
-    }
-    
-    image.save("images/power4boxes1");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
-    image.setColor(Color.RED);
-    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
-    image.save("images/power4boxes2");
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 4, Color.WHITE);
+    image.save("images/oneCell");
+
+    outlineCell(image, 8, 1, 4, Color.BLUE);
+    outlineCell(image, 8, 2, 3, Color.BLUE);
+    outlineCell(image, 8, 3, 4, Color.WHITE);
+    outlineCell(image, 8, 2, 5, Color.WHITE);    
+    image.save("images/neighbours");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
-    image.setColor(Color.RED);
-    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
-    drawBox(image, (imageSize * 4) / 8, (imageSize * 0) / 8, imageSize / 4);
-    drawBox(image, (imageSize * 2) / 8, (imageSize * 2) / 8, imageSize / 4);
-    image.save("images/power4boxes3");
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 4, 1, 2, Color.WHITE);
+    image.save("images/parent");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
-    image.setColor(Color.RED);
-    drawBox(image, (imageSize * 4) / 8, (imageSize * 2) / 8, imageSize / 8);
-    drawBox(image, (imageSize * 4) / 8, (imageSize * 1) / 8, imageSize / 8);
-    drawBox(image, (imageSize * 3) / 8, (imageSize * 2) / 8, imageSize / 8);
-    image.save("images/power4boxes4");
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 4, Color.WHITE);
+    outlineCell(image, 4, 1, 1, Color.BLUE);
+    outlineCell(image, 4, 0, 2, Color.BLUE);
+    outlineCell(image, 4, 1, 2, Color.WHITE);
+    image.save("images/neighboursParents");
     
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 4, Color.WHITE);
+    outlineCell(image, 8, 2, 5, Color.WHITE);
+    outlineCell(image, 8, 3, 4, Color.WHITE);
+    outlineCell(image, 8, 3, 5, Color.WHITE);
+    image.save("images/grid");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 4, Color.ORANGE);
+    outlineCell(image, 8, 2, 5, Color.RED);
+    outlineCell(image, 8, 3, 4, Color.YELLOW);
+    outlineCell(image, 8, 3, 5, Color.ORANGE);
+    image.save("images/gridColoured");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 5, Color.RED);    
+    outlineCell(image, 8, 1, 5, Color.BLUE);
+    outlineCell(image, 8, 2, 6, Color.BLUE);
+    image.save("images/case1");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 2, 4, Color.ORANGE);    
+    outlineCell(image, 8, 1, 4, Color.BLUE);    
+    image.save("images/case2a");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 3, 5, Color.ORANGE);    
+    outlineCell(image, 8, 3, 6, Color.BLUE);    
+    image.save("images/case2b");
+    
+    image = new AWTImage(imageSize, imageSize);
+    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    outlineCell(image, 8, 3, 4, Color.YELLOW);
+    outlineCell(image, 8, 2, 4, Color.ORANGE);
+    outlineCell(image, 8, 3, 5, Color.ORANGE);
+    image.save("images/case3");
+  
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
@@ -200,12 +235,18 @@ public class App {
     
   }
   
-  private static void drawBox(Image image, int x, int y, int size) {
-    image.drawLine(x, y, x + size, y);
-    image.drawLine(x + size, y, x + size, y + size);
-    image.drawLine(x + size, y + size, x, y + size);
-    image.drawLine(x, y + size, x, y);
+  private static void outlineCell(Image image, int grid, int x, int y, Color color) {
+    image.setColor(color);
+    drawBox(image, (image.getWidth() * x) / grid, (image.getHeight() * y) / grid, image.getWidth() / grid);
   }
+  
+  private static void drawBox(Image image, int x, int y, int size) {
+    image.drawLine(x, y, x + size - 1, y);
+    image.drawLine(x + size - 1, y, x + size - 1, y + size - 1);
+    image.drawLine(x + size - 1, y + size - 1, x, y + size - 1);
+    image.drawLine(x, y + size - 1, x, y);
+  }
+
   
   private static void generateTerrain(
       int seed,  
@@ -219,7 +260,7 @@ public class App {
 
     ZRenderer zRenderer = new ZRenderer();
     
-    MeshSplitter splitter = new MeshSplitter(0.05, 0.95);
+    MeshSplitter splitter = new MeshSplitter(0.00, 0.95);
     RNG rng = new RandomRNG(seed);
     
     int size = (int)(Math.pow(2, power));
