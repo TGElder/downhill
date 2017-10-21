@@ -1,8 +1,8 @@
-package com.tgelder.downhill.mesh;
+package com.tgelder.downhill.terrain;
 
-public class FlowComputer {
+class FlowComputer {
   
-  public static int[][] getFlow(Mesh mesh, short[][] downhill) {
+  static int[][] getFlow(Mesh mesh, short[][] downhill) {
     int[][] flow = new int[mesh.getWidth()][mesh.getWidth()];
     
     mesh.iterate((x, y) -> computeFlow(mesh, downhill, flow, x, y));
@@ -16,9 +16,6 @@ public class FlowComputer {
 
       flow[x][y] ++;
       computeFlow(mesh, downhill, flow, x + Mesh.dx[d], y + Mesh.dy[d]);
-    }
-    else {
-      return;
     }
   }
 

@@ -1,29 +1,17 @@
-package com.tgelder.downhill;
-
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+package com.tgelder.downhill.terrain;
 
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
-import com.tgelder.downhill.mesh.DownhillComputer;
-import com.tgelder.downhill.mesh.DownhillException;
-import com.tgelder.downhill.mesh.FlowComputer;
-import com.tgelder.downhill.mesh.Mesh;
-import com.tgelder.downhill.mesh.MeshSplitter;
 import com.tgelder.downhill.renderer.FlowRenderer;
-import com.tgelder.downhill.renderer.ZRenderer;
+import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import org.apache.commons.cli.*;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
   
@@ -109,17 +97,17 @@ public class App {
 
     MeshSplitter splitter = new MeshSplitter(0.05, 0.95);
     RNG rng = new RandomRNG(19);
-    ZRenderer zRenderer = new ZRenderer();
+    HeightRenderer zRenderer = new HeightRenderer();
 
     mesh = splitter.split(mesh, rng);
     mesh = splitter.split(mesh, rng);
 
     Image image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power4");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
     image.save("images/oneCell");
 
@@ -130,12 +118,12 @@ public class App {
     image.save("images/neighbours");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 4, 1, 2, Color.WHITE);
     image.save("images/parent");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
     outlineCell(image, 4, 1, 1, Color.BLUE);
     outlineCell(image, 4, 0, 2, Color.BLUE);
@@ -143,7 +131,7 @@ public class App {
     image.save("images/neighboursParents");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
     outlineCell(image, 8, 2, 5, Color.WHITE);
     outlineCell(image, 8, 3, 4, Color.WHITE);
@@ -151,7 +139,7 @@ public class App {
     image.save("images/grid");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.ORANGE);
     outlineCell(image, 8, 2, 5, Color.RED);
     outlineCell(image, 8, 3, 4, Color.YELLOW);
@@ -159,26 +147,26 @@ public class App {
     image.save("images/gridColoured");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 5, Color.RED);    
     outlineCell(image, 8, 1, 5, Color.BLUE);
     outlineCell(image, 8, 2, 6, Color.BLUE);
     image.save("images/case1");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.ORANGE);    
     outlineCell(image, 8, 1, 4, Color.BLUE);    
     image.save("images/case2a");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 3, 5, Color.ORANGE);    
     outlineCell(image, 8, 3, 6, Color.BLUE);    
     image.save("images/case2b");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 3, 4, Color.YELLOW);
     outlineCell(image, 8, 2, 4, Color.ORANGE);
     outlineCell(image, 8, 3, 5, Color.ORANGE);
@@ -186,40 +174,40 @@ public class App {
   
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power8");
 
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power16");
     
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power32");
     
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power64");
     
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power128");
     
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);    
+    zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power256");
     
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, mesh.getMinZ(), mesh.getMaxZ(), image);    
+    zRenderer.render(mesh.getZ(), mesh.getMinZ(), mesh.getMaxZ(), image);
     image.save("images/power256full");
 
     image = new AWTImage(imageSize, imageSize);
-    zRenderer.render(mesh, mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);    
+    zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
     image.save("images/power256sea");
         
     new FlowRenderer(256).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
@@ -228,7 +216,7 @@ public class App {
     mesh = splitter.split(mesh, rng);
     
     image = new AWTImage(512, 512);
-    zRenderer.render(mesh, mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
+    zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
     new FlowRenderer(512).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
     image.save("images/power512");
 
@@ -255,27 +243,18 @@ public class App {
       int rivers, 
       String destination) throws IOException, DownhillException {
     
-    Mesh mesh = new Mesh(1);
-    mesh.setZ(Mesh.MAX_VALUE);
+    Terrain terrain = new Terrain(seed, power);
 
-    ZRenderer zRenderer = new ZRenderer();
-    
-    MeshSplitter splitter = new MeshSplitter(0.00, 0.95);
-    RNG rng = new RandomRNG(seed);
-    
-    int size = (int)(Math.pow(2, power));
-    
-    for (int i=0; i<power; i++) {
-      mesh = splitter.split(mesh, rng);
-    }
-    
+    HeightRenderer zRenderer = new HeightRenderer();
     double zRendererSeaLevel = Mesh.MIN_VALUE * (1 - seaLevel) + Mesh.MAX_VALUE * seaLevel;
-    
+
+    int size = (int)(Math.pow(2, power));
+
     Image image = new AWTImage(size, size);
-    zRenderer.render(mesh, zRendererSeaLevel, mesh.getMaxZ(), image);
+    zRenderer.render(terrain.getHeights(), zRendererSeaLevel, terrain.getMaxHeight(), image);
     FlowRenderer flowRenderer = new FlowRenderer(rivers);
-    flowRenderer.render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
-    image.save(String.format("%sseed%s_power%s_seaLevel%s_rivers%s", 
+    flowRenderer.render(terrain.getFlow(), image);
+    image.save(String.format("%sseed%s_power%s_seaLevel%s_rivers%s",
         destination, seed, power, seaLevel, rivers));
   }
 

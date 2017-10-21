@@ -1,8 +1,8 @@
-package com.tgelder.downhill.mesh;
+package com.tgelder.downhill.terrain;
 
-public class DownhillComputer {
+class DownhillComputer {
     
-  public static short[][] getDownhill(Mesh mesh) throws DownhillException {
+  static short[][] getDownhill(Mesh mesh) throws DownhillException {
     short[][] out = new short[mesh.getWidth()][mesh.getWidth()];
     
     mesh.iterateWithThrows((x, y) -> out[x][y] = getDownhill(mesh, x, y));
@@ -10,7 +10,7 @@ public class DownhillComputer {
     return out;
   }
   
-  private static short getDownhill(Mesh mesh, int x, int y) throws DownhillException {     
+  private static short getDownhill(Mesh mesh, int x, int y) throws DownhillException {
     short out = -1;
     double minZ = mesh.getZ(x, y);
     

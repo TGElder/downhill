@@ -1,25 +1,24 @@
 package com.tgelder.downhill.renderer;
 
-import java.awt.Color;
-
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.Image;
-import com.tgelder.downhill.mesh.Mesh;
 
-public class ZRenderer {
+import java.awt.*;
+
+public class HeightRenderer {
 
   private final Color [] colors = new Color[256];
   
-  public ZRenderer() {
+  public HeightRenderer() {
     for (int i = 0; i < 256; i++) {
       colors[i] = new Color(i, i, i);
     }
   }
   
-  public void render(Mesh mesh, double min, double max, Image image) {
+  public void render(double[][] heights, double min, double max, Image image) {
 
-    Scale xScale = new Scale(0, image.getWidth(), 0, mesh.getWidth());
-    Scale yScale = new Scale(0, image.getHeight(), 0, mesh.getWidth());
+    Scale xScale = new Scale(0, image.getWidth(), 0, heights.length);
+    Scale yScale = new Scale(0, image.getHeight(), 0, heights[0].length);
     Scale zScale = new Scale(min, max, 0, 255);
     
     for (int x = 0; x < image.getWidth(); x++) {
@@ -28,7 +27,7 @@ public class ZRenderer {
         int mx = (int) xScale.scale(x);
         int my = (int) yScale.scale(y);
         
-        int color = (int) (zScale.scale(mesh.getZ(mx, my)));
+        int color = (int) (zScale.scale(heights[mx][my]));
                 
         if (color < 0) {
           image.setColor(Color.BLUE);

@@ -1,4 +1,4 @@
-package com.tgelder.downhill.mesh;
+package com.tgelder.downhill.terrain;
 
 import static org.junit.Assert.assertEquals;
 
