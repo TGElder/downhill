@@ -251,11 +251,20 @@ public class App {
     int size = (int)(Math.pow(2, power));
 
     Image image = new AWTImage(size, size);
-    zRenderer.render(terrain.getHeights(), zRendererSeaLevel, terrain.getMaxHeight(), image);
+    zRenderer.render(terrain.getAltitudes(), zRendererSeaLevel, terrain.getMaxHeight(), image);
     FlowRenderer flowRenderer = new FlowRenderer(rivers);
     flowRenderer.render(terrain.getFlow(), image);
     image.save(String.format("%sseed%s_power%s_seaLevel%s_rivers%s",
         destination, seed, power, seaLevel, rivers));
+
+    image = new AWTImage(size, size);
+    HeightRenderer slopeRenderer = new HeightRenderer();
+    slopeRenderer.render(terrain.getSlope(3000), Math.PI / 2.0, 0, image);
+    flowRenderer = new FlowRenderer(rivers);
+    flowRenderer.render(terrain.getFlow(), image);
+    image.save(String.format("%sseed%s_power%s_seaLevel%s_rivers%s_slopes",
+            destination, seed, power, seaLevel, rivers));
+
   }
 
 }

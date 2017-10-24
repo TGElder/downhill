@@ -12,7 +12,7 @@ class SlopeComputer {
 
   private static double getSlope(Mesh mesh, int x, int y) {
 
-    double out = 0;
+    double out = Math.PI / 2;
 
     for (int n = 0; n < Mesh.dx.length; n++) {
 

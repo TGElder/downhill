@@ -36,6 +36,7 @@ public class HeightRenderer {
           image.setColor(colors[color]);
         }
 
+
         image.drawPoint(x, y);
       }
     }

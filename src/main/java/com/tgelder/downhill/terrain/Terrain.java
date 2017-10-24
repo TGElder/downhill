@@ -1,5 +1,6 @@
 package com.tgelder.downhill.terrain;
 
+import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ public class Terrain {
   private Mesh mesh;
   private short[][] downhill;
   private int[][] flow;
+  private double[][] slope;
 
-  public double[][] getHeights() {
+  public double[][] getAltitudes() {
     return getMesh().getZ();
   }
 
@@ -46,6 +48,14 @@ public class Terrain {
       flow = FlowComputer.getFlow(getMesh(), getDownhill());
     }
     return flow;
+  }
+
+  public double[][] getSlope(double highestAltitude) {
+    if (slope == null) {
+      slope = SlopeComputer.getSlope(
+              MeshZScaler.scale(mesh, new Scale(mesh.getMinZ(), mesh.getMaxZ(), 0, highestAltitude)));
+    }
+    return slope;
   }
 
   public double getMinHeight() {
