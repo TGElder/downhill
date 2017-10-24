@@ -23,7 +23,7 @@ public class Terrain {
       mesh = new Mesh(1);
       mesh.setZ(Mesh.MAX_VALUE);
 
-      MeshSplitter splitter = new MeshSplitter(0.00, 0.95);
+      MeshSplitter splitter = new MeshSplitter(0.01, 0.95);
       RNG rng = new RandomRNG(seed);
 
       for (int i=0; i<power; i++) {

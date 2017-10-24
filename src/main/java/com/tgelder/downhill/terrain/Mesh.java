@@ -53,7 +53,7 @@ class Mesh {
   }
  
   double getMinZ() {
-    double out = Mesh.MIN_VALUE;
+    double out = Mesh.MAX_VALUE;
     for (int x=0; x<width; x++) {
       for (int y=0; y<width; y++) {
         out = Math.min(out, getZ(x, y));
