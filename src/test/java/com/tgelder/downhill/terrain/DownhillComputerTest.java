@@ -1,11 +1,10 @@
 package com.tgelder.downhill.terrain;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class DownhillComputerTest {
  
@@ -34,8 +33,8 @@ public class DownhillComputerTest {
     
     MeshSplitter splitter = new MeshSplitter(0.1, 0.9);
     RNG rng = new RandomRNG(1986);
-    
-    for (int i = 0; i < 13; i++) {
+
+    for (int i = 0; i < 12; i++) {
       mesh = splitter.split(mesh, rng);
       DownhillComputer.getDownhill(mesh);
     }

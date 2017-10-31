@@ -10,60 +10,69 @@ public class Terrain {
 
   private final int seed;
   private final int power;
+  private final double maxAltitude;
 
-  private Mesh mesh;
+  private Mesh rawMesh;
+  private Mesh scaledMesh;
   private short[][] downhill;
   private int[][] flow;
   private double[][] slope;
 
-  public double[][] getAltitudes() {
-    return getMesh().getZ();
-  }
-
-  private Mesh getMesh() {
-    if (mesh == null) {
-      mesh = new Mesh(1);
-      mesh.setZ(Mesh.MAX_VALUE);
+  private Mesh getRawMesh() {
+    if (rawMesh == null) {
+      rawMesh = new Mesh(1);
+      rawMesh.setZ(Mesh.MAX_VALUE);
 
       MeshSplitter splitter = new MeshSplitter(0.01, 0.95);
       RNG rng = new RandomRNG(seed);
 
       for (int i=0; i<power; i++) {
-        mesh = splitter.split(mesh, rng);
+        rawMesh = splitter.split(rawMesh, rng);
       }
     }
 
-    return mesh;
+    return rawMesh;
+  }
+
+  private double[][] getRawAltitudes() {
+    return getRawMesh().getZ();
+  }
+
+  private Mesh getScaledMesh() {
+    if (scaledMesh == null) {
+      Mesh mesh = getRawMesh();
+      scaledMesh = MeshZScaler.scale(mesh, new Scale(mesh.getMinZ(), mesh.getMaxZ(), 0, maxAltitude));
+    }
+    return scaledMesh;
+  }
+
+  public double[][] getAltitudes() {
+    return getScaledMesh().getZ();
   }
 
   public short[][] getDownhill() throws DownhillException {
     if (downhill == null) {
-      downhill = DownhillComputer.getDownhill(getMesh());
+      downhill = DownhillComputer.getDownhill(getRawMesh());
     }
     return downhill;
   }
 
   public int[][] getFlow() throws DownhillException {
     if (flow == null) {
-      flow = FlowComputer.getFlow(getMesh(), getDownhill());
+      flow = FlowComputer.getFlow(getRawMesh(), getDownhill());
     }
     return flow;
   }
 
-  public double[][] getSlope(double highestAltitude) {
+  public double[][] getSlope() {
     if (slope == null) {
-      slope = SlopeComputer.getSlope(
-              MeshZScaler.scale(mesh, new Scale(mesh.getMinZ(), mesh.getMaxZ(), 0, highestAltitude)));
+      slope = SlopeComputer.getSlope(getScaledMesh());
     }
     return slope;
   }
 
-  public double getMinHeight() {
-    return getMesh().getMinZ();
-  }
-
-  public double getMaxHeight() {
-    return getMesh().getMaxZ();
+  public boolean inBounds(int x, int y) {
+    return rawMesh.inBounds(x, y);
   }
 
 }
