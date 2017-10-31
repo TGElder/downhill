@@ -3,13 +3,17 @@ package com.tgelder.downhill.terrain;
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Terrain {
 
+  @Getter
   private final int seed;
+  @Getter
   private final int power;
+  @Getter
   private final double maxAltitude;
 
   private Mesh rawMesh;
@@ -73,6 +77,10 @@ public class Terrain {
 
   public boolean inBounds(int x, int y) {
     return rawMesh.inBounds(x, y);
+  }
+
+  public int getWidth() {
+    return getScaledMesh().getWidth();
   }
 
 }
