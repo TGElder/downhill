@@ -16,7 +16,7 @@ public class SlopeComputerTest {
 
     double[][] actual = SlopeComputer.getSlope(mesh);
 
-    assertEquals(1.10715, actual[0][0], TestUtils.PRECISION);
+    assertEquals(2, actual[0][0], TestUtils.PRECISION);
   }
 
 
@@ -28,7 +28,7 @@ public class SlopeComputerTest {
 
     double[][] actual = SlopeComputer.getSlope(mesh);
 
-    assertEquals(0.95532, actual[0][0], TestUtils.PRECISION);
+    assertEquals(1.41421, actual[0][0], TestUtils.PRECISION);
   }
 
 
@@ -50,7 +50,7 @@ public class SlopeComputerTest {
     mesh.setZ(values);
 
     double[][] actual = SlopeComputer.getSlope(mesh);
-    double[][] expected = {{0.61548, 0.78540, 0.61548}, {0.78540, 0.78540, 0.78540}, {0.61548, 0.78540, 0.61548}};
+    double[][] expected = {{0.70711, 1, 0.70711}, {1, 1, 1}, {0.70711, 1, 0.70711}};
 
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {

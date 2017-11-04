@@ -37,7 +37,7 @@ class SlopeComputer {
     double bz = mesh.getZ(bx, by);
     double rise = Math.abs(az - bz);
 
-    return Math.atan(rise / run);
+    return rise / run;
   }
 
   private static double getDistance(int ax, int ay, int bx, int by) {
