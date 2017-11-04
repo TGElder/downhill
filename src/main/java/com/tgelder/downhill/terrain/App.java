@@ -2,7 +2,6 @@ package com.tgelder.downhill.terrain;
 
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
-import com.tgelder.downhill.renderer.ContourRenderer;
 import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
@@ -264,10 +263,6 @@ public class App {
     flowRenderer.render(terrain.getFlow(), image);
     image.save(String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
             destination, seed, power, seaLevel, maxAltitude, rivers));
-
-    image = new AWTImage(size, size);
-    ContourRenderer.render(terrain.getAltitudes(), 250, 0, 3000, image);
-    image.save("contours");
   }
 
 }
