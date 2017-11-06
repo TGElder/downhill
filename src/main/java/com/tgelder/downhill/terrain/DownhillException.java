@@ -1,6 +1,6 @@
 package com.tgelder.downhill.terrain;
 
-class DownhillException extends Exception {
+public class DownhillException extends Exception {
   
   DownhillException(String message) {
     super(message);
