@@ -1,5 +1,5 @@
 # downhill
-This repository contains an implementation of an algorithm for randomly generating terrain that has a downhill path from any point to the edge of the map. We call this the **downhill property**. This property is useful for generating realistic rivers. It is common for other terrain generation algorithms end up with 'bowls' in the landscape that make it difficult to add realistic rivers.   
+This repository contains an implementation of an algorithm for randomly generating terrain that has a downhill path from any point to the edge of the map. We call this the **downhill property**. This property is useful for generating realistic rivers. It is common for other terrain generation algorithms to end up with 'bowls' in the landscape that make it difficult to add realistic rivers.   
 
 ## The Algorithm
 
