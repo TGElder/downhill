@@ -6,76 +6,79 @@ import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import com.tgelder.downhill.writer.HeightWriter;
 import org.apache.commons.cli.*;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class App {
   
   @SuppressWarnings("static-access")
   public static void main(String [] args) throws IOException, DownhillException, ParseException {
-        
+
     List<Option> options = new ArrayList<> ();
 
     options.add(
-            Option.builder("seed")
-                    .desc("Random seed.")
-                    .hasArg()
-                    .argName("seed")
-                    .build());
+        Option.builder("seed")
+            .desc("Random seed.")
+            .hasArg()
+            .argName("seed")
+            .build());
 
     options.add(
-            Option.builder("power")
-                    .desc("Output terrain will have width 2^power.")
-                    .hasArg()
-                    .argName("power")
-                    .build());
+        Option.builder("power")
+            .desc("Output terrain will have width 2^power.")
+            .hasArg()
+            .argName("power")
+            .build());
 
     options.add(
-            Option.builder("seaLevel")
-                    .desc("Everything below this altitude will be coloured blue in the output image.")
-                    .hasArg()
-                    .argName("altitude")
-                    .build());
+        Option.builder("seaLevel")
+            .desc("Everything below this altitude will be coloured blue in the output image.")
+            .hasArg()
+            .argName("altitude")
+            .build());
 
     options.add(
-            Option.builder("maxAltitude")
-                    .desc("Altitude of highest point (altitude of lowest point is always zero).")
-                    .hasArg()
-                    .argName("altitude")
-                    .build());
+        Option.builder("maxAltitude")
+            .desc("Altitude of highest point (altitude of lowest point is always zero).")
+            .hasArg()
+            .argName("altitude")
+            .build());
 
     options.add(
-            Option.builder("rivers")
-                    .desc("Every cell with flow over this threshold will be coloured blue in the output image.")
-                    .hasArg()
-                    .argName("threshold")
-                    .build());
+        Option.builder("rivers")
+            .desc("Every cell with flow over this threshold will be coloured blue in the output image.")
+            .hasArg()
+            .argName("threshold")
+            .build());
 
     options.add(
-            Option.builder("destination")
-                    .desc("Destination for output.")
-                    .hasArg()
-                    .argName("path")
-                    .build());
-    
-    
+        Option.builder("destination")
+            .desc("Destination for output.")
+            .hasArg()
+            .argName("path")
+            .build());
+
+
     Options commandOptions = new Options();
     Options helpOptions = new Options();
-    
+
     for (Option option : options) {
       commandOptions.addOption(option);
       helpOptions.addOption(option);
     }
-    
+
     commandOptions.addOption("generateImagesForReadMe", false, ""); // hidden option, not in helpOptions
-    
+
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("downhill", helpOptions);
-    
+
     CommandLineParser parser = new DefaultParser();
     CommandLine line = parser.parse(commandOptions, args);
 
@@ -87,12 +90,12 @@ public class App {
           Integer.parseInt(line.getOptionValue("seed", "0")),
           Integer.parseInt(line.getOptionValue("power", "10")),
           Double.parseDouble(line.getOptionValue("seaLevel", "0.25")),
-              Double.parseDouble(line.getOptionValue("maxAltitude", "3000")),
+          Double.parseDouble(line.getOptionValue("maxAltitude", "3000")),
           Integer.parseInt(line.getOptionValue("rivers", "2000")),
           line.getOptionValue("destination", ""));
-     
+
     }
-     
+
   }
   
   private static void generateImagesForReadMe() throws IOException, DownhillException {
@@ -261,8 +264,10 @@ public class App {
     zRenderer.render(terrain.getAltitudes(), seaLevel, maxAltitude, image);
     FlowRenderer flowRenderer = new FlowRenderer(rivers);
     flowRenderer.render(terrain.getFlow(), image);
-    image.save(String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
-            destination, seed, power, seaLevel, maxAltitude, rivers));
+    String fileName = String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
+                                    destination, seed, power, seaLevel, maxAltitude, rivers);
+    image.save(fileName);
+    HeightWriter.write(terrain.getAltitudes(), String.format("%s_heights", fileName));
   }
 
 }
