@@ -6,22 +6,21 @@ import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import com.tgelder.downhill.writer.FlowWriter;
 import com.tgelder.downhill.writer.HeightWriter;
 import org.apache.commons.cli.*;
 
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class App {
-  
-  @SuppressWarnings("static-access")
-  public static void main(String [] args) throws IOException, DownhillException, ParseException {
 
-    List<Option> options = new ArrayList<> ();
+  @SuppressWarnings("static-access")
+  public static void main(String[] args) throws IOException, DownhillException, ParseException {
+
+    List<Option> options = new ArrayList<>();
 
     options.add(
         Option.builder("seed")
@@ -84,8 +83,7 @@ public class App {
 
     if (line.hasOption("generateImagesForReadMe")) {
       generateImagesForReadMe();
-    }
-    else {
+    } else {
       generateTerrain(
           Integer.parseInt(line.getOptionValue("seed", "0")),
           Integer.parseInt(line.getOptionValue("power", "10")),
@@ -97,11 +95,11 @@ public class App {
     }
 
   }
-  
+
   private static void generateImagesForReadMe() throws IOException, DownhillException {
-    
+
     int imageSize = 256;
-    
+
     Mesh mesh = new Mesh(1);
     mesh.setZ(Mesh.MAX_VALUE);
 
@@ -115,7 +113,7 @@ public class App {
     Image image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power4");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
@@ -124,14 +122,14 @@ public class App {
     outlineCell(image, 8, 1, 4, Color.BLUE);
     outlineCell(image, 8, 2, 3, Color.BLUE);
     outlineCell(image, 8, 3, 4, Color.WHITE);
-    outlineCell(image, 8, 2, 5, Color.WHITE);    
+    outlineCell(image, 8, 2, 5, Color.WHITE);
     image.save("images/neighbours");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 4, 1, 2, Color.WHITE);
     image.save("images/parent");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
@@ -139,7 +137,7 @@ public class App {
     outlineCell(image, 4, 0, 2, Color.BLUE);
     outlineCell(image, 4, 1, 2, Color.WHITE);
     image.save("images/neighboursParents");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.WHITE);
@@ -147,7 +145,7 @@ public class App {
     outlineCell(image, 8, 3, 4, Color.WHITE);
     outlineCell(image, 8, 3, 5, Color.WHITE);
     image.save("images/grid");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 2, 4, Color.ORANGE);
@@ -155,33 +153,33 @@ public class App {
     outlineCell(image, 8, 3, 4, Color.YELLOW);
     outlineCell(image, 8, 3, 5, Color.ORANGE);
     image.save("images/gridColoured");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
-    outlineCell(image, 8, 2, 5, Color.RED);    
+    outlineCell(image, 8, 2, 5, Color.RED);
     outlineCell(image, 8, 1, 5, Color.BLUE);
     outlineCell(image, 8, 2, 6, Color.BLUE);
     image.save("images/case1");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
-    outlineCell(image, 8, 2, 4, Color.ORANGE);    
-    outlineCell(image, 8, 1, 4, Color.BLUE);    
+    outlineCell(image, 8, 2, 4, Color.ORANGE);
+    outlineCell(image, 8, 1, 4, Color.BLUE);
     image.save("images/case2a");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
-    outlineCell(image, 8, 3, 5, Color.ORANGE);    
-    outlineCell(image, 8, 3, 6, Color.BLUE);    
+    outlineCell(image, 8, 3, 5, Color.ORANGE);
+    outlineCell(image, 8, 3, 6, Color.BLUE);
     image.save("images/case2b");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     outlineCell(image, 8, 3, 4, Color.YELLOW);
     outlineCell(image, 8, 2, 4, Color.ORANGE);
     outlineCell(image, 8, 3, 5, Color.ORANGE);
     image.save("images/case3");
-  
+
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
@@ -191,27 +189,27 @@ public class App {
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power16");
-    
+
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power32");
-    
+
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power64");
-    
+
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power128");
-    
+
     mesh = splitter.split(mesh, rng);
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), Mesh.MIN_VALUE, Mesh.MAX_VALUE, image);
     image.save("images/power256");
-    
+
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), mesh.getMinZ(), mesh.getMaxZ(), image);
     image.save("images/power256full");
@@ -219,25 +217,25 @@ public class App {
     image = new AWTImage(imageSize, imageSize);
     zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
     image.save("images/power256sea");
-        
+
     new FlowRenderer(256).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
     image.save("images/power256rivers");
-    
+
     mesh = splitter.split(mesh, rng);
-    
+
     image = new AWTImage(512, 512);
     zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
     new FlowRenderer(512).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
     image.save("images/power512");
 
-    
+
   }
-  
+
   private static void outlineCell(Image image, int grid, int x, int y, Color color) {
     image.setColor(color);
     drawBox(image, (image.getWidth() * x) / grid, (image.getHeight() * y) / grid, image.getWidth() / grid);
   }
-  
+
   private static void drawBox(Image image, int x, int y, int size) {
     image.drawLine(x, y, x + size - 1, y);
     image.drawLine(x + size - 1, y, x + size - 1, y + size - 1);
@@ -245,20 +243,20 @@ public class App {
     image.drawLine(x, y + size - 1, x, y);
   }
 
-  
+
   private static void generateTerrain(
-          int seed,
-          int power,
-          double seaLevel,
-          double maxAltitude,
-          int rivers,
-          String destination) throws IOException, DownhillException {
+      int seed,
+      int power,
+      double seaLevel,
+      double maxAltitude,
+      int rivers,
+      String destination) throws IOException, DownhillException {
 
     Terrain terrain = new Terrain(seed, power, maxAltitude);
 
     HeightRenderer zRenderer = new HeightRenderer();
 
-    int size = (int)(Math.pow(2, power));
+    int size = (int) (Math.pow(2, power));
 
     Image image = new AWTImage(size, size);
     zRenderer.render(terrain.getAltitudes(), seaLevel, maxAltitude, image);
@@ -268,6 +266,7 @@ public class App {
                                     destination, seed, power, seaLevel, maxAltitude, rivers);
     image.save(fileName);
     HeightWriter.write(terrain.getAltitudes(), String.format("%s_heights", fileName));
+    new FlowWriter(rivers).write(terrain, String.format("%s_rivers", fileName));
   }
 
 }

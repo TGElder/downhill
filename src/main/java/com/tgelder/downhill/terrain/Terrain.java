@@ -3,8 +3,11 @@ package com.tgelder.downhill.terrain;
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class Terrain {
@@ -81,6 +84,22 @@ public class Terrain {
 
   public int getWidth() {
     return getScaledMesh().getWidth();
+  }
+
+  public Optional<Point> getDownhill(int x, int y) throws DownhillException {
+    int nx = x + Mesh.dx[getDownhill()[x][y]];
+    int ny = y + Mesh.dy[getDownhill()[x][y]];
+    if (inBounds(nx, ny)) {
+      return Optional.of(new Point(nx, ny));
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  @AllArgsConstructor
+  public static class Point {
+    public final int x;
+    public final int y;
   }
 
 }
