@@ -265,7 +265,7 @@ public class App {
     String fileName = String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
                                     destination, seed, power, seaLevel, maxAltitude, rivers);
     image.save(fileName);
-    HeightWriter.write(terrain.getAltitudes(), String.format("%s_heights", fileName));
+    HeightWriter.write(terrain, String.format("%s_heights", fileName));
     new FlowWriter(rivers).write(terrain, String.format("%s_rivers", fileName));
   }
 

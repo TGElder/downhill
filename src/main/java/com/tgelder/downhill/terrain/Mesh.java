@@ -1,6 +1,15 @@
 package com.tgelder.downhill.terrain;
 
+import com.tgelder.downhill.geometry.Scale;
+import com.tgelder.downhill.rngs.RNG;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class Mesh {
 
@@ -86,6 +95,84 @@ class Mesh {
         operation.operate(x, y);
       }
     }
+  }
+
+  List<Split> splitCell(int x, int y, RNG rng, Scale scale) {
+
+    List<SplitRule> splitRules = new ArrayList<>();
+
+    for (int offsetX = 0; offsetX < 2; offsetX++) {
+      for (int offsetY = 0; offsetY < 2; offsetY++) {
+        int xNeighbour = (offsetX * 2) - 1;
+        int yNeighbour = (offsetY * 2) - 1;
+        double xNeighbourZ = getZ(x + xNeighbour, y, Mesh.MIN_VALUE);
+        double yNeighbourZ = getZ(x, y + yNeighbour, Mesh.MIN_VALUE);
+        double z = getZ(x, y);
+
+        double minZ = Math.min(Math.min(xNeighbourZ, yNeighbourZ), z);
+
+        splitRules.add(new SplitRule(offsetX, offsetY, minZ, z));
+
+      }
+    }
+
+    List<SplitRule> sorted = splitRules.stream()
+        .sorted(Comparator.comparingDouble(sr -> sr.minZ))
+        .collect(Collectors.toList());
+
+    List<Split> out = new ArrayList<>();
+
+//    System.out.println("Starting rules = " + sorted);
+
+    for (SplitRule rule : sorted) {
+
+      //System.out.println(rule.minZ);
+
+      Split split = rule.generateSplit(rng, scale);
+
+
+      out.add(split);
+
+      for (SplitRule other : sorted) {
+        if (other != rule) {
+          if (other.offsetX == rule.offsetX || other.offsetY == rule.offsetY) {
+            other.minZ = Math.min(other.minZ, split.z);
+
+          }
+        }
+      }
+    }
+
+//    System.out.println("Final rules = " + sorted);
+//    System.out.println("Final splits = " + out);
+
+    return out;
+
+  }
+
+  @AllArgsConstructor
+  @Data
+  private static class SplitRule {
+    final int offsetX;
+    final int offsetY;
+    double minZ;
+    final double maxZ;
+
+    private Split generateSplit(RNG rng, Scale scale) {
+      double r = rng.getNext();
+      double range = (maxZ - minZ);
+      double z = minZ + range * scale.scale(r);
+
+      return new Split(offsetX, offsetY, z);
+    }
+  }
+
+  @AllArgsConstructor
+  @Data
+  static class Split {
+    final int offsetX;
+    final int offsetY;
+    final double z;
   }
   
   

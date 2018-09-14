@@ -34,6 +34,7 @@ public class Terrain {
       RNG rng = new RandomRNG(seed);
 
       for (int i=0; i<power; i++) {
+        System.out.println(i);
         rawMesh = splitter.split(rawMesh, rng);
       }
     }
