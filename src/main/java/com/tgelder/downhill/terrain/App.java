@@ -218,14 +218,14 @@ public class App {
     zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
     image.save("images/power256sea");
 
-    new FlowRenderer(256).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
+    new FlowRenderer(256).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh, Mesh.dx8, Mesh.dy8), Mesh.dx8, Mesh.dy8), image);
     image.save("images/power256rivers");
 
     mesh = splitter.split(mesh, rng);
 
     image = new AWTImage(512, 512);
     zRenderer.render(mesh.getZ(), mesh.getMinZ() * 0.8 + mesh.getMaxZ() * 0.2, mesh.getMaxZ(), image);
-    new FlowRenderer(512).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh)), image);
+    new FlowRenderer(512).render(FlowComputer.getFlow(mesh, DownhillComputer.getDownhill(mesh, Mesh.dx8, Mesh.dy8), Mesh.dx8, Mesh.dy8), image);
     image.save("images/power512");
 
 
@@ -261,7 +261,7 @@ public class App {
     Image image = new AWTImage(size, size);
     zRenderer.render(terrain.getAltitudes(), seaLevel, maxAltitude, image);
     FlowRenderer flowRenderer = new FlowRenderer(rivers);
-    flowRenderer.render(terrain.getFlow(), image);
+    //flowRenderer.render(terrain.getFlow(), image);
     String fileName = String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
                                     destination, seed, power, seaLevel, maxAltitude, rivers);
     image.save(fileName);

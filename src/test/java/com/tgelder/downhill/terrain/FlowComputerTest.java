@@ -7,13 +7,13 @@ import org.junit.Test;
 public class FlowComputerTest {
   
   @Test
-  public void testFlow() throws DownhillException {
+  public void testFlow() {
     Mesh mesh = new Mesh(4);
     mesh.setZ(1);
     
     short[][] downhill = { { 1, 0, 3, 2 }, { 2, 1, 2, 2 }, { 4, 2, 2, 2 }, { 6, 6, 6, 6 } };
     
-    int[][] actual = FlowComputer.getFlow(mesh, downhill);
+    int[][] actual = FlowComputer.getFlow(mesh, downhill, Mesh.dx8, Mesh.dy8);
     int[][] expected = { { 6, 1, 2, 1 }, { 1, 5, 2, 1 }, { 4, 3, 2, 1 }, { 5, 6, 7, 8 } };
     
     for (int y = 0; y < 4; y++) {

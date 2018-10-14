@@ -2,20 +2,20 @@ package com.tgelder.downhill.terrain;
 
 class DownhillComputer {
     
-  static short[][] getDownhill(Mesh mesh) throws DownhillException {
+  static short[][] getDownhill(Mesh mesh, short[] dx, short[] dy) throws DownhillException {
     short[][] out = new short[mesh.getWidth()][mesh.getWidth()];
     
-    mesh.iterateWithThrows((x, y) -> out[x][y] = getDownhill(mesh, x, y));
+    mesh.iterateWithThrows((x, y) -> out[x][y] = getDownhill(mesh, x, y, dx, dy));
     
     return out;
   }
   
-  private static short getDownhill(Mesh mesh, int x, int y) throws DownhillException {
+  private static short getDownhill(Mesh mesh, int x, int y, short[] dx, short[] dy) throws DownhillException {
     short out = -1;
     double minZ = mesh.getZ(x, y);
     
-    for (short d = 0; d < Mesh.dx.length; d++) {
-      double focusZ = mesh.getZ(x + Mesh.dx[d], y + Mesh.dy[d], 0);
+    for (short d = 0; d < dx.length; d++) {
+      double focusZ = mesh.getZ(x + dx[d], y + dy[d], 0);
       if (focusZ < minZ) {
         out = d;
         minZ = focusZ;
@@ -23,7 +23,7 @@ class DownhillComputer {
     }
     
     if (out == -1) {
-      throw new DownhillException("No downhill from "+x+", "+y);
+      throw new DownhillException("No downhill from "+x+", "+y+ " (z = " + minZ+ ")");
     }
     else {
       return out;

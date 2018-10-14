@@ -1,12 +1,17 @@
 package com.tgelder.downhill.terrain;
 
 import com.tgelder.downhill.geometry.Scale;
+import com.tgelder.downhill.image.AWTImage;
+import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -30,12 +35,34 @@ public class Terrain {
       rawMesh = new Mesh(1);
       rawMesh.setZ(Mesh.MAX_VALUE);
 
-      MeshSplitter splitter = new MeshSplitter(0.01, 0.95);
+      MeshSplitter splitter = new MeshSplitter(0.05, 0.5);
       RNG rng = new RandomRNG(seed);
 
       for (int i=0; i<power; i++) {
         System.out.println(i);
         rawMesh = splitter.split(rawMesh, rng);
+        int size = rawMesh.getWidth() * rawMesh.getWidth();
+
+        try {
+          downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4);
+          flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
+
+          rawMesh.iterateWithThrows((x, y) -> {
+
+            if (flow[x][y] > 1 && flow[x][y] > size / 4096) {
+              double factor = .85;
+              double after = rawMesh.getZ(x, y) * factor;
+              //System.out.println(String.format("%s, %s, %s, %s, %s", size, flow[x][y], before, factor, after));
+              rawMesh.setZ(x, y, after);
+            }
+
+          });
+
+
+        } catch (DownhillException e) {
+          throw new RuntimeException(e);
+        }
+
       }
     }
 
@@ -60,14 +87,14 @@ public class Terrain {
 
   public short[][] getDownhill() throws DownhillException {
     if (downhill == null) {
-      downhill = DownhillComputer.getDownhill(getRawMesh());
+      downhill = DownhillComputer.getDownhill(getRawMesh(), Mesh.dx8, Mesh.dy8);
     }
     return downhill;
   }
 
   public int[][] getFlow() throws DownhillException {
     if (flow == null) {
-      flow = FlowComputer.getFlow(getRawMesh(), getDownhill());
+      flow = FlowComputer.getFlow(getRawMesh(), getDownhill(), Mesh.dx8, Mesh.dy8);
     }
     return flow;
   }
@@ -79,7 +106,7 @@ public class Terrain {
     return slope;
   }
 
-  public boolean inBounds(int x, int y) {
+  private boolean inBounds(int x, int y) {
     return rawMesh.inBounds(x, y);
   }
 
@@ -88,8 +115,8 @@ public class Terrain {
   }
 
   public Optional<Point> getDownhill(int x, int y) throws DownhillException {
-    int nx = x + Mesh.dx[getDownhill()[x][y]];
-    int ny = y + Mesh.dy[getDownhill()[x][y]];
+    int nx = x + Mesh.dx8[getDownhill()[x][y]];
+    int ny = y + Mesh.dy8[getDownhill()[x][y]];
     if (inBounds(nx, ny)) {
       return Optional.of(new Point(nx, ny));
     } else {

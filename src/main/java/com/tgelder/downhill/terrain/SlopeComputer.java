@@ -14,10 +14,10 @@ class SlopeComputer {
 
     double out = 0;
 
-    for (int n = 0; n < Mesh.dx.length; n++) {
+    for (int n = 0; n < Mesh.dx8.length; n++) {
 
-      int dx = Mesh.dx[n];
-      int dy = Mesh.dy[n];
+      int dx = Mesh.dx8[n];
+      int dy = Mesh.dy8[n];
 
       if (dx != 0 || dy != 0) {
         if (mesh.inBounds(x + dx, y + dy)) {

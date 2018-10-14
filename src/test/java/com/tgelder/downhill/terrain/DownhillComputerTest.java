@@ -15,7 +15,7 @@ public class DownhillComputerTest {
     double[][] values = { { 53, 11, 13, 38 }, { 8, 50, 28, 33 }, { 10, 15, 18, 10 }, { 7, 13, 17, 16 } };
     mesh.setZ(values);
     
-    short[][] actual = DownhillComputer.getDownhill(mesh);
+    short[][] actual = DownhillComputer.getDownhill(mesh, Mesh.dx8, Mesh.dy8);
     short[][] expected = { { 0, 0, 0, 0 }, { 1, 2, 5, 5 }, { 1, 3, 6, 5 }, { 1, 3, 3, 3 } };
     
     for (int y = 0; y < 4; y++) {
@@ -36,7 +36,7 @@ public class DownhillComputerTest {
 
     for (int i = 0; i < 12; i++) {
       mesh = splitter.split(mesh, rng);
-      DownhillComputer.getDownhill(mesh);
+      DownhillComputer.getDownhill(mesh, Mesh.dx8, Mesh.dy8);
     }
    
   }

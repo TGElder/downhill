@@ -16,8 +16,11 @@ class Mesh {
   static final double MAX_VALUE = Double.MAX_VALUE;
   static final double MIN_VALUE = Double.MIN_VALUE;
     
-  static final short [] dx = {-1, -1, 0, 1, 1, 1, 0, -1};
-  static final short [] dy = {0, -1, -1, -1, 0, 1, 1, 1};
+  static final short [] dx8 = {-1, -1, 0, 1, 1, 1, 0, -1};
+  static final short [] dy8 = {0, -1, -1, -1, 0, 1, 1, 1};
+
+  static final short [] dx4 = {-1, 0, 1, 0};
+  static final short [] dy4 = {0, -1, 0, 1};
   
   @Getter
   private final int width;
