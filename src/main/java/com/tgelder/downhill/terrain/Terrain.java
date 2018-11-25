@@ -50,10 +50,12 @@ public class Terrain {
           rawMesh.iterateWithThrows((x, y) -> {
 
             if (flow[x][y] > 1 && flow[x][y] > size / 4096) {
-              double factor = .85;
-              double after = rawMesh.getZ(x, y) * factor;
-              //System.out.println(String.format("%s, %s, %s, %s, %s", size, flow[x][y], before, factor, after));
-              rawMesh.setZ(x, y, after);
+               double factor = ((size * 1.0 - flow[x][y]) / (size * 1.0));
+               factor = Math.floor(factor * 10.0) / 10.0;
+               double after = rawMesh.getZ(x, y) * factor;
+
+                //System.out.println(String.format("%s, %s, %s, %s", size, flow[x][y], factor, after));
+               rawMesh.setZ(x, y, after);
             }
 
           });
