@@ -27,7 +27,7 @@ public class Terrain {
   private Mesh rawMesh;
   private Mesh scaledMesh;
   private short[][] downhill;
-  private int[][] flow;
+  private int[][] flow = {{1}};
   private double[][] slope;
 
   private Mesh getRawMesh() {
@@ -35,33 +35,49 @@ public class Terrain {
       rawMesh = new Mesh(1);
       rawMesh.setZ(Mesh.MAX_VALUE);
 
-      MeshSplitter splitter = new MeshSplitter(0.05, 0.5);
+      double minSplit = 0.05;
+      double maxSplit = 0.5;
+      double splitRange = maxSplit - minSplit;
+
+      MeshSplitter splitter = new MeshSplitter(minSplit, maxSplit);
       RNG rng = new RandomRNG(seed);
+
 
       for (int i=0; i<power; i++) {
         System.out.println(i);
-        rawMesh = splitter.split(rawMesh, rng);
-        int size = rawMesh.getWidth() * rawMesh.getWidth();
+        double size = rawMesh.getWidth() * rawMesh.getWidth();
+        rawMesh = splitter.split(rawMesh, (x, y) -> {
+          double factor = Math.min(1.0, flow[x][y]/4.0);
+          double minRandom = (splitRange * (1.0 - factor)) + minSplit;
 
-        try {
-          downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4);
-          flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
-
-          rawMesh.iterateWithThrows((x, y) -> {
-
-            if (flow[x][y] > 1 && flow[x][y] > size / 4096) {
-              double factor = .85;
-              double after = rawMesh.getZ(x, y) * factor;
-              //System.out.println(String.format("%s, %s, %s, %s, %s", size, flow[x][y], before, factor, after));
-              rawMesh.setZ(x, y, after);
-            }
-
-          });
+          return (rng.getNext() * splitRange) + minRandom;
+        });
 
 
-        } catch (DownhillException e) {
+
+          try {
+            downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4);
+            flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
+
+//            rawMesh.iterateWithThrows((x, y) -> {
+//
+//
+//              if (flow[x][y] > 1 && flow[x][y] > size / 4096) {
+//                double factor = ((size * 1.0 - flow[x][y]) / (size * 1.0));
+//                factor = Math.floor(factor * 10.0) / 10.0;
+//                double after = rawMesh.getZ(x, y) * factor;
+//
+//                //System.out.println(String.format("%s, %s, %s, %s", size, flow[x][y], factor, after));
+//                rawMesh.setZ(x, y, after);
+//              }
+//
+//            });
+
+
+        } catch(DownhillException e){
           throw new RuntimeException(e);
         }
+
 
       }
     }

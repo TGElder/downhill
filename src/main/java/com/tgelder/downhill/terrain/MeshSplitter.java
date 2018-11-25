@@ -3,6 +3,8 @@ package com.tgelder.downhill.terrain;
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.rngs.RNG;
 
+import java.util.function.BiFunction;
+
 class MeshSplitter {
   
   private final Scale scale;
@@ -11,7 +13,7 @@ class MeshSplitter {
     scale = new Scale(0, 1, minSplit, maxSplit);
   }
 
-  Mesh split(Mesh in, RNG rng) {
+  Mesh split(Mesh in, BiFunction<Integer, Integer, Double> rng) {
     Mesh out = new Mesh(in.getWidth() * 2);
 
     in.iterate((x, y) -> in.splitCell(x, y, rng, scale)

@@ -22,8 +22,7 @@ public class MeshSplitterTest {
   public void testMaxValues() {
     MeshSplitter splitter = new MeshSplitter(1, 1);
     
-    double[] fixedRandom = {1};
-    Mesh split = splitter.split(mesh, new MockRNG(fixedRandom));
+    Mesh split = splitter.split(mesh, (x, y) -> 1.0);
     
     double[][] actual = split.getZ();
     
@@ -41,8 +40,7 @@ public class MeshSplitterTest {
   public void testMinValues() {
     MeshSplitter splitter = new MeshSplitter(0, 0);
     
-    double[] fixedRandom = {1};
-    Mesh split = splitter.split(mesh, new MockRNG(fixedRandom));
+    Mesh split = splitter.split(mesh, (x, y) -> 1.0);
     
     double[][] actual = split.getZ();
     

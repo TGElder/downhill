@@ -14,6 +14,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class App {
 
@@ -104,7 +105,8 @@ public class App {
     mesh.setZ(Mesh.MAX_VALUE);
 
     MeshSplitter splitter = new MeshSplitter(0.05, 0.95);
-    RNG rng = new RandomRNG(19);
+    RNG random = new RandomRNG(19);
+    BiFunction<Integer, Integer, Double> rng = (x, y) -> random.getNext();
     HeightRenderer zRenderer = new HeightRenderer();
 
     mesh = splitter.split(mesh, rng);

@@ -9,6 +9,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 class Mesh {
@@ -100,7 +101,7 @@ class Mesh {
     }
   }
 
-  List<Split> splitCell(int x, int y, RNG rng, Scale scale) {
+  List<Split> splitCell(int x, int y, BiFunction<Integer, Integer, Double> rng, Scale scale) {
 
     List<SplitRule> splitRules = new ArrayList<>();
 
@@ -131,7 +132,8 @@ class Mesh {
 
       //System.out.println(rule.minZ);
 
-      Split split = rule.generateSplit(rng, scale);
+      double r = rng.apply(x, y);
+      Split split = rule.generateSplit(r, scale);
 
 
       out.add(split);
@@ -161,8 +163,7 @@ class Mesh {
     double minZ;
     final double maxZ;
 
-    private Split generateSplit(RNG rng, Scale scale) {
-      double r = rng.getNext();
+    private Split generateSplit(double r, Scale scale) {
       double range = (maxZ - minZ);
       double z = minZ + range * scale.scale(r);
 
