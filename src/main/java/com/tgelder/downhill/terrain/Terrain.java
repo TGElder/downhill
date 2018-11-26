@@ -14,7 +14,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class Terrain {
 
   @Getter
@@ -24,19 +23,27 @@ public class Terrain {
   @Getter
   private final double maxAltitude;
 
+  private final RNG rng;
+
   private Mesh rawMesh;
   private Mesh scaledMesh;
   private short[][] downhill;
   private int[][] flow;
   private double[][] slope;
 
+  public Terrain(int seed, int power, double maxAltitude) {
+    this.seed = seed;
+    this.power = power;
+    this.maxAltitude = maxAltitude;
+    this.rng = new RandomRNG(seed);
+  }
+
   private Mesh getRawMesh() {
     if (rawMesh == null) {
       rawMesh = new Mesh(1);
       rawMesh.setZ(Mesh.MAX_VALUE);
 
-      MeshSplitter splitter = new MeshSplitter(0.01, 0.5);
-      RNG rng = new RandomRNG(seed);
+      MeshSplitter splitter = new MeshSplitter(0.05, 0.5);
 
       for (int i=0; i<power; i++) {
         System.out.println(i);
@@ -44,7 +51,7 @@ public class Terrain {
         int size = rawMesh.getWidth() * rawMesh.getWidth();
 
         try {
-          downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4);
+          downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4, rng);
           flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
 
           if (i < 99) {
@@ -93,7 +100,7 @@ public class Terrain {
 
   public short[][] getDownhill() throws DownhillException {
     if (downhill == null) {
-      downhill = DownhillComputer.getDownhill(getRawMesh(), Mesh.dx8, Mesh.dy8);
+      downhill = DownhillComputer.getDownhill(getRawMesh(), Mesh.dx8, Mesh.dy8, rng);
     }
     return downhill;
   }
