@@ -7,31 +7,40 @@ import lombok.AllArgsConstructor;
 import java.awt.*;
 import java.util.Arrays;
 
+@AllArgsConstructor
 public class FlowProbabilityRenderer {
 
-  private final Color [] colors = new Color[256];
+  private final float threshold;
 
-  public FlowProbabilityRenderer() {
-    for (int i = 0; i < 256; i++) {
-      colors[i] = new Color(i, i, i);
-    }
-  }
+
+//  private final Color [] colors = new Color[256];
+//
+//  public FlowProbabilityRenderer() {
+//    for (int i = 0; i < 256; i++) {
+//      colors[i] = new Color(i, i, i);
+//    }
+//  }
 
   public void render(double[][] flow, Image image) {
     final Scale xScale = new Scale(0, image.getWidth(), 0, flow.length);
     final Scale yScale = new Scale(0, image.getHeight(), 0, flow[0].length);
      
-    final double max = getMax(flow);
-    
+//    final double max = getMax(flow);
+
+    image.setColor(Color.BLUE);
+
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
         
         int mx = (int) xScale.scale(x);
         int my = (int) yScale.scale(y);
 
-        image.setColor(colors[(int)((flow[mx][my] * 255) / max)]);
+        if (flow[mx][my] > threshold) {
+          image.drawPoint(x, y);
+        }
 
-        image.drawPoint(x, y);
+//        image.setColor(colors[(int)((flow[mx][my] * 255) / max)]);
+
       }
     }
   }

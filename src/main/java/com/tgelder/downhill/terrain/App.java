@@ -264,14 +264,14 @@ public class App {
     //FlowRenderer flowRenderer = new FlowRenderer(rivers);
     //flowRenderer.render(terrain.getFlow(), image);
 
-    Image flowProbability = new AWTImage(size, size);
-    FlowProbabilityRenderer flowProbabilityRenderer = new FlowProbabilityRenderer();
-    flowProbabilityRenderer.render(terrain.getFlowProbability(0.0001), flowProbability);
+    //Image flowProbability = new AWTImage(size, size);
+    FlowProbabilityRenderer flowProbabilityRenderer = new FlowProbabilityRenderer(100);
+    flowProbabilityRenderer.render(terrain.getFlowProbability(), image);
 
     String fileName = String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
                                     destination, seed, power, seaLevel, maxAltitude, rivers);
     image.save(fileName);
-    flowProbability.save(String.format("%s_flowprobability", fileName));
+    //flowProbability.save(String.format("%s_flowprobability", fileName));
     HeightWriter.write(terrain, String.format("%s_heights", fileName));
     new FlowWriter(rivers).write(terrain, String.format("%s_rivers", fileName));
   }

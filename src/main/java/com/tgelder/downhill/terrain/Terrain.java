@@ -56,7 +56,7 @@ public class Terrain {
           downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4, rng);
           flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
 
-          if (i < 0) {
+          if (i < 99) {
 
 
             rawMesh.iterateWithThrows((x, y) -> {
@@ -128,8 +128,8 @@ public class Terrain {
     return downhillProbability;
   }
 
-  public double[][] getFlowProbability(double threshold) throws DownhillException {
-    FlowProbabilityComputer flowProbabilityComputer = new FlowProbabilityComputer(threshold);
+  public double[][] getFlowProbability() throws DownhillException {
+    FlowProbabilityComputer flowProbabilityComputer = new FlowProbabilityComputer();
     return flowProbabilityComputer.getFlow(getRawMesh(), getDownhillProbability(), Mesh.dx8, Mesh.dy8);
   }
 

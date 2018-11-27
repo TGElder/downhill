@@ -2,61 +2,51 @@ package com.tgelder.downhill.terrain;
 
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 @AllArgsConstructor
 class FlowProbabilityComputer {
 
-  private final double threshold;
-  
   double[][] getFlow(Mesh mesh, double[][][] probabilities, short[] dx, short[] dy) {
     double[][] flow = new double[mesh.getWidth()][mesh.getWidth()];
+
+    List<WorkItem> work = new ArrayList<>();
     
-    mesh.iterate((x, y) -> computeFlow(mesh, probabilities, flow, x, y, dx, dy));
+    mesh.iterate((x, y) -> work.add(new WorkItem(x, y)));
+
+    Comparator<WorkItem> comparator = Comparator.comparingDouble(a -> mesh.getZ(a.x, a.y));
+    work.sort(comparator.reversed());
+
+    for (WorkItem focus : work) {
+      computeFlow(mesh, probabilities, flow, focus.x, focus.y, dx, dy);
+    }
     
     return flow;
   }
   
   private void computeFlow(Mesh mesh, double[][][] probabilities, double[][] flow, int x, int y, short[] dx, short[] dy) {
 
-    System.out.println(y);
+    flow[x][y] += 1;
+    //System.out.println(x +", "+ y+ " = "+flow[x][y]);
 
-    final Deque<Flow> stack = new ArrayDeque<>();
-
-    stack.push(new Flow(x, y, 1));
-
-    while (!stack.isEmpty()) {
-
-      Flow focus = stack.pop();
-
-      if (focus.flow > this.threshold) {
-
-        if (mesh.inBounds(focus.x, focus.y)) {
-
-          flow[focus.x][focus.y] += 1;
-
-          for (int d = 0; d < dx.length; d++) {
-            double probability = probabilities[focus.x][focus.y][d];
-            if (probability > 0) {
-              int nx = focus.x + dx[d];
-              int ny = focus.y + dy[d];
-              stack.push(new Flow(nx, ny, probability * focus.flow));
-            }
-          }
+    for (int d = 0; d < dx.length; d++) {
+      double probability = probabilities[x][y][d];
+      if (probability > 0) {
+        int nx = x + dx[d];
+        int ny = y + dy[d];
+        if (mesh.inBounds(nx, ny)) {
+          flow[nx][ny] += (flow[x][y] * probability);
 
         }
       }
-
     }
   }
 
   @AllArgsConstructor
-  private static class Flow {
+  private static class WorkItem {
 
     private final int x;
     private final int y;
-    private final double flow;
 
   }
 
