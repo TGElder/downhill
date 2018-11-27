@@ -2,6 +2,7 @@ package com.tgelder.downhill.terrain;
 
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.renderer.FlowProbabilityRenderer;
 import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
@@ -260,11 +261,17 @@ public class App {
 
     Image image = new AWTImage(size, size);
     zRenderer.render(terrain.getAltitudes(), seaLevel, maxAltitude, image);
-    FlowRenderer flowRenderer = new FlowRenderer(rivers);
+    //FlowRenderer flowRenderer = new FlowRenderer(rivers);
     //flowRenderer.render(terrain.getFlow(), image);
+
+    Image flowProbability = new AWTImage(size, size);
+    FlowProbabilityRenderer flowProbabilityRenderer = new FlowProbabilityRenderer();
+    flowProbabilityRenderer.render(terrain.getFlowProbability(0.0001), flowProbability);
+
     String fileName = String.format("%sseed%s_power%s_seaLevel%s_maxAltitude%s_rivers%s",
                                     destination, seed, power, seaLevel, maxAltitude, rivers);
     image.save(fileName);
+    flowProbability.save(String.format("%s_flowprobability", fileName));
     HeightWriter.write(terrain, String.format("%s_heights", fileName));
     new FlowWriter(rivers).write(terrain, String.format("%s_rivers", fileName));
   }

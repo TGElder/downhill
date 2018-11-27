@@ -17,7 +17,7 @@ class DownhillProbabilityComputer {
   private static double[] getDownhill(Mesh mesh, int x, int y, short[] dx, short[] dy) throws DownhillException {
     double minZ = mesh.getZ(x, y);
 
-    double[] drops = {0, 0, 0, 0};
+    double[] drops = new double[dx.length];
 
     double total = 0;
 

@@ -30,6 +30,8 @@ public class Terrain {
   private short[][] downhill;
   private int[][] flow;
   private double[][] slope;
+  private double[][][] downhillProbability;
+  private double[][] flowProbability;
 
   public Terrain(int seed, int power, double maxAltitude) {
     this.seed = seed;
@@ -54,7 +56,7 @@ public class Terrain {
           downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4, rng);
           flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
 
-          if (i < 99) {
+          if (i < 0) {
 
 
             rawMesh.iterateWithThrows((x, y) -> {
@@ -117,6 +119,18 @@ public class Terrain {
       slope = SlopeComputer.getSlope(getScaledMesh());
     }
     return slope;
+  }
+
+  public double[][][] getDownhillProbability() throws DownhillException {
+    if (downhillProbability == null) {
+      downhillProbability = DownhillProbabilityComputer.getProbabilities(getRawMesh(), Mesh.dx8, Mesh.dy8);
+    }
+    return downhillProbability;
+  }
+
+  public double[][] getFlowProbability(double threshold) throws DownhillException {
+    FlowProbabilityComputer flowProbabilityComputer = new FlowProbabilityComputer(threshold);
+    return flowProbabilityComputer.getFlow(getRawMesh(), getDownhillProbability(), Mesh.dx8, Mesh.dy8);
   }
 
   private boolean inBounds(int x, int y) {
