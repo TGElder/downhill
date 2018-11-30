@@ -130,7 +130,7 @@ public class Terrain {
 
   public double[][] getFlowProbability() throws DownhillException {
     FlowProbabilityComputer flowProbabilityComputer = new FlowProbabilityComputer();
-    return flowProbabilityComputer.getFlow(getRawMesh(), getDownhillProbability(), Mesh.dx8, Mesh.dy8);
+    return flowProbabilityComputer.getFlow(getRawMesh(), Mesh.dx8, Mesh.dy8);
   }
 
   private boolean inBounds(int x, int y) {
