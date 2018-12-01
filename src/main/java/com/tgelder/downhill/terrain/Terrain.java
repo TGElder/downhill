@@ -3,6 +3,7 @@ package com.tgelder.downhill.terrain;
 import com.tgelder.downhill.geometry.Scale;
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.renderer.FlowSamplerRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
 import com.tgelder.downhill.rngs.RNG;
 import com.tgelder.downhill.rngs.RandomRNG;
@@ -12,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Terrain {
 
@@ -30,8 +34,9 @@ public class Terrain {
   private short[][] downhill;
   private int[][] flow;
   private double[][] slope;
+  private double[][][] downhillProbabilities;
 
-  public Terrain(int seed, int power, double maxAltitude) {
+  Terrain(int seed, int power, double maxAltitude) {
     this.seed = seed;
     this.power = power;
     this.maxAltitude = maxAltitude;
@@ -51,22 +56,54 @@ public class Terrain {
         int size = rawMesh.getWidth() * rawMesh.getWidth();
 
         try {
-          downhill = DownhillComputer.getDownhill(rawMesh, Mesh.dx4, Mesh.dy4, rng);
-          flow = FlowComputer.getFlow(rawMesh, downhill, Mesh.dx4, Mesh.dy4);
+//          Image image = new AWTImage(rawMesh.getWidth(), rawMesh.getWidth());
+//          new HeightRenderer().render(MeshZScaler.scale(rawMesh, new Scale(rawMesh.getMinZ(), rawMesh.getMaxZ(), 0, maxAltitude)).getZ(), 0, maxAltitude, image);
+//          try {
+//            image.save("z" + i );
+//          } catch (IOException e) {
+//            e.printStackTrace();
+//          }
 
-          if (i < 99) {
-
+          if (i < 9) {
+            downhillProbabilities = DownhillProbabilityComputer.getProbabilities(rawMesh, Mesh.dx4, Mesh.dy4);
+            int samples = 8;
+            int flow[][][] = new FlowSampler(rng).getFlow(rawMesh, downhillProbabilities, Mesh.dx4, Mesh.dy4, samples);
+            int threshold = i;
+//            Image flowImage = new AWTImage(rawMesh.getWidth(), rawMesh.getWidth());
+//            new FlowSamplerRenderer(threshold).render(flow, flowImage);
+//
+//            try {
+//              flowImage.save("f" + i );
+//            } catch (IOException e) {
+//              e.printStackTrace();
+//            }
 
             rawMesh.iterateWithThrows((x, y) -> {
 
-              if (flow[x][y] > 1 && flow[x][y] >= Math.pow(size / 65536, 2.0)) {
-                double factor = ((size * 1.0 - flow[x][y]) / (size * 1.0));
-                factor = Math.floor(factor * 10.0) / 10.0;
-                double after = rawMesh.getZ(x, y) * factor;
 
-                //System.out.println(String.format("%s, %s, %s, %s", size, flow[x][y], factor, after));
-                rawMesh.setZ(x, y, after);
+
+              for (int s = 0; s < samples; s++) {
+                if (flow[s][x][y] > 1 && flow[s][x][y] >= threshold) {
+                  double after = rawMesh.getZ(x, y) * 0.9;
+//                  rawMesh.setZ(x, y, after);
+
+//                  double factor = ((size * 1.0 - flow[0][x][y]) / (size * 1.0));
+//                 factor = Math.floor(factor * 10.0) / 10.0;
+//                  double after = rawMesh.getZ(x, y) * factor;
+////
+                  rawMesh.setZ(x, y, after);
+                  break;
+                }
               }
+
+//              if (flow[0][x][y] > 1 && flow[0][x][y] >= Math.pow(size / 65536, 2.0)) {
+//                double factor = ((size * 1.0 - flow[0][x][y]) / (size * 1.0));
+//                factor = Math.floor(factor * 10.0) / 10.0;
+//                double after = rawMesh.getZ(x, y) * factor;
+//
+//                //System.out.println(String.format("%s, %s, %s, %s", size, flow[x][y], factor, after));
+//                rawMesh.setZ(x, y, after);
+//              }
 
             });
 
@@ -117,6 +154,18 @@ public class Terrain {
       slope = SlopeComputer.getSlope(getScaledMesh());
     }
     return slope;
+  }
+
+  private double[][][] getDownhillProbabilities() throws DownhillException {
+    if (downhillProbabilities == null) {
+      downhillProbabilities = DownhillProbabilityComputer.getProbabilities(getRawMesh(), Mesh.dx8, Mesh.dy8);
+    }
+    return downhillProbabilities;
+  }
+
+  public int[][][] getFlowSample(int samples) throws DownhillException {
+    FlowSampler sampler = new FlowSampler(rng);
+    return sampler.getFlow(getRawMesh(), getDownhillProbabilities(), Mesh.dx4, Mesh.dy4, samples);
   }
 
   private boolean inBounds(int x, int y) {
