@@ -26,7 +26,7 @@ class DownhillProbabilityComputer {
       if (focusZ < minZ) {
         double drop = minZ - focusZ;
         drops[d] = 1;
-        total += 1;
+        total += drops[d];
       }
     }
 

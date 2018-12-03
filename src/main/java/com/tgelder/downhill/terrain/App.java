@@ -2,6 +2,7 @@ package com.tgelder.downhill.terrain;
 
 import com.tgelder.downhill.image.AWTImage;
 import com.tgelder.downhill.image.Image;
+import com.tgelder.downhill.renderer.ContourRenderer;
 import com.tgelder.downhill.renderer.FlowRenderer;
 import com.tgelder.downhill.renderer.FlowSamplerRenderer;
 import com.tgelder.downhill.renderer.HeightRenderer;
@@ -264,6 +265,11 @@ public class App {
     FlowRenderer flowRenderer = new FlowRenderer(rivers);
     flowRenderer.render(terrain.getFlow(), image);
     String fileName = String.format("%s/%s-%s", destination, seed, power);
+    ContourRenderer contourRenderer = new ContourRenderer();
+    Image countourImage = new AWTImage(size, size);
+    System.out.println("Rendering contours");
+    ContourRenderer.render(terrain.getAltitudes(), terrain.getMaxAltitude()/16.0, 0, terrain.getMaxAltitude(), countourImage);
+    countourImage.save(String.format("%s_countours", fileName));
 //    new FlowSamplerRenderer(16).render(terrain.getFlowSample(32), image);
     image.save(fileName);
     HeightWriter.write(terrain, String.format("%s", fileName));

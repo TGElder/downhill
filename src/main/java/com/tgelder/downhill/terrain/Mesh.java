@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class Mesh {
 
@@ -19,8 +20,8 @@ class Mesh {
   static final short [] dx8 = {-1, -1, 0, 1, 1, 1, 0, -1};
   static final short [] dy8 = {0, -1, -1, -1, 0, 1, 1, 1};
 
-  static final short [] dx4 = {-1, 0, 1, 0};
-  static final short [] dy4 = {0, -1, 0, 1};
+  //static final short [] dx4 = {-1, 0, 1, 0};
+  //static final short [] dy4 = {0, -1, 0, 1};
   
   @Getter
   private final int width;
@@ -110,9 +111,10 @@ class Mesh {
         int yNeighbour = (offsetY * 2) - 1;
         double xNeighbourZ = getZ(x + xNeighbour, y, Mesh.MIN_VALUE);
         double yNeighbourZ = getZ(x, y + yNeighbour, Mesh.MIN_VALUE);
+        double dNeighbourZ = getZ(x + xNeighbour, y + yNeighbour, Mesh.MIN_VALUE);
         double z = getZ(x, y);
 
-        double minZ = Math.min(Math.min(xNeighbourZ, yNeighbourZ), z);
+        double minZ = Stream.of(xNeighbourZ, yNeighbourZ, dNeighbourZ, z).min(Double::compareTo).get();
 
         splitRules.add(new SplitRule(offsetX, offsetY, minZ, z));
 
